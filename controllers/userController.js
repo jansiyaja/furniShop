@@ -2,7 +2,7 @@ const User = require('../models/userModel');
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
 const userOtpVerification = require('../models/userOtpVerification');
-require('dotenv').config();
+ const dotenv=require('dotenv').config();
 
 //Home page
 const loadHome = async (req, res) => {
@@ -117,8 +117,9 @@ const sendOtpVerificationMail = async ({ email }, res) => {
         port: 465,
         secure: true,
         auth: {
-            user: "jansiyajahan8@gmail.com",
-            pass: "lttz ypri ziwm omdy",
+            user:process.env.MAIL_EMAIL,
+            pass:process.env. MAIL_PASSWORD
+         
         },
       });
   
@@ -126,7 +127,7 @@ const sendOtpVerificationMail = async ({ email }, res) => {
       console.log(otp);
   
       const emailOptions = {
-        from: 'jansiyajahan8@gmail.com',
+        from: process.env.MAIL_EMAIL,
         to: email,
         subject: 'Verify your email',
         html: `Your OTP is ${otp}`,
