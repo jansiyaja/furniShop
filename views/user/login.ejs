@@ -55,7 +55,7 @@
                                                 <i class="icon-long-arrow-right"></i>
                                             </button>
 
-                                            <a href="#" class="forgot-link">Forgot Your Password?</a>
+                                            <!-- <a href="#" class="forgot-link">Forgot Your Password?</a> -->
                                         </div><!-- End .form-footer -->
                                         <div class="form mt-3">
                                             <a href="/register" class="forgot-link"> create account just SIGN up</a>  
@@ -182,39 +182,25 @@
                             <div class="tab-content" id="tab-content-5">
                                 <div class="tab-pane fade show active" id="signin" role="tabpanel"
                                     aria-labelledby="signin-tab">
-                                    <form action="" method="post">
+                                    <form action="" id="registration-form" method="post" onsubmit="return validateForm()">
                                         <div class="form-group">
-                                            <label for="singin-email">email address *</label>
-                                            <input type="text" class="form-control" id="singin-email" name="email"
-                                                required>
+                                            <label for="singin-email">Email address *</label>
+                                            <input type="text" class="form-control" id="singin-email" name="email" required>
+                                            <p id="email-error" style="color: red;"></p>
                                         </div><!-- End .form-group -->
-
+                                    
                                         <div class="form-group">
                                             <label for="singin-password">Password *</label>
-                                            <input type="password" class="form-control" id="singin-password"
-                                                name="password" required>
+                                            <input type="password" class="form-control" id="singin-password" name="password" required>
+                                            <p id="password-error" style="color: red;"></p>
                                         </div><!-- End .form-group -->
-
+                                    
                                         <div class="form-footer">
                                             <button type="submit" class="btn btn-outline-primary-2">
                                                 <span>LOG IN</span>
                                                 <i class="icon-long-arrow-right"></i>
                                             </button>
-
-
-                                            <a href="#" class="forgot-link">Forgot Your Password?</a>
-                                        </div><!-- End .form-footer -->
-                                        <% if (typeof message !== 'undefined') { %>
-                                            <% if (message === 'success') { %>
-                                              <p style="color: green; text-align: center;">
-                                                <%= message %>
-                                              </p>
-                                            <% } else { %>
-                                              <p style="color: red; text-align: center;">
-                                                <%= message %>
-                                              </p>
-                                            <% } %>
-                                          <% } %>
+                                        </div><!-- End .form-footer>
                                     </form>
 
                                 </div><!-- .End .tab-pane -->
@@ -231,3 +217,6 @@
         </div><!-- End .modal-dialog -->
     </div><!-- End .modal -->
     <%- include ('../Layout/footer.ejs') -%>
+
+   
+    

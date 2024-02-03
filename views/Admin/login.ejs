@@ -69,17 +69,23 @@
 <body>
   <main>
     <h1>Login</h1>
-    <form id="login_form" action="/user/login" method="post" onsubmit="return validateForm()">
-      <label for="email">Email:</label>
-      <input id="email" name="email" type="email" placeholder="Enter your email" autofocus required>
+    <form id="login_form" action="" method="post" onsubmit="return validateForm()">
+        <label for="email">Email:</label>
+        <input id="email" name="email" type="email" placeholder="Enter your email" autofocus required>
 
-      <label for="password">Password:</label>
-      <input id="password" name="password" type="password" placeholder="Enter your password" required>
+        <label for="password">Password:</label>
+        <input id="password" name="password" type="password" placeholder="Enter your password" required>
 
-      <button type="submit">Login</button>
+        <button type="submit">Login</button>
     </form>
+
+    <div id="error-message-container">
+      <% if (typeof logout !== 'undefined') { %>
+        <p class="error-message"><%= logout %></p>
+    <% } %>
     
-  </main>
+    </div>
+</main>
 
   <script>
     function validateForm() {
@@ -91,10 +97,11 @@
         return false;
       }
 
-      // Additional validation logic can be added here if needed.
-
       return true;
     }
+    
+    
+
   </script>
 </body>
 

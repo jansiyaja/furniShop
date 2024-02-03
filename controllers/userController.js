@@ -2,12 +2,14 @@ const User = require('../models/userModel');
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
 const userOtpVerification = require('../models/userOtpVerification');
- const dotenv=require('dotenv').config();
+const dotenv = require('dotenv').config();
+const product=require('../models/products')
 
-//Home page
+
+//------Home page----------------------------//
 const loadHome = async (req, res) => {
   try {
-   
+
     res.render('home');
   } catch (error) {
     console.log(error.message);
@@ -15,11 +17,11 @@ const loadHome = async (req, res) => {
   }
 };
 
+//----------------------------------------------//
 
 
 
-
-// Load login page
+// ----------Load login page-------------------//
 const loadLogin = async (req, res) => {
   try {
     res.render('login');
@@ -28,33 +30,35 @@ const loadLogin = async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 };
+//-----------------------------------------------//
 
-// Logout
-const  logout=async (req , res, next) =>{
+
+// userLogout session---------------------------//
+const logout = async (req, res, next) => {
 
   try {
-    if(req.session){
-      req.session.destroy((err)=>{
-          if(err) {
-              return next(err);
-          }
-          else{
-              return res.redirect ('/')
-          }
+    if (req.session) {
+      req.session.destroy((err) => {
+        if (err) {
+          return next(err);
+        }
+        else {
+          return res.redirect('/login')
+        }
       })
-   }
-    
+    }
+
   } catch (error) {
     console.log(error.message);
     res.status(500).send('Internal Server Error');
-    
+
   }
- 
+
 
 };
+//--------------------------------------------------------------------------------//
 
-
-// Secure the password
+// ----------Secure the password------------------------------------------//
 const securePassword = async (password) => {
   try {
     const securePass = await bcrypt.hash(password, 10);
@@ -64,8 +68,9 @@ const securePassword = async (password) => {
     throw new Error('Failed to secure password. ' + error.message);
   }
 };
+//-------------------------------------------------------------//
 
-// Load signup page
+// ---------------------Load signup page------------------------------------//
 const loadSignup = (req, res) => {
   try {
     res.render('register');
@@ -75,85 +80,142 @@ const loadSignup = (req, res) => {
   }
 };
 
+//------------------------------------------------------------------------------------//
 
-const insertUser=async(req,res)=>{
-    try{
+//-------------check the user------------------------------//
 
-        const securepassword = await securePassword(req.body.password);
-        console.log('Request Body:', req.body);
-        console.log('Secure Password:', securepassword);
+const insertUser = async (req, res) => {
+  try {
 
-        // Check if the email is already in use
-        const existingUser = await User.findOne({ email: req.body.email });
-        if (existingUser) {
-            return res.render("login", { message: "Email is already in use" });
-        }
-           const user=new User({
-            name:req.body.name,
-            email:req.body.email,
-            mobile:req.body.mobile,
-            password:securepassword,
-            is_admin:0
+    const securepassword = await securePassword(req.body.password);
+    console.log('Request Body:', req.body);
+    console.log('Secure Password:', securepassword);
 
-            });
-            sendOtpVerificationMail(user, res);
-              await user.save();
+    // Check if the email is already in use
+    const existingUser = await User.findOne({ email: req.body.email });
+    if (existingUser) {
+      return res.render("login", { message: "Email is already in use" });
+    } else {
+      const user = new User({
 
-             
-            }
-    catch(error){
-        console.log(error.message)
+        name: req.body.name,
+        email: req.body.email,
+        mobile: req.body.mobile,
+        password: securepassword,
+        is_admin: 0,
+        verified: 0,
+        Blocked: false
+      });
+      sendOtpVerificationMail(user, res);
+      await user.save();
     }
-}
 
 
+
+
+  }
+  catch (error) {
+    console.log(error.message)
+  }
+};
+
+//---------------------------------------------------------------------------------//
+
+//-------node mailer setup-------------------------------------//
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  host: 'smtp.gmail.com',
+  port: 465,
+  secure: true,
+  auth: {
+    user: process.env.MAIL_EMAIL,
+    pass: process.env.MAIL_PASSWORD
+  }
+});
 
 
 const sendOtpVerificationMail = async ({ email }, res) => {
-    try {
-      const transporter = nodemailer.createTransport({
-        service: 'gmail',
-        host: 'smtp.gmail.com',
-        port: 465,
-        secure: true,
-        auth: {
-            user:process.env.MAIL_EMAIL,
-            pass:process.env. MAIL_PASSWORD
-         
-        },
-      });
-  
-      const otp = `${Math.floor(100000 + Math.random() * 9000)}`;
-      console.log(otp);
-  
-      const emailOptions = {
-        from: process.env.MAIL_EMAIL,
-        to: email,
-        subject: 'Verify your email',
-        html: `Your OTP is ${otp}`,
-      };
-  
-      const hashedOtp = await bcrypt.hash(otp, 10);
-  
-      const newOtpVerification = new userOtpVerification({
-        email: email,
-        otp: hashedOtp,
-      });
-  
-      await newOtpVerification.save();
-  
-      // Use await to ensure the email is sent before redirecting
-     
-  
-      res.redirect(`/otp?email=${email}`);
-      await transporter.sendMail(emailOptions);
-    } catch (error) {
-      console.error('Error sending OTP email:', error.message);
-      res.status(500).send('Failed to send OTP email');
-    }
-  };
-  
-// Load OTP page
+  try {
+
+    const otp = generateOtp();
+    console.log(otp);
+
+    const emailOptions = {
+      from: "jansiyajahan8@gmail.com",
+      to: email,
+      subject: 'Verify your email',
+      html: `Your OTP is ${otp}`,
+    };
+
+    const hashedOtp = await bcrypt.hash(otp, 10);
+
+    const newOtpVerification = new userOtpVerification({
+      email,
+      otp: hashedOtp,
+      createdAt: new Date(),
+    });
+
+    await newOtpVerification.save();
+
+    await transporter.sendMail(emailOptions);
+    res.redirect(`/otp?email=${email}`);
+
+
+  } catch (error) {
+    handleError(res, error, 'Failed to send OTP email');
+  }
+};
+
+//--------------------------------------------------------------------------------//
+
+//---------------resend OTP-----------------------------------//
+const resendOtp = async (req, res) => {
+  try {
+    console.log(process.env.MAIL_EMAIL);
+    console.log(process.env.MAIL_PASSWORD);
+    const { email } = req.body;
+    const otp = generateOtp();
+    console.log(otp);
+
+    const emailOptions = {
+      from: "jansiyajahan8@gmail.com",
+      to: email,
+      subject: 'Verify your email',
+      html: `Your OTP is ${otp}`,
+    };
+
+    const hashedOtp = await bcrypt.hash(otp, 10);
+
+    const newOtpVerification = new userOtpVerification({
+      email,
+      otp: hashedOtp,
+      createdAt: new Date(),
+    });
+
+    await newOtpVerification.save();
+
+    await transporter.sendMail(emailOptions);
+
+    const resendUrl = `${req.protocol}://${req.get('host')}/otp?email=${email}`;
+    res.json({ resendUrl });
+  } catch (error) {
+    handleError(res, error, 'Failed to send OTP email11');
+  }
+};
+
+
+
+const generateOtp = () => `${Math.floor(100000 + Math.random() * 9000)}`;
+
+
+const handleError = (res, error, message) => {
+  console.error(`Error: ${message}`, error.message);
+  res.status(500).send(message);
+};
+//-------------------------------------------------------------------------------//
+
+
+// ----------------Load OTP page-----------------------------------------------//
 const loadOtp = async (req, res) => {
   try {
     const email = req.query.email;
@@ -163,8 +225,9 @@ const loadOtp = async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 };
+//-----------------------------------------------------------------------//
 
-// Verify OTP
+//--------------- Verify OTP-----------------------------//
 const verifyOtp = async (req, res) => {
   try {
     const email = req.body.email;
@@ -176,14 +239,7 @@ const verifyOtp = async (req, res) => {
       req.body.digit5 +
       req.body.digit6;
 
-    const userVerification = await userOtpVerification.findOne({ email: email });
-
-    if (!userVerification) {
-     
-       res.redirect("/register", { message: "OTP expired" });
-     
-      
-    }
+    const userVerification = await userOtpVerification.findOne({ email: email, });
 
     const { otp: hashedOtp } = userVerification;
     const validOtp = await bcrypt.compare(otp, hashedOtp);
@@ -201,13 +257,14 @@ const verifyOtp = async (req, res) => {
             },
           }
         );
+
       }
     } else {
-     
-      res.redirect('/otp',{ message: "OTP expired" });
+
+      res;
     }
 
-    
+
     const user = await User.findOne({ email: email })
     await userOtpVerification.deleteOne({ email: email })
     if (user.verified) {
@@ -222,14 +279,14 @@ const verifyOtp = async (req, res) => {
         console.log("user blocked from this site");
 
 
-      
-        res.redirect(`/otp?email=${email}`,{message:" you are blocked from this contact with admin"})
+
+        res.redirect(`/otp?email=${email}`, { message: " you are blocked from this contact with admin" })
 
       }
     } else {
       console.log("otp incorrect else worked")
 
-      res.redirect(`/otp?email=${email}`,{message:"otp is incorrect"})
+      res.redirect(`/otp?email=${email}`, { message: "otp is expired" })
 
     }
   }
@@ -237,67 +294,65 @@ const verifyOtp = async (req, res) => {
     console.log(error);
   }
 }
+//-------------------------------------------------------------------//
 
-    
 
-// UserLogin
+//---------------UserLogin----------------------------//
 const UserLogin = async (req, res) => {
-    try {
-      const email = req.body.email; // Corrected this line
-      const user = await User.findOne({ email: email });
-  
-      if (user) {
-        if (user.verified) {
-          if (user.Blocked) {
-            res.redirect('/login', { message: "User is blocked by the admin" });
-          } else {
-            const password = req.body.password;
-            const dbpass = user.password;
-            const pass = await bcrypt.compare(password, dbpass);
-  
-            if (pass) {
-              req.session.user = {
-                email: user.email,
-                _id: user._id,
-                name: user.name,
-              };
-              res.redirect('/');
-            } else {
-              res.redirect('/login', { message: "Incorrect Password" });
-              console.log('Incorrect password');
-            }
-          }
+  try {
+    const email = req.body.email; 
+    const user = await User.findOne({ email: email });
+
+    if (user) {
+      if (user.verified) {
+        if (user.Blocked) {
+          res.render('login', { message: "User is blocked by the admin" });
         } else {
-          console.log('User is not verified');
-          res.redirect('/login', { message: "User is not verified" });
+          const password = req.body.password;
+          const dbpass = user.password;
+          const pass = await bcrypt.compare(password, dbpass);
+
+          if (pass) {
+            req.session.user = {
+              email: user.email,
+              _id: user._id,
+              name: user.name,
+            };
+            res.render('home');
+          } else {
+            res.render('login', { logout: "Incorrect Password" });
+            console.log('Incorrect password');
+          }
         }
       } else {
-        res.render('login', { message: "User is not found" });
+        console.log('User is not verified');
+        res.render('login', { logout: "Incorrect Password" });
       }
-    } catch (error) {
-      console.log(error.message);
-      res.status(500).send('Internal Server Error');
+    } else {
+      res.render('login', {logout: "User is not found" });
     }
-  };
-
-  //
-
- 
-
-const loadShop = async (req, res) => {
-  try {
-    res.render('shop');
   } catch (error) {
     console.log(error.message);
     res.status(500).send('Internal Server Error');
   }
 };
 
+//------------------------------------------------------//
+
+
+const loadAbout= async (req,res)=>{
+  try {
+    res.render('about')
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+
 
 // Export module
 module.exports = {
   loadHome,
- 
   loadLogin,
   logout,
   securePassword,
@@ -306,6 +361,7 @@ module.exports = {
   sendOtpVerificationMail,
   loadOtp,
   verifyOtp,
+  resendOtp,
   UserLogin,
-  loadShop
+  loadAbout
 };

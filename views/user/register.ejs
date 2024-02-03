@@ -19,7 +19,7 @@
 							    
 							    	
 							    <div class="tab-pane fade show active" id="register-2" role="tabpanel" aria-labelledby="register-tab-2">
-							    	<form action="" method="post">
+							    	<form action="" id="registration-form" method="post" onsubmit="return validateForm()">
 							    		 <div class="form-group">
                                             <label for="register-username">Name *</label>
                                             <input type="Text" class="form-control" id="register-username" name="name" required>
@@ -34,7 +34,7 @@
 
                                         <div class="form-group">
                                             <label for="register-mobile">Mobile  *</label>
-                                            <input type="number" class="form-control" id="register-mobile" name="mobile" required>
+                                            <input type="string" class="form-control" id="register-mobile" name="mobile" required>
                                         </div><!-- End .form-group -->
 
                                         <div class="form-group">
@@ -54,6 +54,13 @@
 												<label class="custom-control-label" for="register-policy-2">I agree to the <a href="#">privacy policy</a> *</label>
 											</div><!-- End .custom-checkbox -->
 							    		</div><!-- End .form-footer -->
+                                        <div class="form mt-3">
+                                            <a href="/login" class="forgot-link"> Already have account? LOGIN IN</a>  
+
+                                          
+                                          
+                                        </div><!-- End .form-footer -->
+                                        <div >
                                         <% if (typeof message !== 'undefined') { %>
                                             <% if (message === 'success') { %>
                                               <p style="color: green; text-align: center;">
@@ -65,6 +72,7 @@
                                               </p>
                                             <% } %>
                                           <% } %>
+                                        </div>
 							    	</form>
                                     
                                     

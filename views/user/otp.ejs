@@ -108,7 +108,7 @@
                     </div>
                 </div>
             <% } %>
-            <form id="verificationForm" onsubmit="return validate()" method="post" action="">
+            <form method="post" action="">
                 <% if(locals.email) { %>
                     <input type="hidden" name="email" value="<%= email %>">
                 <% } %>
@@ -122,20 +122,22 @@
                     <input type="text" class="form-control" id="digit5" name="digit5" required>
                     <input type="text" class="form-control" id="digit6" name="digit6" required>
                 </div>
-                <button type="submit" class="submit-btn">Submit</button>
+                <button type="submit" class="submit-btn" id="submitButton">Submit</button>
             </form>
             <span class="time text-center"></span>
             <div class="text-center">
-                <span class="mobile-text">Don't receive the code?</span>
-                <span class="font-weight-bold text-danger cursor resend-link" onclick="resend()">Resend</span>
+                <span class="mobile-text">Didn't receive the code?</span>
+                <div id="otpSend" style="display: none;">otp resend success</div>
+                <span class="font-weight-bold text-danger cursor resend-link"  onclick="resend()"  >Resend  </span>
                 <% if (typeof message !== 'undefined') { %>
-                  <% if (message =='OTP expired') { %>
+                  <% if (message) { %>
                     <p style="color: red; text-align: center;">
                       <%= message %>
                     </p>
                   <% } %>
                 <% } %>
               </div>
+              
               
         </div>
     </div>
@@ -183,15 +185,36 @@
                 timerContainer.style.display = 'none';
             });
         });
+       
 
-        function validate() {
-            // Add your validation logic here
-            return true; // Return true if validation passes, false otherwise
-        }
 
-        function resend() {
-            // Add logic to resend the OTP
-        }
+  function resend() {
+    document.getElementById('otpSend').style.display = 'block';
+    setTimeout(()=>{
+        document.getElementById('otpSend').style.display = 'none';
+    },1000)
+    
+    const email = '<%= email %>';
+   
+    fetch('/resendOtp', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    
+      body: JSON.stringify({email:email }),
+    })
+      .then(response => response.json())
+      .then(data => {
+
+       
+      })
+      .catch(error => {
+        console.error('Error fetching resend URL:', error.message);
+        // Handle error as needed
+      });
+  }
+
     </script>
    
     <%- include('../Layout/footer.ejs') -%>
