@@ -107,38 +107,37 @@ const addProduct = async (req, res) => {
 //------------------------------------------------------------------------------------------//
 
 //-----------------List and Unlist the product-------------------------------------------------------------//
+
+
 const listUnlist = async (req, res) => {
   try {
-    const userid = req.body.userid;
-    const product = await Product.findOne({ _id: userid })
-    if (product.is_Listed) {
-      await Product.findByIdAndUpdate({
-        _id: userid
-      },
-        {
-          $set: {
-            is_Listed: false
-          }
-        }
-      )
-    }
-    else {
-      await Product.findByIdAndUpdate({
-        _id: userid
-      },
-        {
-          $set: {
-            is_Listed: true
-          }
-        }
-      )
-    }
-    res.json({ list: true })
+     const productId = req.body.userid;
+     console.log("Received product id:", productId);
+
+     const product = await Product.findOneAndUpdate(
+        { _id: productId },
+        { $set: { is_Listed: req.body.isListed } },
+        { new: true }
+     );
+
+     if (!product) {
+        console.error("Product not found");
+        return res.status(404).json({ error: "Product not found" });
+     }
+
+     console.log("Updated product status:", product.is_Listed);
+
+     res.json({ list: product.is_Listed });
   } catch (error) {
-    console.log(error.message);
+     console.error("Error in listUnlist:", error.message);
+     res.status(500).json({ error: "Internal Server Error" });
   }
-}
+};
+
+
+
 //------------------------------------------------------------------------------------------//
+//-------------------edit product load--------------------------------------------------------------------//
 const editProductLoad = async (req, res) => {
   try {
     const id = req.query.id
@@ -150,6 +149,9 @@ const editProductLoad = async (req, res) => {
   }
 }
 
+//------------------------------------------------------------------------------------------//
+
+//--------------------Edit product----------------------------------------------------------------------//
 
 
 const editProduct = async (req, res) => {
@@ -195,21 +197,10 @@ const editProduct = async (req, res) => {
   }
 };
 
+//------------------------------------------------------------------------------------------//
 
 
-//delete product 
-const deleteProduct = async (req, res) => {
-  try {
-
-    const id = req.body.productid
-    await Product.deleteOne({ _id: id })
-    res.json({ success: true })
-
-  } catch (error) {
-    console.log(error);
-  }
-}
-
+//------------------------loading shoap------------------------------------------------------------------//
 const loadShop = async (req, res) => {
   let products;
   let category = await Category.find({ isListed: false })
@@ -225,7 +216,10 @@ const loadShop = async (req, res) => {
     console.log(error.message);
   }
 }
+//------------------------------------------------------------------------------------------//
 
+
+//----------------------product details page --------------------------------------------------------------------//
 
 const productView = async (req, res) => {
   try {
@@ -256,10 +250,11 @@ const productView = async (req, res) => {
     res.render('productDetails', { products, relatedProduct, inCart: false });
   } catch (error) {
     console.log(error.message);
-    // Handle the error appropriately, e.g., send an error response
+   
     res.status(500).send('Internal Server Error');
   }
 }
+//------------------------------------------------------------------------------------------//
 
 module.exports = {
   loadaddProduct,
@@ -268,7 +263,7 @@ module.exports = {
   listUnlist,
   editProductLoad,
   editProduct,
-  deleteProduct,
+  
   loadShop,
   productView
 }
