@@ -1,5 +1,7 @@
 const Category = require('../models/categoryModel');
 const Product = require('../models/products');
+const Cart= require('../models/cartModel')
+
 // const cloudinary= require('../config/cloudinary')
 
 const cloudinary = require('cloudinary').v2;
@@ -104,6 +106,59 @@ const addProduct = async (req, res) => {
     console.log(error);
   }
 };
+// const addProduct = async (req, res) => {
+//   try {
+//     const details = req.body;
+//     const files = req.files;
+//     let arrImages = [];
+
+//     if (Array.isArray(req.files)) {
+//       for (let i = 0; i < req.files.length; i++) {
+//         const result = await cloudinary.uploader.upload(files[i].path, {
+//           width: 500,
+//           height: 500,
+//           crop: 'fill',
+//         });
+//         arrImages.push(result.secure_url);
+//       }
+//     }
+
+//     if (details.quantity > 0 && details.price > 0) {
+//       const variations = []; // Initialize an array to store variations
+
+//       // Loop through variation details provided in the request
+//       for (const variationDetails of details.variations) {
+//         // For each variation, add it to the variations array
+//         variations.push({
+//           color: variationDetails.color,
+//           size: variationDetails.size,
+//           quantity: variationDetails.quantity,
+//           // Add any other properties specific to a variation
+//         });
+//       }
+
+//       // Create the product with variations
+//       const product = new Product({
+//         name: details.name,
+//         previous_price: details.previous_price,
+//         price: details.price,
+//         category: details.category,
+//         description: details.description,
+//         stock: details.quantity,
+//         images: arrImages,
+//         variations: variations, // Assign the array of variations
+//       });
+
+//       await product.save();
+//     }
+
+//     res.redirect('/admin/addProduct');
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).send('Internal Server Error');
+//   }
+// };
+
 //------------------------------------------------------------------------------------------//
 
 //-----------------List and Unlist the product-------------------------------------------------------------//
@@ -163,7 +218,7 @@ const editProduct = async (req, res) => {
     const newquantity = req.body.quantity;
     const newcategory = req.body.category;
     const newdescription = req.body.description;
-    const existingData = await Product.findById(id);
+    
 
     const arrimages = [];
     for (let i = 0; i < req.files.length; i++) {
@@ -197,6 +252,8 @@ const editProduct = async (req, res) => {
   }
 };
 
+
+
 //------------------------------------------------------------------------------------------//
 
 
@@ -211,7 +268,10 @@ const loadShop = async (req, res) => {
     } else {
       products = await Product.find({}).populate("category")
     }
-    res.render('shop', { products, category })
+    const messages = req.flash('error');
+   
+    res.render('shop', { products, category,messages })
+   
   } catch (error) {
     console.log(error.message);
   }
@@ -224,36 +284,47 @@ const loadShop = async (req, res) => {
 const productView = async (req, res) => {
   try {
     const productId = req.query.id;
-    const userid = req.session.user;
-    const products = [await Product.findById(productId).populate('category')];
-    console.log("ppppp",products);
-    const viewProduct = await Product.findById({ _id: productId });
-    const relatedProduct = await Product.find({
-      category: viewProduct.category,
-      _id: {
-        $ne: viewProduct._id
-      }
-    });
-
-    if (userid) {
-      const existscart = await Cart.findOne({ userId: userid });
-
-      if (existscart) {
-        const existsProduct = existscart.products.find((pro) => pro.productId.toString() === productId);
-
-        if (existsProduct) {
-          return res.render('productDetails', { products, relatedProduct, inCart: true });
-        }
-      }
-    }
-
-    res.render('productDetails', { products, relatedProduct, inCart: false });
+    const products = [await Product.findById(productId)];
+    res.render('productDetails', { products, inCart: false });
   } catch (error) {
-    console.log(error.message);
+    console.log("cart",error.message);
    
     res.status(500).send('Internal Server Error');
   }
 }
+// const productView = async (req, res) => {
+//   try {
+//     const productId = req.query.id;
+//     const userid = req.session.user;
+    
+// const products = await Product.findById(productId).populate('category');
+
+// const existscart = await Cart.findOne({ userId: userid });
+// console.log(existscart);
+
+// // Add more console.log statements to identify the flow of your program
+
+// if (userid) {
+//   if (existscart) {
+//     const existsProduct = existscart.products.find((pro) => pro.productId.toString() === productId);
+
+//     if (existsProduct) {
+//       console.log('In existsProduct block');
+//       return res.render('productDetails', { products,  inCart: true });
+//     }
+//   }
+// }
+
+// console.log('Before render');
+// res.render('productDetails', { products,inCart: false });
+
+
+//   } catch (error) {
+//     console.log(error.message);
+//     res.render('errorPage', { errorMessage: 'An error occurred while loading the product details.' });
+//   }
+// }
+
 //------------------------------------------------------------------------------------------//
 
 module.exports = {
