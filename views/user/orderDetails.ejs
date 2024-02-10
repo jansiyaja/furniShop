@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Order Details</title>
+    <!-- Add your Bootstrap CDN link here -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Add your custom CSS styles here -->
+    <style>
+        .order-details-content {
+            padding: 50px 0;
+        }
+
+        .order-details-box {
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin-bottom: 20px;
+            background-color: #f8f9fa;
+        }
+
+        .order-summary-box,
+        .order-products-box {
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .order-products-box img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 10px;
+        }
+
+        .go-back-button {
+            display: inline-block;
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .go-back-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container order-details-content">
+        <h1 class="text-center mb-4">Order Details</h1>
+        <div class="row">
+            <div class="col-md-12">
+                <!-- Order Details -->
+                <div class="order-details-box">
+                    <% if (order) { %>
+                        <p>Order ID: <%= order._id %></p>
+                        <p>Status: <%= order.status %></p>
+                        <p>Date: <%= order.date.toLocaleDateString() %></p>
+                        
+                        <h2>Delivery Address</h2>
+                        <p>Name: <%= order.deliveryAddress.fullName %></p>
+                        <p>Phone: <%= order.deliveryAddress.phone %></p>
+                        <p>Street Address: <%= order.deliveryAddress.streetAddress %></p>
+                        <p>City: <%= order.deliveryAddress.city %></p>
+                        <p>Pincode: <%= order.deliveryAddress.pincode %></p>
+                        <p>State: <%= order.deliveryAddress.state %></p>
+                    <% } else { %>
+                        <p>No order found with the given ID.</p>
+                    <% } %>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <!-- Order Summary -->
+                <div class="order-summary-box">
+                    <h2 class="mb-4">Order Summary</h2>
+                    <% if (order) { %>
+                        <p>Total Amount: <%= order.totalAmount %></p>
+                        <p>Payment Method: <%= order.paymentMethod %></p>
+                    <% } else { %>
+                        <p>No order found with the given ID.</p>
+                    <% } %>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <!-- Order Products -->
+                <div class="order-products-box">
+                    <h2 class="mb-3">Order Products</h2>
+                    <table class="table table-bordered mb-5">
+                        <thead>
+                            <tr>
+                                <th>Image</th>
+                                <th>Product</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% if (orderedProducts && orderedProducts.length > 0) { %>
+                                <% orderedProducts.forEach(product => { %>
+                                    <tr>
+                                        <td>
+                                            <img src="<%= product.images[0] %>" alt="Product Image" style="max-width: 150px;">
+                                        </td>
+                                        <td>
+                                            <%= product.name %>
+                                            <strong class="mx-2">x</strong>
+                                            <%= product.quantity %>
+                                        </td>
+                                        <td>₹<%= product.price %></td>
+                                        <td>
+                                            <p>Description: <%= product.description %></p>
+                                        </td>
+
+                                        <td> <a href="#" class="go-back-button">Cancel Order</a></td>
+                                    </tr>
+                                    
+                                    
+
+                                <% }); %>
+                            <% } else { %>
+                                <tr>
+                                    <td colspan="3">No products found for this order.</td>
+                                </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="text-center">
+            <a href="/shop" class="go-back-button">Go Back to Shop</a>
+        </div>
+    </div>
+
+    <!-- Add your Bootstrap JS and Popper.js CDN links here -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>

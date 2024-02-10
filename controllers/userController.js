@@ -2,27 +2,27 @@ const User = require('../models/userModel');
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
 const userOtpVerification = require('../models/userOtpVerification');
-const dotenv = require('dotenv').config();
-const product=require('../models/products')
+const Order= require('../models/orderModel')
+const Cart=require('../models/cartModel')
 
 
 //------Home page----------------------------//
 const loadHome = async (req, res) => {
   try {
+   
+      res.render('home', { user: req.session.user});
 
-    res.render('home');
   } catch (error) {
-    console.log(error.message);
+    console.error('Error in loadHome:', error);
     res.status(500).send('Internal Server Error');
   }
 };
 
 //----------------------------------------------//
 
-
-
 // ----------Load login page-------------------//
 const loadLogin = async (req, res) => {
+  
   try {
     res.render('login');
   } catch (error) {
@@ -144,7 +144,7 @@ const sendOtpVerificationMail = async ({ email }, res) => {
       from: "jansiyajahan8@gmail.com",
       to: email,
       subject: 'Verify your email',
-      html: `Your OTP is ${otp}`,
+      html: `Lets complete your account setting with furnishop. Your OTP is ${otp}`,
     };
 
     const hashedOtp = await bcrypt.hash(otp, 10);
@@ -181,7 +181,7 @@ const resendOtp = async (req, res) => {
       from: "jansiyajahan8@gmail.com",
       to: email,
       subject: 'Verify your email',
-      html: `Your OTP is ${otp}`,
+      html: `Your resend OTP is ${otp}`,
     };
 
     const hashedOtp = await bcrypt.hash(otp, 10);
@@ -199,11 +199,9 @@ const resendOtp = async (req, res) => {
     const resendUrl = `${req.protocol}://${req.get('host')}/otp?email=${email}`;
     res.json({ resendUrl });
   } catch (error) {
-    handleError(res, error, 'Failed to send OTP email11');
+    handleError(res, error, 'Failed to send OTP emaill');
   }
 };
-
-
 
 const generateOtp = () => `${Math.floor(100000 + Math.random() * 9000)}`;
 
@@ -280,13 +278,14 @@ const verifyOtp = async (req, res) => {
 
 
 
-        res.redirect(`/otp?email=${email}`, { message: " you are blocked from this contact with admin" })
+        res.redirect(`/otp?email=${email}`, )
 
       }
-    } else {
-      console.log("otp incorrect else worked")
-
-      res.redirect(`/otp?email=${email}`, { message: "otp is expired" })
+    } 
+      else {
+        req.flash('error', 'OTP is incorrect or expired');
+        res.redirect(`/otp?email=${email}`);
+      
 
     }
   }
@@ -310,26 +309,27 @@ const UserLogin = async (req, res) => {
         } else {
           const password = req.body.password;
           const dbpass = user.password;
+       
           const pass = await bcrypt.compare(password, dbpass);
-
+          
           if (pass) {
             req.session.user = {
               email: user.email,
-              _id: user._id,
+              id: user._id,
               name: user.name,
             };
-            res.render('home');
+            res.redirect('/');
           } else {
-            res.render('login', { logout: "Incorrect Password" });
+            res.render('login', { message: "Incorrect Password" });
             console.log('Incorrect password');
           }
         }
       } else {
         console.log('User is not verified');
-        res.render('login', { logout: "Incorrect Password" });
+        res.render('login', { message: "User is not verified" });
       }
     } else {
-      res.render('login', {logout: "User is not found" });
+      res.render('login', {message: "User is not found" });
     }
   } catch (error) {
     console.log(error.message);
@@ -338,6 +338,7 @@ const UserLogin = async (req, res) => {
 };
 
 //------------------------------------------------------//
+//---------- load about page--------------------------------------------//
 
 
 const loadAbout= async (req,res)=>{
@@ -347,7 +348,176 @@ const loadAbout= async (req,res)=>{
     console.log(error);
   }
 }
+//--------------Load userDashboard----------------------------------------//
+const loadDashboard = async (req, res) => {
+  try {
+    if (req.session.user) {
+      const userId = req.session.user.id;
+      console.log("userId", userId);
 
+      const orders = await Order.find({ userId: userId });
+      console.log(orders);
+
+      const user = await User.findOne({ _id: userId });
+
+      res.render('userProfile', { userDetails: user, orders: orders });
+    } else {
+      req.flash('error', 'Please log in.');
+      res.redirect('/login');
+      console.log("Please verify");
+    }
+
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+//------------------------------------------------------//
+//-----------------Edit  User Profile-------------------------------------//
+const editProfile = async (req, res) => {
+  try {
+    console.log("you are in the deit");
+    const id = req.session.user.id; 
+    console.log("edotId",id);
+    const newName = req.body.editName;
+    const newEmail = req.body.editEmail;
+    const newMobile = req.body.editPhone;
+
+    console.log("id", id);
+    console.log("newName", newName);
+
+    const already = await User.findOne({ _id: id, name: newName });
+
+    if (already) {
+      req.flash('error', 'This name is already taken');
+      res.redirect('/user');
+    } else {
+      await User.findByIdAndUpdate(id, { $set: { name: newName, email: newEmail, mobile: newMobile } });
+      req.flash('success', 'Profile updated successfully');
+      res.redirect('/user');
+    }
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send('Internal Server Error');
+  }
+};
+
+//------------------------------------------------------//
+//------------------Add Addresses------------------------------------//
+const addAddress = async (req, res) => {
+  try {
+    console.log(req.body);
+    const { fullName, city, streetAddress, state, zipCode, phone } = req.body;
+
+   
+    const user = await User.findOne({ _id: req.session.user.id });
+    const existAddress = user.address.find((addr) => addr.streetAddress === streetAddress);
+
+    if (existAddress) {
+      req.flash('success', 'Address already exists');
+      res.redirect('/user');
+    } else {
+      
+      user.address.push({
+        fullName: fullName,
+        streetAddress: streetAddress,
+        phone: phone,
+        city: city,
+        pincode: zipCode,
+        state: state,
+      });
+
+      
+      await user.save();
+
+      req.flash('success', 'Address added successfully');
+      res.redirect('/user');
+    }
+  } catch (error) {
+    console.error(error.message);
+   
+  }
+};
+
+
+//------------------------------------------------------//
+//------------Edit Address---------------------------------------------//
+ const editAddress= async(req,res)=>{
+  try {
+    const userId = req.params.userId;
+    const addressIndex = req.params.addressIndex;
+
+    
+    const user = await User.findById(userId);
+
+    if (!user || !user.address || user.address.length <= addressIndex) {
+      req.flash('error', 'Address not found');
+      return res.redirect('/user');
+    }
+
+    const addressDetails = user.address[addressIndex];
+
+    // Render a form with address details for editing
+    res.render('editAddress', { addressDetails });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send('Internal Server Error');
+  }
+ }
+
+
+//------------------------------------------------------//
+//------------Delete Addressess------------------------------------------//
+const deleteAddress= async (req,res)=>{
+  try {
+    const userId = req.params.userId;
+    const addressIndex = req.params.addressIndex;
+
+    
+    const user = await User.findById(userId);
+
+    if (!user || !user.address || user.address.length <= addressIndex) {
+      req.flash('error', 'Address not found');
+      return res.redirect('/user');
+    }
+
+    user.address.splice(addressIndex, 1);
+
+    await user.save();
+
+    req.flash('success', 'Address deleted successfully');
+    res.redirect('/user');
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send('Internal Server Error');
+  }
+
+}
+//-----------------------------------------------------//
+//-------- Load checkOut---------------------------------------------//
+const loadCheckout = async (req, res) => {
+  try {
+      const userid = req.session.user.id;
+      const user = await User.findOne({ _id: userid });
+
+      const cart = await Cart.findOne({ userId: userid }).populate('products.productId');
+
+      
+      cart.products.forEach((product) => {
+          product.totalPrice = product.quantity * product.productId.productPrice;
+      });
+
+     
+      const subtotal = cart.products.reduce((acc, product) => acc + product.totalPrice, 0);
+
+      res.render('checkout', { user: user, cart: cart.products, subtotal: subtotal });
+  } catch (error) {
+      console.log(error.message);
+      res.status(500).send('Internal Server Error');
+  }
+};
+
+//-----------------------------------------------------//
 
 
 // Export module
@@ -363,5 +533,11 @@ module.exports = {
   verifyOtp,
   resendOtp,
   UserLogin,
-  loadAbout
+  loadAbout,
+  loadDashboard,
+  editProfile,
+  addAddress,
+  deleteAddress,
+  editAddress,
+  loadCheckout
 };

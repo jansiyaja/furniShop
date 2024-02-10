@@ -72,24 +72,35 @@
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right">
+                                <%if(locals.user){ %>
                                 <div class="dropdown-cart-products">
                                     <div class="product">
                                         <div class="product-cart-details">
                                             <h4 class="product-title">
-                                                <a href="#">Your Account</a>
+                                                <a href="/user">Your Account</a>
                                             </h4>
                                         </div><!-- End .product-cart-details -->
                                     </div><!-- End .product -->
-
+        
                                     <div class="product">
                                         <div class="product-cart-details">
                                             <h4 class="product-title">
                                                 <a href="/logout">Logout</a>
                                             </h4>
                                         </div><!-- End .product-cart-details -->
-
+        
                                     </div><!-- End .product -->
                                 </div><!-- End .cart-product -->
+                                <%} else{%>
+                                <div class="product">
+                                    <div class="product-cart-details">
+                                        <h4 class="product-title">
+                                            <a href="/login">Login</a>
+                                        </h4>
+                                    </div><!-- End .product-cart-details -->
+        
+                                </div><!-- End .product -->
+                                <%}%>
                             </div><!-- End .dropdown-menu -->
                         </div><!-- End .cart-dropdown -->
 

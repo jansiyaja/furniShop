@@ -1,5 +1,6 @@
 const User=require("../models/userModel");
 const bcrypt=require("bcrypt");
+const Order=require('../models/orderModel')
 
 
 
@@ -33,10 +34,11 @@ const adminLogout= async(req,res)=>{
         if(req.session){
           req.session.destroy((err)=>{
               if(err) {
-                  return next(err);
+                  // return next(err);
+                  return res.redirect('/admin/login');
               }
               else{
-                return res.status(200).json({ success: 'Logout successfully' });
+                return res.redirect('/admin/login');
                  
               }
           })
@@ -104,13 +106,72 @@ const adminLogout= async(req,res)=>{
         }
     };
       
+    const loadOrder = async (req, res) => {
+      try {
+        const order = await Order.find({})
+          .populate('userId')
+          .populate('products.productId')
+          .sort({ date: -1 })
+        res.render('OrderList', { order: order })
+      } catch (error) {
+        console.log(error.message);
+      }
+    } 
+    
+    const singleProductView = async (req, res) => {
+      try {
+        const orderId = req.query.orderId
+        const order = await Order.findOne({ _id: orderId }).populate('userId').populate('products.productId')
+        res.render('singleOrder', { order: order })
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
+   
+    // const changeOrderStatus = async (req, res) => {
+    //   try {
+    //     const { orderId, productId, status, userId } = req.body;
+    //     console.log(orderId, productId, status, userId);
+    //     const orderData = await Order.findOneAndUpdate({ _id: orderId, userId: userId, 'products.productId': productId }, { $set: { 'products.$.status': status } })
+    //     console.log(orderData, 'update');
+    //     res.json({ change: true })
+    
+    //   } catch (error) {
+    //     console.log(error.message);
+    //   }
+    // }
+    const changeOrderStatus = async (req, res) => {
+      try {
+          const { orderId, productId, status, userId } = req.body;
+          console.log(orderId, productId, status, userId);
+  
         
+          const orderData = await Order.findOneAndUpdate(
+              { _id: orderId, userId: userId, 'products.productId': productId },
+              { $set: { 'products.$.status': status } },
+              { new: true }
+          );
+  
+          console.log(orderData, 'update');
+          res.json({ change: true, orderData });
+  
+      } catch (error) {
+          console.log(error.message);
+          res.status(500).json({ change: false, error: error.message });
+      }
+  }
+  
+  
+
 module.exports={
     adminLogin,
     loadHome,
     loadCustomer,
     adminLogout,
     userManagementSystem,
-   blockUser
+   blockUser,
+   loadOrder,
+   singleProductView,
+   changeOrderStatus,
 
 }

@@ -48,9 +48,10 @@ admin_route.get('/addProduct',productController.loadaddProduct)
 admin_route.post('/addProduct',multer.array('images'),productController.addProduct)
 admin_route.get('/editProduct',productController.editProductLoad)
 admin_route.post('/editProduct',multer.array('images'),productController.editProduct)
-admin_route.post('/deleteProduct',productController.deleteProduct)
 
-//---------------------- ---------------------------------------------//
+admin_route.post('/listproduct',productController.listUnlist)
+
+//-------------------------------------------------------------------//
 
 
 //---------------------- cateory session-----------------------------------------//
@@ -67,7 +68,9 @@ admin_route.post('/editCategory',categoryController.editCategory)
 
 
 //------------------------------------------------------------------//
-
+admin_route.get('/orders',adminAuth.isLogout,adminController.loadOrder)
+admin_route.get('/singleOrder',adminAuth.isLogout,adminController.singleProductView)
+admin_route.post('/changeOrderStatus',adminController.changeOrderStatus)
 
 
 
