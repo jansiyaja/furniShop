@@ -745,50 +745,79 @@
     
       
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
         function placeOrder(total) {
-          try {
-            const radioBtnAddress = document.querySelector('input[name="addressRadio"]:checked')
-            const index = radioBtnAddress ? radioBtnAddress.value : null
-            if (index) {
-              const radioBtnPayment = document.querySelector('input[name="paymentMethod"]:checked')
-              const payment = radioBtnPayment ? radioBtnPayment.value : null
-              if (payment) {
-                const subTotal = total
-                if (subTotal) {
-                  const data = {
-                    index: index,
-                    payment: payment,
-                    subTotal: subTotal
-                  }
-                  console.log(data);
-                  $.ajax({
-                    url: '/placeOrder',
-                    method: 'POST',
-                    data: JSON.stringify(data),
-                    contentType: 'application/json'
-                  }).then((response)=>{
-                    if(response.success==true){
-                      location.href = `/orderSuccess/${response.orderId}`                
-                    }else if(response.quan == true){
-                        alert(`Sorry you product ${response.quantityLess} is Out Of Stock'`,)
-                   
-                    }
-                  })
-                }
-              } else {
-                alert('select a payment method')
-              }
-            } else {
-              alert('select a address')
-            }
-          } catch (error) {
-            console.log(error.message);
-          }
+            console.log("Total:", total);
+            try {
+
+                console.log("iam clicked");
+                const radioBtnAddress = document.querySelector('input[name="addressRadio"]:checked');
+                const index = radioBtnAddress ? radioBtnAddress.value : null;
     
+                if (index) {
+                    const radioBtnPayment = document.querySelector('input[name="paymentMethod"]:checked');
+                    const payment = radioBtnPayment ? radioBtnPayment.value : null;
+    
+                    if (payment) {
+                        const subTotal = total;
+                        
+                        if (subTotal) {
+                            const data = {
+                                index: index,
+                                payment: payment,
+                                subTotal: subTotal
+                            };
+    
+                            console.log("Sending AJAX request with data:",data);
+    
+                            $.ajax({
+                                url: '/placeOrder',
+                                method: 'POST',
+                                data: JSON.stringify(data),
+                                contentType: 'application/json'
+                            }).then((response) => {
+                                console.log("Ajax success callback reached");
+                                console.log("After AJAX success:", response);
+                                if (response.orderId) {
+                                    console.log("iam comming");
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Order Placed!',
+                                        text: `Your order (ID: ${response.orderId}) has been successfully placed.`,
+                                    }).then(() => {
+                                        location.href = `/orderSuccess/${response.orderId}`;
+                                    });
+                                } else if (response.quan) {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Out of Stock',
+                                        text: `Sorry, the product ${response.quantityLess} is out of stock.`,
+                                    });
+                                }
+                            });
+                        }
+                    } else {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Payment Method',
+                            text: 'Please select a payment method.',
+                        });
+                    }
+                } else {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Address',
+                        text: 'Please select an address.',
+                    });
+                }
+            } catch (error) {
+                console.error('AJAX Error:', error);
+            }
         }
-      </script>
+    </script>
+    
     
       
       

@@ -18,6 +18,10 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    image:{
+        type:String,
+        required:true,
+    },
   
      address : [{
             fullName : {
@@ -60,8 +64,7 @@ const userSchema = new mongoose.Schema({
       },
       createdAt: {
         type: Date,
-        
-            default: Date.now,
+        default: Date.now,
             
         
         

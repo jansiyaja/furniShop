@@ -413,11 +413,14 @@
                     method:'POST',
                     data:JSON.stringify(data),
                     contentType:'application/json',
-                    success:function(response){
-                        if(response.change  ==true){
-                            $('#ReloadTable').load('/admin/singleOrder?orderId=<%= order._id %> #ReloadTable')
-                        }
-                    }
+                    success: function(response) {
+    console.log('Response from server:', response);
+    if (response.change == true) {
+        $('#ReloadTable').load('/admin/singleOrder?orderId=<%= order._id %> #ReloadTable', function() {
+           
+        });
+    }
+}
                 })
             }
           </script>

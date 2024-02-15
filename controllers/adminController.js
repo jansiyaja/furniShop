@@ -128,31 +128,22 @@ const adminLogout= async(req,res)=>{
       }
     }
    
-    // const changeOrderStatus = async (req, res) => {
-    //   try {
-    //     const { orderId, productId, status, userId } = req.body;
-    //     console.log(orderId, productId, status, userId);
-    //     const orderData = await Order.findOneAndUpdate({ _id: orderId, userId: userId, 'products.productId': productId }, { $set: { 'products.$.status': status } })
-    //     console.log(orderData, 'update');
-    //     res.json({ change: true })
-    
-    //   } catch (error) {
-    //     console.log(error.message);
-    //   }
-    // }
+  
     const changeOrderStatus = async (req, res) => {
       try {
-          const { orderId, productId, status, userId } = req.body;
-          console.log(orderId, productId, status, userId);
-  
+        const { orderId, productId, status, userId } = req.body;
+        console.log('Received request to change order status:', orderId, productId, status, userId);
         
           const orderData = await Order.findOneAndUpdate(
               { _id: orderId, userId: userId, 'products.productId': productId },
-              { $set: { 'products.$.status': status } },
+              { $set: {
+                'products.$.status': status,
+                
+            } },
               { new: true }
           );
   
-          console.log(orderData, 'update');
+          console.log('Updated order data:', orderData);
           res.json({ change: true, orderData });
   
       } catch (error) {

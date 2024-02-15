@@ -18,6 +18,7 @@ const orderSchema = mongoose.Schema({
       name:{
         type:String
       },
+     
       price:{
         type:Number,
         
@@ -33,15 +34,16 @@ const orderSchema = mongoose.Schema({
       },
       quantity :{
         type:Number,
-      }
+      },
+      cancelReason:{
+        type:String
+      },
+      returnReason:{
+        type:String
+      },
     }
   ],
-  cancelReason:{
-    type:String
-  },
-  returnReason:{
-    type:String
-  },
+  
   totalAmount:{
     type:Number,
     required:true
@@ -50,11 +52,11 @@ const orderSchema = mongoose.Schema({
     type:Date,
     required:true
   },
-  status:{
-    type:String,
-    required:true
-  },
-  paymentMethod:{
+ expectedDate:{
+  type:Date,
+    
+ },
+   paymentMethod:{
     type:String,
     required:true
   },
@@ -66,6 +68,7 @@ const orderSchema = mongoose.Schema({
     type:String
   }
 })
+
 
 module.exports = mongoose.model('Order',orderSchema)
 

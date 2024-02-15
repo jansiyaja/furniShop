@@ -4,6 +4,14 @@ const nodemailer = require('nodemailer');
 const userOtpVerification = require('../models/userOtpVerification');
 const Order= require('../models/orderModel')
 const Cart=require('../models/cartModel')
+const cloudinary = require('cloudinary').v2;
+
+
+cloudinary.config({
+  cloud_name:process.env.CLOUD_NAME,
+  api_key:process.env.API_KEYS,
+  api_secret:process.env.API_SECRETS
+});
 
 
 //------Home page----------------------------//
@@ -376,31 +384,47 @@ const loadDashboard = async (req, res) => {
 //-----------------Edit  User Profile-------------------------------------//
 const editProfile = async (req, res) => {
   try {
-    console.log("you are in the deit");
-    const id = req.session.user.id; 
-    console.log("edotId",id);
+    const id = req.session.user.id;
     const newName = req.body.editName;
-    const newEmail = req.body.editEmail;
+  
     const newMobile = req.body.editPhone;
+console.log("hiiiii",id,newName);
+    // Check if a file was uploaded
+    if (req.file) {
+      const result = await cloudinary.uploader.upload(req.file.path);
 
-    console.log("id", id);
-    console.log("newName", newName);
+      // Log information about the uploaded file
+      console.log('File uploaded successfully:');
+      console.log('Original filename:', req.file)
 
-    const already = await User.findOne({ _id: id, name: newName });
-
-    if (already) {
-      req.flash('error', 'This name is already taken');
-      res.redirect('/user');
+      // Update the user's profile with the Cloudinary image URL
+      await User.findByIdAndUpdate(id, {
+        $set: {
+          name: newName,
+         
+          mobile: newMobile,
+          image: result.secure_url,
+        },
+      });
     } else {
-      await User.findByIdAndUpdate(id, { $set: { name: newName, email: newEmail, mobile: newMobile } });
-      req.flash('success', 'Profile updated successfully');
-      res.redirect('/user');
+      // If no image is provided, update the user's profile without an image
+      await User.findByIdAndUpdate(id, {
+        $set: {
+          name: newName,
+         
+          mobile: newMobile,
+        },
+      });
     }
+
+    req.flash('success', 'Profile updated successfully');
+    res.redirect('/user');
   } catch (error) {
     console.error(error.message);
     res.status(500).send('Internal Server Error');
   }
 };
+
 
 //------------------------------------------------------//
 //------------------Add Addresses------------------------------------//

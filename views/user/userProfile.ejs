@@ -329,11 +329,11 @@
                           </div>
                           <div class="avatar-and-upload">
                             <div class="avatar">
-                              <img src="/assets/imgs/people/avatar-1.png" alt="Avatar">
+                              <img src="<%=userDetails.image%>" alt="Avatar">
                             </div>
                             <div class="photo-upload mt-3">
-                              <label for="uploadPhoto" class="form-label"></label>
-                              <input type="file" id="uploadPhoto" accept="image/*">
+                              <label for="uploadPhoto" class="form-label">Upload Photo:</label>
+                              <input type="file" id="uploadPhoto" name="uploadPhoto" accept="image/*">
                             </div>
                           </div>
                         </div>

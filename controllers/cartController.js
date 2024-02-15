@@ -30,13 +30,12 @@ const addToCart = async (req, res) => {
     try {
         console.log("Session user:", req.session.user);
         if (!req.session.user || !req.session.user.id) {
-            
-            return res.json({ login: true, message: 'please login and continuing shopping' });
+            return res.json({ login: true, message: 'Please login and continue shopping.' });
         } else {
-            const userid = req.session.user.id;  // Corrected this line
+            const userid = req.session.user.id;
             console.log(userid);
             const { productQuantity, productId } = req.body;
-            const product = await Product.findOne({ _id: productId });
+            const product = await Product.findById(productId);
             const cart = await Cart.findOne({ userId: userid });
 
             if (cart) {
@@ -44,7 +43,7 @@ const addToCart = async (req, res) => {
                 if (existProduct) {
                     await Cart.findOneAndUpdate(
                         { userId: userid, "products.productId": productId },
-                        { $inc: { "products.$.quantity": productQuantity, "products.$.totalPrice": productQuantity * existProduct.productPrice } }
+                        { $inc: { "products.$.quantity": productQuantity, "products.$.totalPrice": productQuantity * product.price } }
                     );
                 } else {
                     await Cart.findOneAndUpdate(
@@ -54,7 +53,6 @@ const addToCart = async (req, res) => {
                                 products: {
                                     productId: productId,
                                     quantity: productQuantity,
-                                    productPrice: product.price,
                                     totalPrice: productQuantity * product.price
                                 }
                             }
@@ -68,7 +66,6 @@ const addToCart = async (req, res) => {
                         {
                             productId: productId,
                             quantity: productQuantity,
-                            productPrice: product.price,
                             totalPrice: productQuantity * product.price
                         }
                     ]
@@ -79,10 +76,11 @@ const addToCart = async (req, res) => {
             res.json({ success: true });
         }
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ error: 'Internal Server Error' });
     }
 };
+
 
 //-----------------------------------------------------------------//
 //-----------------------------------------------------------------//
