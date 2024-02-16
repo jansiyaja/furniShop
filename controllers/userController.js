@@ -4,14 +4,6 @@ const nodemailer = require('nodemailer');
 const userOtpVerification = require('../models/userOtpVerification');
 const Order= require('../models/orderModel')
 const Cart=require('../models/cartModel')
-const cloudinary = require('cloudinary').v2;
-
-
-cloudinary.config({
-  cloud_name:process.env.CLOUD_NAME,
-  api_key:process.env.API_KEYS,
-  api_secret:process.env.API_SECRETS
-});
 
 
 //------Home page----------------------------//
@@ -384,47 +376,31 @@ const loadDashboard = async (req, res) => {
 //-----------------Edit  User Profile-------------------------------------//
 const editProfile = async (req, res) => {
   try {
-    const id = req.session.user.id;
+    console.log("you are in the deit");
+    const id = req.session.user.id; 
+    console.log("edotId",id);
     const newName = req.body.editName;
-  
+    const newEmail = req.body.editEmail;
     const newMobile = req.body.editPhone;
-console.log("hiiiii",id,newName);
-    // Check if a file was uploaded
-    if (req.file) {
-      const result = await cloudinary.uploader.upload(req.file.path);
 
-      // Log information about the uploaded file
-      console.log('File uploaded successfully:');
-      console.log('Original filename:', req.file)
+    console.log("id", id);
+    console.log("newName", newName);
 
-      // Update the user's profile with the Cloudinary image URL
-      await User.findByIdAndUpdate(id, {
-        $set: {
-          name: newName,
-         
-          mobile: newMobile,
-          image: result.secure_url,
-        },
-      });
+    const already = await User.findOne({ _id: id, name: newName });
+
+    if (already) {
+      req.flash('error', 'This name is already taken');
+      res.redirect('/user');
     } else {
-      // If no image is provided, update the user's profile without an image
-      await User.findByIdAndUpdate(id, {
-        $set: {
-          name: newName,
-         
-          mobile: newMobile,
-        },
-      });
+      await User.findByIdAndUpdate(id, { $set: { name: newName, email: newEmail, mobile: newMobile } });
+      req.flash('success', 'Profile updated successfully');
+      res.redirect('/user');
     }
-
-    req.flash('success', 'Profile updated successfully');
-    res.redirect('/user');
   } catch (error) {
     console.error(error.message);
     res.status(500).send('Internal Server Error');
   }
 };
-
 
 //------------------------------------------------------//
 //------------------Add Addresses------------------------------------//
@@ -482,12 +458,13 @@ const addAddress = async (req, res) => {
     const addressDetails = user.address[addressIndex];
 
     // Render a form with address details for editing
-    res.render('editAddress', { addressDetails });
+    res.render('user', { addressDetails });
   } catch (error) {
     console.error(error.message);
     res.status(500).send('Internal Server Error');
   }
  }
+
 
 
 //------------------------------------------------------//
@@ -517,6 +494,39 @@ const deleteAddress= async (req,res)=>{
   }
 
 }
+//-----------------------------------------------------//
+//-----------Upadte Adress ------------------------------------------//
+const updateAddress = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const addressIndex = req.params.addressIndex;
+
+    const user = await User.findById(userId);
+
+    if (!user || !user.address || user.address.length <= addressIndex) {
+      req.flash('error', 'Address not found');
+      return res.redirect('/user');
+    }
+
+    // Update the address details in the user object based on the form data
+    user.address[addressIndex].fullName = req.body.fullName;
+    user.address[addressIndex].streetAddress = req.body.streetAddress;
+    user.address[addressIndex].city = req.body.city;
+    user.address[addressIndex].phone = req.body.phone;
+    user.address[addressIndex].state = req.body.state;
+    user.address[addressIndex].zipCode = req.body.zipCode;
+
+    // Save the updated user object to the database
+    await user.save();
+
+    // Redirect to the user profile or another appropriate page
+    res.redirect('/user');
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send('Internal Server Error');
+  }
+};
+
 //-----------------------------------------------------//
 //-------- Load checkOut---------------------------------------------//
 const loadCheckout = async (req, res) => {
@@ -563,5 +573,6 @@ module.exports = {
   addAddress,
   deleteAddress,
   editAddress,
+  updateAddress,
   loadCheckout
 };

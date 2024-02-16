@@ -36,7 +36,7 @@ const orderSchema = mongoose.Schema({
         type:Number,
       },
       cancelReason:{
-        type:String
+        type:String,
       },
       returnReason:{
         type:String
@@ -54,7 +54,7 @@ const orderSchema = mongoose.Schema({
   },
  expectedDate:{
   type:Date,
-    
+  required:true  
  },
    paymentMethod:{
     type:String,

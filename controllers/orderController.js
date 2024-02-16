@@ -91,6 +91,8 @@ const placeOrder = async (req, res) => {
       const address = user.address[index];
      // console.log(address);
       const date = Date.now();
+      const expectedDate = new Date(date);
+     expectedDate.setDate(expectedDate.getDate() + 7);
 
       const order = new Order({
           userId: userId,
@@ -99,7 +101,9 @@ const placeOrder = async (req, res) => {
           date: date,
           status: status,
           deliveryAddress: address,
-          paymentMethod: payment
+          paymentMethod: payment,
+          expectedDate:expectedDate
+
       });
 
       const orderDetails = await order.save();
@@ -206,7 +210,8 @@ const loadOrderSuccess = async (req, res) => {
                     }
                 }
             ]);
-                  console.log(orderedProducts);
+            
+                  console.log("orderDetails",orderedProducts);
             res.render('orderDetails', { order, orderedProducts });
         }
     } catch (error) {
@@ -219,10 +224,70 @@ const loadOrderSuccess = async (req, res) => {
 
 
 //--------------------------------------------------------------------------------------------------//
+//-------------Cancel Orders--------------------------------------------------------//
+// const cancelOrder = async (req, res) => {
+//   try {
+//     const { orderId, productId } = req.body;
+//    // console.log(req.body);
+
+//     const orderData = await Order.findOneAndUpdate(
+//       { _id: orderId, 'products.productId': productId },
+//       { $set: { 'products.$.status': 'cancelled' } })
+//       console.log("order",orderData);
+//     const productDetails = await Order.findOne(
+//       { _id: orderId, 'products.productId': productId },
+//       { 'products.$': 1 }
+//     );
+
+//     const productQty = productDetails.products[0].quantity;
+
+//     await Product.updateOne({ _id: productId }, { $inc: { stock: productQty } })
+//     res.json({ cancel: true })
+//   } catch (error) {
+//     console.log(error.message);
+//   }
+// };
+const cancelOrder = async (req, res) => {
+  try {
+      const { orderId, productId, cancelReason } = req.body;
+      console.log(cancelReason);
+
+      // Update the order with cancel reason and expected delivery time
+      const orderData = await Order.findOneAndUpdate(
+       
+          { _id: orderId, 'products.productId': productId },
+          {
+              $set: {
+                  'products.$.status': 'cancelled',
+                  'products.$.cancelReason': cancelReason,
+                 
+              },
+          },
+          { new: true }
+      );
+      console.log(orderData);
+      const productDetails = await Order.findOne(
+          { _id: orderId, 'products.productId': productId },
+          { 'products.$': 1 }
+      );
+
+      const productQty = productDetails.products[0].quantity;
+
+      // Update product stock based on order
+      await Product.updateOne({ _id: productId }, { $inc: { stock: productQty } });
+
+      res.json({ cancel: true, orderId });
+  } catch (error) {
+      console.error(error.message);
+      res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
 //--------------------------------------------------------------------------------------------------//
 
   module.exports={
     placeOrder,
     loadOrderSuccess,
-    loadOrderDetilas
+    loadOrderDetilas,
+    cancelOrder
   }

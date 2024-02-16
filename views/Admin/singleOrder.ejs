@@ -271,6 +271,7 @@
                                                         <th>Index</th>
                                                         <th scope="col">Image</th>
                                                         <th scope="col">Name</th>
+                                                      <th> Reason</th>
                                                         <th scope="col">Total</th>
                                                         <th scope="col">Status</th>
                                                         <th scope="col">Date</th>
@@ -294,16 +295,19 @@
                                                                 <%= el.productId.name%>
                                                             </td>
                                                             <td>
+                                                                <%= el.cancelReason%>
+                                                            </td>
+                                                            <td>
                                                                 <%= order.totalAmount %>
                                                             </td>
                                                             <td><span class="badge rounded-pill alert-warning">
                                                                     <%= el.status%>
                                                                 </span></td>
-                                                            <% const formattedDate=order.date.toLocaleString('en-US', { weekday: 'short'
-                                                                , month: 'short' , day: 'numeric' , year: 'numeric' , hour: 'numeric' ,
-                                                                minute: 'numeric' , second: 'numeric' , hour12: true }); %>
+                                                                <% const options = { year: 'numeric', month: 'long', day: 'numeric' }; %>
+                                                                <% const formattedDate = order.date.toLocaleDateString('en-US', options); %>
+                                                               
                                                                 <td>
-                                                                    <%= formattedDate%>
+                                                                    <%= formattedDate %>
                                                                 </td>
                                                                 <td class="text-end">
                       
@@ -339,7 +343,10 @@
                                                                 <td><button class="btn-danger">Cancel</button></td>
                                                                             <%}%>
                                                         </tr>
+                                                        
                                                         <%})%>
+
+                                                        
                                                 </tbody>
                                             </table>
                                 </div>

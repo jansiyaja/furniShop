@@ -62,7 +62,7 @@
                         <p>Order ID: <%= order._id %>
                         </p>
 
-                        <p>Date: <%= order.date.toLocaleDateString() %>
+                        <p>Ordered Date: <%= order.date.toLocaleDateString() %>
                         </p>
 
                         <h2>Delivery Address</h2>
@@ -78,7 +78,8 @@
                         </p>
                         <p>State: <%= order.deliveryAddress.state %>
                         </p>
-                        
+                        <p>Expected Date: <%= order.expectedDate.toLocaleDateString()  %></p>
+                       
                         <% } else { %>
                             <p>No order found with the given ID.</p>
                             <% } %>
@@ -96,21 +97,27 @@
                                 <% orderedProducts.forEach(product => { %>
                                   
                                         <p>Status: <%= product.quantity.status %></p>
+                                        <!-- <p>Product Price: ₹<%= product.quantity.productId %></p> -->
                                        
                                     <p>Quantity: <%= product.quantity.quantity%></p>
                                     <p><img src=" <%= product.images[0] %>" alt="" style="max-width: 50px;"></p>
                                     <p>Product Name: <%= product.name %></p>
                                     <p>Product Price: ₹<%= product.price %></p>
-                                   
+                                    <p>Cancel Reason: <%=product.quantity.cancelReason %> </p>
+                                  
                                     <!-- Display product-specific status for orderedProducts -->
                                    
                                     <p>
-                                        <% if (product.status !== 'delivered') { %>
-                                            <a href="#" class="go-back-button">Cancel Order</a>
+                                        <% if (product.quantity.status  === 'cancelled') { %>
+                                            <p>Cancelled</p>
+                                        <% } else if (product.quantity.status  === 'delivered') { %>
+                                            <p>Delivered</p>
+                                            <a href="#" class="go-back-button" id="returnOrderButton" data-order-id="<%= order._id %>" data-product-id="<%= product.quantity.productId %>">Return Order</a>
                                         <% } else { %>
-                                            <!-- Add any other action you want for delivered products -->
+                                            <a href="#" class="go-back-button" id="cancelOrderButton" data-order-id="<%= order._id %>" data-product-id="<%= product.quantity.productId %>">Cancel Order</a>
                                         <% } %>
                                     </p>
+                                    
                                 <% }); %>
                             <% } else { %>
                                 <p>No products found for this order.</p>
@@ -134,7 +141,78 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script> 
+    <!-- <script>
+        // Attach an event listener to the cancel order button
+        $(document).on('click', '#cancelOrderButton', function (e) {
+            e.preventDefault();
+            const orderId = $(this).data('order-id');
+            const productId = $(this).data('product-id');
+    
+            // Send an AJAX request to cancel the order
+            $.ajax({
+                url: '/orderCancel',
+                method: 'POST',
+                data: JSON.stringify({ orderId, productId }),
+                contentType: 'application/json'
+            }).then((response) => {
+                if (response.cancel == true) {
+                    // Use Swal.fire to show a confirmation dialog
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: 'Do you want to cancel the order?',
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes, cancel it!',
+                        cancelButtonText: 'No, keep it',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // User confirmed, you can perform additional actions here if needed
+                            console.log('Order canceled successfully');
+                        } else {
+                            // User clicked "No" or closed the dialog
+                            console.log('Order cancellation canceled');
+                        }
+                    });
+                } else {
+                    console.error('Failed to cancel order');
+                }
+            });
+        });
+    </script> -->
+    <script>
+        $(document).on('click', '#cancelOrderButton', function (e) {
+            e.preventDefault();
+            const orderId = $(this).data('order-id');
+            const productId = $(this).data('product-id');
+            const cancelReason = prompt('Enter cancel reason:'); 
+           
+    
+            // Send an AJAX request to cancel the order
+            $.ajax({
+                url: '/orderCancel',
+                method: 'POST',
+                data: JSON.stringify({ orderId, productId, cancelReason }),
+                contentType: 'application/json',
+            }).then((response) => {
+                if (response.cancel) {
+                    Swal.fire({
+                        title: 'Order Cancelled',
+                        text: 'The order has been successfully cancelled.',
+                        icon: 'success',
+                    });
+                } else {
+                    Swal.fire({
+                        title: 'Failed to Cancel Order',
+                        text: 'There was an error cancelling the order.',
+                        icon: 'error',
+                    });
+                }
+            });
+        });
+    </script>
+    
 </body>
 
 </html>

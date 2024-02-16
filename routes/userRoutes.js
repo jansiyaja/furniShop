@@ -4,6 +4,9 @@ const userController = require('../controllers/userController');
 const productController=require('../controllers/productController')
 const cartController=require('../controllers/cartController')
 const orderController=require('../controllers/orderController')
+const { userUpload } = require('../middleware/multer');
+
+
 
 const session = require('express-session');
 
@@ -44,6 +47,8 @@ user_route.get('/about',userController.loadAbout);
 
 user_route.get('/user',userController.loadDashboard);
 user_route.post('/user',userController.editProfile);
+user_route.get('/edit-address/:userId/:addressIndex',userController.editAddress);
+user_route.post('/edit-address/:userId/:addressIndex',userController. updateAddress);
 
 user_route.post('/addAddress',userController.addAddress);
 user_route.get('/delete-address/:userId/:addressIndex',userController.deleteAddress);
@@ -57,10 +62,18 @@ user_route.post('/removeCart',cartController.removeCart)
 user_route.get('/cart',cartController.loadCart)
 user_route.post('/updateQuantity',cartController.updateQuantity)
 //----------------------------------------------------------------------------------//
+//--------------------WishList Management--------------------------------------------------------------//
+user_route.get('/wishlist',cartController.loadWhislist)
+user_route.post('/addToWishlist',cartController.addToWishlist)
+user_route.post('/removeWishlist',cartController.removeWishlist)
+
+//----------------------------------------------------------------------------------//
 user_route.get('/checkout',userController.loadCheckout);
 user_route.post('/placeOrder',orderController.placeOrder)
 
 user_route.get('/orderSuccess/:id',orderController.loadOrderSuccess)
 user_route.get('/orderDetailes/:id',orderController.loadOrderDetilas)
+user_route.post('/orderCancel',orderController.cancelOrder)
+
 
 module.exports = user_route;

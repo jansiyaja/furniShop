@@ -259,9 +259,12 @@
                                             </a>
                             
                                             <div class="details-action-wrapper">
-                                                <a href="#" class="btn-product btn-wishlist" title="Wishlist">
-                                                    <span>Add to Wishlist</span>
-                                                </a>
+                                                
+                                               
+                                                 <button id="wishlistBtn" class="btn-product btn-wishlist" title="Wishlist" onclick="addToWishlist('<%= products[0]._id %>')" style="padding: 7px;
+                                                   background: white;border: white; ">Add to Wishlist</button>
+                                                   
+                                                
                                             </div><!-- End .details-action-wrapper -->
                                         </div><!-- End .product-details-action -->
                                     </div><!-- End .product-details -->
@@ -638,7 +641,7 @@
    
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>  
 <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.min.css'></link>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.all.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
 
@@ -675,7 +678,7 @@
         if (response.login) {
             // Use SweetAlert for login message
             console.log('Login Required:', response.message);
-            swal({
+            Swal.fire({
                 title: 'Login Required',
                 text: response.message,
                 icon: 'info',
@@ -683,7 +686,7 @@
         } else if (response.success) {
             // Use SweetAlert for success message
             console.log('Success!');
-            swal({  
+            Swal.fire({  
                 title: 'Success',
                 text: 'Item added to the cart successfully!',
                 icon: 'success', 
@@ -693,18 +696,18 @@
     error: function (error) {
         // Use SweetAlert for error message
         console.log('Error:', error.responseText || 'An error occurred!');
-        swal({
+        Swal.fire({
             title: 'Error',
             text: error.responseText || 'An error occurred!',
             icon: 'error',
         });
     }
-});  // <- Don't forget to close the AJAX call properly
+});  
 
 
         });
 
-        // Function to get URL parameters by name
+        
         function getParameterByName(name, url) {
             if (!url) url = window.location.href;
             name = name.replace(/[\[\]]/g, "\\$&");
@@ -716,7 +719,48 @@
         }
     });
 </script>
-
+<script>
+function addToWishlist(id){
+   
+    const data = {productId:id}
+    console.log(data);
+  $.ajax({
+    url:'/addToWishlist',
+    method:'POST',
+    data:data,
+    success:function (response){
+      if(response.added == true){
+        Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Added to Whishlist ',
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: 'ok',
+          })
+      }else if (response.login == true){
+        Swal.fire({
+            icon: 'warning',
+            title: 'Please Login',
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "Login",
+            showCancelButton: true,
+            cancelButtonColor: "#d33",
+            text: response.message
+          }).then((res) => {
+            if (res.isConfirmed) {
+              window.location.href = '/login'
+            }
+          })
+      }else if(response.already == true){
+        Swal.fire({
+          title:'already in the whishlist',
+          confirmButton:false
+        })
+      }
+    }
+  })
+  }
+</script>
 
 
 

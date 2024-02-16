@@ -1,6 +1,7 @@
 const User= require('../models/userModel');
 const Product= require('../models/products');
-const Cart=require('../models/cartModel')
+const Cart=require('../models/cartModel');
+const Wishlist=require('../models/wishlistModel')
 
 //------------cart Loading------------------------------------------//
 const loadCart = async (req, res) => {
@@ -161,10 +162,79 @@ const removeCart = async (req, res) => {
     }
   }
 //-----------------------------------------------------------------//
+//----------------Load wishlist-------------------------------------------------//
+const loadWhislist = async (req, res) => {
+    try {
+      if (req.session.user) {
+        const userId = req.session.user.id;
+        
+        // Assuming you have a field named `productId` in your Wishlist model
+        const wishlistDetails = await Wishlist.find({ userId: userId }).populate('productId');
+        
+        console.log(wishlistDetails);
+      
+        res.render('wishlist', { wishlistDetails: wishlistDetails , user: req.session.user});
+      } else {
+        req.flash('error', 'You are not verified. Please <a href="/login">login</a>.');
+        res.redirect('/shop');
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  
+//-----------------------------------------------------------------//
+//-------------------Add to wishlist----------------------------------------------//
+const addToWishlist = async (req, res) => {
+    try {
+      if (!req.session.user || !req.session.user.id) {
+        return res.json({ login: true, message: 'please login' })
+      } else {
+  
+        const userId = req.session.user.id;
+        console.log(req.body);
+        const { productId } = req.body;
+        console.log(productId);
+        const already = await Wishlist.findOne({ productId: productId })
+        if (already) {
+          res.json({ already: true })
+        } else {
+          const whishlist = new Wishlist({
+            userId: userId,
+            productId: productId
+          })
+          await whishlist.save()
+          res.json({ added: true })
+        }
+      }
+  
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+//-----------------------------------------------------------------//
+//--------------Remove wishlist---------------------------------------------------//
+const removeWishlist = async (req, res) => {
+    try {
+      const userId = req.session.user.id
+      const {productId} = req.body;
+      console.log(req.body);
+      const remove = await Wishlist.findOneAndDelete({productId:productId})
+      console.log(remove);
+      res.json({removed:true})
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+//-----------------------------------------------------------------//
 
 module.exports={
     loadCart,
     addToCart,
    updateQuantity,
-   removeCart
+   removeCart,
+//------wishlist-------//
+   loadWhislist,
+   addToWishlist,
+   removeWishlist
 }
