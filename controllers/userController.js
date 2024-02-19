@@ -1,7 +1,9 @@
 const User = require('../models/userModel');
 const bcrypt = require('bcrypt');
+const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 const userOtpVerification = require('../models/userOtpVerification');
+const Token= require('../models/tokenModel')
 const Order= require('../models/orderModel')
 const Cart=require('../models/cartModel')
 
@@ -348,6 +350,16 @@ const loadAbout= async (req,res)=>{
     console.log(error);
   }
 }
+//------------------------------------------------------//
+//-----------load contact-------------------------------------------//
+const loadContact= async (req,res)=>{
+  try {
+    res.render('contact')
+  } catch (error) {
+    console.log(error);
+  }
+}
+//------------------------------------------------------//
 //--------------Load userDashboard----------------------------------------//
 const loadDashboard = async (req, res) => {
   try {
@@ -373,6 +385,7 @@ const loadDashboard = async (req, res) => {
 }
 
 //------------------------------------------------------//
+
 //-----------------Edit  User Profile-------------------------------------//
 const editProfile = async (req, res) => {
   try {
@@ -552,6 +565,121 @@ const loadCheckout = async (req, res) => {
 };
 
 //-----------------------------------------------------//
+//-----------------------------------------------------//
+ 
+const loadForgetPage= async(req,res)=>{
+try {
+  res.render('forgetPassword')
+} catch (error) {
+  console.log(error);
+}
+}
+//-----------------------------------------------------//
+//----------------Forgot Password-------------------------------------//
+const loadForget = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    const token = crypto.randomBytes(20).toString('hex');
+
+    const newToken = new Token({
+      userId: user._id,
+      token,
+    });
+    await newToken.save();
+
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      host: 'smtp.gmail.com',
+      port: 465,
+      secure: true,
+      auth: {
+        user: process.env.MAIL_EMAIL,
+        pass: process.env.MAIL_PASSWORD,
+      },
+    });
+
+    const mailOptions = {
+      to: user.email,
+      subject: 'Password Reset',
+      text: `Click the following link to reset your password: ${'http://localhost:3000'}/reset-password/${token}`,
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Failed to send reset password email' });
+      }
+      
+      console.log(`Email sent: ${info.response}`);
+      res.json({ message: 'Reset password email sent successfully' });
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+
+//-----------------------------------------------------//
+//-----------------Reset password------------------------------------//
+
+
+ const resetPassword=async (req, res) => {
+  try {
+      const { token } = req.params;
+
+    
+      const tokenDoc = await Token.findOne({ token });
+
+      if (!tokenDoc) {
+          return res.status(404).json({ message: 'Invalid or expired token' });
+      }
+
+     
+      res.render('restPass', { token });
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+
+//-----------------------------------------------------//
+//----------------Upadte the password-------------------------------------//
+const updatePass= async (req, res) => {
+  try {
+      const { token } = req.params;
+      const { password } = req.body;
+      console.log("newpass=",password);
+
+     
+      const tokenDoc = await Token.findOne({ token });
+
+      if (!tokenDoc) {
+          return res.status(404).json({ message: 'Invalid or expired token' });
+      }
+
+      const securePass = await bcrypt.hash(password, 10);
+       
+      const user = await User.findById(tokenDoc.userId);
+      user.password = securePass;
+      await user.save();
+      
+    
+      await Token.findByIdAndDelete(tokenDoc._id);
+
+      res.redirect('/login');
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+//-----------------------------------------------------//
 
 
 // Export module
@@ -563,16 +691,24 @@ module.exports = {
   loadSignup,
   insertUser,
   sendOtpVerificationMail,
+  //---OTP Section---//
   loadOtp,
   verifyOtp,
   resendOtp,
+
   UserLogin,
   loadAbout,
+  loadContact,
   loadDashboard,
   editProfile,
   addAddress,
   deleteAddress,
   editAddress,
   updateAddress,
-  loadCheckout
+  loadCheckout,
+  //----FOrgetPassword-------//
+  loadForgetPage,
+  loadForget,
+  resetPassword,
+  updatePass
 };

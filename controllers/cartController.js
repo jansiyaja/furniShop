@@ -192,9 +192,9 @@ const addToWishlist = async (req, res) => {
       } else {
   
         const userId = req.session.user.id;
-        console.log(req.body);
+     //   console.log(req.body);
         const { productId } = req.body;
-        console.log(productId);
+       // console.log(productId);
         const already = await Wishlist.findOne({ productId: productId })
         if (already) {
           res.json({ already: true })
@@ -215,17 +215,75 @@ const addToWishlist = async (req, res) => {
 //-----------------------------------------------------------------//
 //--------------Remove wishlist---------------------------------------------------//
 const removeWishlist = async (req, res) => {
-    try {
-      const userId = req.session.user.id
-      const {productId} = req.body;
-      console.log(req.body);
-      const remove = await Wishlist.findOneAndDelete({productId:productId})
+  try {
+      const userId = req.session.user.id;
+      const {_id} = req.body;
+console.log(_id);
+      // Assuming productId is an array of arrays in your Wishlist model
+      const remove = await Wishlist.findOneAndDelete({ userId: userId, _id: _id });
+
       console.log(remove);
-      res.json({removed:true})
-    } catch (error) {
+      res.json({ removed: true, });
+  } catch (error) {
       console.log(error.message);
-    }
+      res.status(500).json({ error: 'Internal Server Error' });
   }
+};
+
+
+//-----------------------------------------------------------------//
+//--------------Wishlist To Cart---------------------------------------------------//
+const wishToCart = async (req, res) => {
+  try {
+    if (!req.session.user || !req.session.user.id) {
+      return res.json({ login: true, message: 'Please login and continue shopping.' });
+    }
+
+    const userId = req.session.user.id;
+    const wishlist = await Wishlist.findOne({ userId: userId });
+
+    if (wishlist && wishlist.productId.length > 0) {
+      const cart = await Cart.findOne({ userId: userId });
+
+      if (cart) {
+        for (const productId of wishlist.productId) {
+          const existingProduct = cart.products.find((pro) => pro.productId.toString() === productId.toString());
+
+          if (!existingProduct) {
+            cart.products.push({
+              productId: productId,
+              // You can add other properties like quantity if needed
+            });
+          }
+        }
+
+        await cart.save();
+      } else {
+        const newCart = new Cart({
+          userId: userId,
+          products: wishlist.productId.map((productId) => ({
+            productId: productId,
+            // You can add other properties like quantity if needed
+          })),
+        });
+
+        await newCart.save();
+      }
+
+      // Clear the wishlist after adding to the cart
+      await Wishlist.findOneAndDelete({ userId: userId });
+
+      res.json({ success: true, message: 'Wishlist items added to the cart successfully.' });
+    } else {
+      res.json({ success: false, message: 'Wishlist is empty.' });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+
 //-----------------------------------------------------------------//
 
 module.exports={
@@ -236,5 +294,6 @@ module.exports={
 //------wishlist-------//
    loadWhislist,
    addToWishlist,
-   removeWishlist
+   removeWishlist,
+   wishToCart
 }

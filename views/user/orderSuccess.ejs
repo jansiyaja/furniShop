@@ -89,11 +89,11 @@
 
     <div class="success-content">
         <div class="container">
-            <% if(orderId && randomOrderNumber && orderedProducts && orderedProducts.length > 0) { %>
+            <% if(orderId  && orderedProducts && orderedProducts.length > 0) { %>
             <h1>Order Completed Successfully!</h1>
            
             <p>Your order has been successfully placed. Thank you for shopping with us!</p>
-          <p>OrderID: <span><%= randomOrderNumber %></span> </p>
+          <p>OrderID: <span><%=orderId%></span> </p>
             
             <% orderedProducts.forEach(product => { %>
             <div class="product-details">

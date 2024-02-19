@@ -40,14 +40,14 @@
                             <span class="sr-only">Toggle mobile menu</span>
                             <i class="icon-bars"></i>
                         </button>
-
-                        <a href="index.html" class="logo">
+                        
+                        <a href="/" class="logo">
                             <img src="assets/images/demos/demo-2/logo.png" alt="Molla Logo" width="105" height="25">
                         </a>
                     </div><!-- End .header-left -->
 
                     <div class="header-center">
-
+                        
                     </div>
 
                     <div class="header-right">
@@ -61,50 +61,48 @@
                         </div>End .compare-dropdown -->
 
                         <div class="dropdown cart-dropdown">
-                            <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown"
-                                aria-haspopup="true" aria-expanded="false" data-display="static">
+                            <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
                                 <div class="icon">
                                     <i class="icon-user"></i>
                                 </div>
                                 <p>Account</p>
                             </a>
 
-
                             <div class="dropdown-menu dropdown-menu-right">
                                 <%if(locals.user){ %>
-                                    <div class="dropdown-cart-products">
-                                        <div class="product">
-                                            <div class="product-cart-details">
-                                                <h4 class="product-title">
-                                                    <a href="/user">Your Account</a>
-                                                </h4>
-                                            </div><!-- End .product-cart-details -->
-                                        </div><!-- End .product -->
-
-                                        <div class="product">
-                                            <div class="product-cart-details">
-                                                <h4 class="product-title">
-                                                    <a href="/logout">Logout</a>
-                                                </h4>
-                                            </div><!-- End .product-cart-details -->
-
-                                        </div><!-- End .product -->
-                                    </div><!-- End .cart-product -->
-                                    <%} else{%>
-                                        <div class="product">
-                                            <div class="product-cart-details">
-                                                <h4 class="product-title">
-                                                    <a href="/login">Login</a>
-                                                </h4>
-                                            </div><!-- End .product-cart-details -->
-
-                                        </div><!-- End .product -->
-                                        <%}%>
+                                <div class="dropdown-cart-products">
+                                    <div class="product">
+                                        <div class="product-cart-details">
+                                            <h4 class="product-title">
+                                                <a href="/user">Your Account</a>
+                                            </h4>
+                                        </div><!-- End .product-cart-details -->
+                                    </div><!-- End .product -->
+        
+                                    <div class="product">
+                                        <div class="product-cart-details">
+                                            <h4 class="product-title">
+                                                <a href="/logout">Logout</a>
+                                            </h4>
+                                        </div><!-- End .product-cart-details -->
+        
+                                    </div><!-- End .product -->
+                                </div><!-- End .cart-product -->
+                                <%} else{%>
+                                <div class="product">
+                                    <div class="product-cart-details">
+                                        <h4 class="product-title">
+                                            <a href="/login">Login</a>
+                                        </h4>
+                                    </div><!-- End .product-cart-details -->
+        
+                                </div><!-- End .product -->
+                                <%}%>
                             </div><!-- End .dropdown-menu -->
                         </div><!-- End .cart-dropdown -->
 
                         <div class="wishlist">
-                            <a href="wishlist.html" title="Wishlist">
+                            <a href="/wishlist" title="Wishlist">
                                 <div class="icon">
                                     <i class="icon-heart-o"></i>
                                     <span class="wishlist-count badge">3</span>
@@ -114,72 +112,15 @@
                         </div><!-- End .compare-dropdown -->
 
                         <div class="dropdown cart-dropdown">
-                            <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown"
-                                aria-haspopup="true" aria-expanded="false" data-display="static">
+                            <a href="/cart" class="dropdown-toggle" role="button" >
                                 <div class="icon">
                                     <i class="icon-shopping-cart"></i>
-                                    <span class="cart-count">2</span>
+                                    
                                 </div>
                                 <p>Cart</p>
                             </a>
 
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <div class="dropdown-cart-products">
-                                    <div class="product">
-                                        <div class="product-cart-details">
-                                            <h4 class="product-title">
-                                                <a href="product.html">Beige knitted elastic runner shoes</a>
-                                            </h4>
-
-                                            <span class="cart-product-info">
-                                                <span class="cart-product-qty">1</span>
-                                                x $84.00
-                                            </span>
-                                        </div><!-- End .product-cart-details -->
-
-                                        <figure class="product-image-container">
-                                            <a href="product.html" class="product-image">
-                                                <img src="assets/images/products/cart/product-1.jpg" alt="product">
-                                            </a>
-                                        </figure>
-                                        <a href="#" class="btn-remove" title="Remove Product"><i
-                                                class="icon-close"></i></a>
-                                    </div><!-- End .product -->
-
-                                    <div class="product">
-                                        <div class="product-cart-details">
-                                            <h4 class="product-title">
-                                                <a href="product.html">Blue utility pinafore denim dress</a>
-                                            </h4>
-
-                                            <span class="cart-product-info">
-                                                <span class="cart-product-qty">1</span>
-                                                x $76.00
-                                            </span>
-                                        </div><!-- End .product-cart-details -->
-
-                                        <figure class="product-image-container">
-                                            <a href="product.html" class="product-image">
-                                                <img src="assets/images/products/cart/product-2.jpg" alt="product">
-                                            </a>
-                                        </figure>
-                                        <a href="#" class="btn-remove" title="Remove Product"><i
-                                                class="icon-close"></i></a>
-                                    </div><!-- End .product -->
-                                </div><!-- End .cart-product -->
-
-                                <div class="dropdown-cart-total">
-                                    <span>Total</span>
-
-                                    <span class="cart-total-price">$160.00</span>
-                                </div><!-- End .dropdown-cart-total -->
-
-                                <div class="dropdown-cart-action">
-                                    <a href="cart.html" class="btn btn-primary">View Cart</a>
-                                    <a href="checkout.html" class="btn btn-outline-primary-2"><span>Checkout</span><i
-                                            class="icon-long-arrow-right"></i></a>
-                                </div><!-- End .dropdown-cart-total -->
-                            </div><!-- End .dropdown-menu -->
+                          <!-- End .dropdown-menu -->
                         </div><!-- End .cart-dropdown -->
                     </div><!-- End .header-right -->
                 </div><!-- End .container -->
@@ -188,7 +129,7 @@
             <div class="header-bottom sticky-header">
                 <div class="container">
                     <div class="header-left">
-
+                        
                     </div><!-- End .header-left -->
 
                     <div class="header-center">
@@ -201,27 +142,27 @@
                                 <li>
                                     <a href="/shop" class="sf-with-ul">Shop</a>
 
-
+                                   
                                 </li>
                                 <li>
-                                    <a href="contact.html" class="sf-with-ul">Contact</a>
+                                    <a href="/contact" class="sf-with-ul">Contact</a>
 
-
+                                   
                                 </li>
-
+                                
                                 <li>
                                     <a href="/about" class="sf-with-ul">About</a>
 
 
                                 </li>
-
-
-
+                               
+                                
+                               
                             </ul><!-- End .menu -->
                         </nav><!-- End .main-nav -->
                     </div><!-- End .header-center -->
 
-
+                  
                 </div><!-- End .container -->
             </div><!-- End .header-bottom -->
         </header><!-- End .header -->
@@ -282,22 +223,23 @@
                                     </td>
                                     <td class="action-col">
                                       <% if (product.stock > 0) { %>
-                                        <button class="btn btn-block btn-outline-primary-2 <%= product.stock %>">
-                                          Add to Cart
-                                        </button>
+                                        <button class="btn btn-block btn-outline-primary-2 "onclick="addToWishlist('<%= product._id %>')">
+                                           Add To Cart
+                                          </button>
                                       <% } else { %>
                                         <button class="btn btn-block btn-outline-primary-2 disabled">
                                           Out of Stock
                                         </button>
                                       <% } %>
                                     </td>
+                                    <% }) %>
                                     <td class="remove-col">
-                                      <button class="btn-remove" onclick="deleteWishlist('<%= product._id %>')">
+                                      <button class="btn-remove" onclick="deleteWishlist('<%= wishlistItem._id %>')">
                                         <i class="icon-close"></i>
                                       </button>
                                     </td>
                                   </tr>
-                                <% }) %>
+                                
                               <% }) %>
                             </tbody>
                           </table><!-- End .table table-wishlist -->
@@ -707,12 +649,12 @@
             $.ajax({
                 url: '/removeWishlist',
                 data: {
-                    product: proId
+                    _id: proId 
                 },
                 
                 method: 'POST',
                 success: function (response) {
-                    if (response.success == true) {
+                    if (response.removed == true) {
                         Swal.fire({
                             icon: 'success',
                             title: 'Item Removed',
@@ -727,6 +669,51 @@
     });
 }
 </script>
+<script>
+    function addToWishlist(id){
+       console.log("iam clicked");
+        const data = {productId:id}
+        console.log(data);
+      $.ajax({
+        url:'/wishToCart',
+        method:'POST',
+        data:data,
+        success:function (response){
+          if(response.success == true){
+            Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: 'Added to cart ',
+                confirmButtonColor: "#3085d6",
+                confirmButtonText: 'ok',
+              }).then(() => {
+                            location.reload();
+                        });
+              
+          }else if (response.login == true){
+            Swal.fire({
+                icon: 'warning',
+                title: 'Please Login',
+                confirmButtonColor: "#3085d6",
+                confirmButtonText: "Login",
+                showCancelButton: true,
+                cancelButtonColor: "#d33",
+                text: response.message
+              }).then((res) => {
+                if (res.isConfirmed) {
+                  window.location.href = '/login'
+                }
+              })
+          }else if(response.already == true){
+            Swal.fire({
+              title:'already in the Cart',
+              confirmButton:false
+            })
+          }
+        }
+      })
+      }
+    </script>
 </body>
 <!-- molla/wishlist.html  22 Nov 2019 09:55:06 GMT -->
 </html>

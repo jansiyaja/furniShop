@@ -43,6 +43,7 @@ user_route.post('/register',userController.insertUser)
 user_route.get('/shop',productController.loadShop)
 user_route.get('/productView',productController.productView)
 user_route.get('/about',userController.loadAbout);
+user_route.get('/contact',userController.loadContact);
 
 
 user_route.get('/user',userController.loadDashboard);
@@ -52,6 +53,10 @@ user_route.post('/edit-address/:userId/:addressIndex',userController. updateAddr
 
 user_route.post('/addAddress',userController.addAddress);
 user_route.get('/delete-address/:userId/:addressIndex',userController.deleteAddress);
+user_route.get('/forgot-password',userController.loadForgetPage)
+user_route.post('/forgot-password',userController.loadForget)
+user_route.get('/reset-password/:token',userController.resetPassword)
+user_route.post('/reset-password/:token',userController.updatePass)
 
 //----------------------------------------------------------------------------------//
 
@@ -66,14 +71,15 @@ user_route.post('/updateQuantity',cartController.updateQuantity)
 user_route.get('/wishlist',cartController.loadWhislist)
 user_route.post('/addToWishlist',cartController.addToWishlist)
 user_route.post('/removeWishlist',cartController.removeWishlist)
+user_route.post('/wishToCart',cartController.wishToCart)
 
 //----------------------------------------------------------------------------------//
 user_route.get('/checkout',userController.loadCheckout);
 user_route.post('/placeOrder',orderController.placeOrder)
-
 user_route.get('/orderSuccess/:id',orderController.loadOrderSuccess)
 user_route.get('/orderDetailes/:id',orderController.loadOrderDetilas)
 user_route.post('/orderCancel',orderController.cancelOrder)
+user_route.post('/verify-payment',orderController.verifyPayment)
 
 
 module.exports = user_route;

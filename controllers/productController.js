@@ -259,32 +259,45 @@ const editProduct = async (req, res) => {
 
 //------------------------loading shoap------------------------------------------------------------------//
 
+
+
 // const loadShop = async (req, res) => {
-//   let products;
-//   let category = await Category.find({ isListed: false })
 //   try {
-//     let id = req.query.id
-//     if (req.query.id) {
-//       products = await Product.find({ category: id }).populate("category")
-//     } else {
-//       products = await Product.find({}).populate("category")
+//     let products;
+//     let category = await Category.find({ isListed: false });
+//     let id = req.query.id;
+//     let priceFilter = req.query.priceFilter; // Added priceFilter parameter
+
+//     let query = {};
+
+//     if (id) {
+//       query.category = id;
 //     }
-  
+
+//     if (priceFilter === 'highToLow') {
+//       products = await Product.find(query).sort({ price: -1 }).populate("category");
+//     } else if (priceFilter === 'lowToHigh') {
+//       products = await Product.find(query).sort({ price: 1 }).populate("category");
+//     } else {
+//       products = await Product.find(query).populate("category");
+//     }
+
 //     const messages = req.flash('error');
-   
-//     res.render('shop', { products, category,messages })
-   
+
+//     res.render('shop', { products, category, messages });
 //   } catch (error) {
 //     console.log(error.message);
 //   }
-// }
-
+// };
 const loadShop = async (req, res) => {
   try {
+    const itemsPerPage = 10; // Set the number of items to display per page
+
     let products;
     let category = await Category.find({ isListed: false });
     let id = req.query.id;
-    let priceFilter = req.query.priceFilter; // Added priceFilter parameter
+    let priceFilter = req.query.priceFilter;
+    let page = req.query.page || 1; // Get the page from the query parameters
 
     let query = {};
 
@@ -293,16 +306,33 @@ const loadShop = async (req, res) => {
     }
 
     if (priceFilter === 'highToLow') {
-      products = await Product.find(query).sort({ price: -1 }).populate("category");
+      products = await Product.find(query)
+        .sort({ price: -1 })
+        .skip((page - 1) * itemsPerPage) // Skip items based on the current page
+        .limit(itemsPerPage); // Limit the number of items per page
     } else if (priceFilter === 'lowToHigh') {
-      products = await Product.find(query).sort({ price: 1 }).populate("category");
+      products = await Product.find(query)
+        .sort({ price: 1 })
+        .skip((page - 1) * itemsPerPage)
+        .limit(itemsPerPage);
     } else {
-      products = await Product.find(query).populate("category");
+      products = await Product.find(query)
+        .skip((page - 1) * itemsPerPage)
+        .limit(itemsPerPage);
     }
+
+    const totalProducts = await Product.countDocuments(query); // Get the total number of products for pagination
+    const totalPages = Math.ceil(totalProducts / itemsPerPage);
 
     const messages = req.flash('error');
 
-    res.render('shop', { products, category, messages });
+    res.render('shop', {
+      products,
+      category,
+      messages,
+      currentPage: parseInt(page),
+      totalPages,
+    });
   } catch (error) {
     console.log(error.message);
   }

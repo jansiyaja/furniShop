@@ -59,7 +59,7 @@
                 <!-- Order Details -->
                
                     <% if (order) { %>
-                        <p>Order ID: <%= order._id %>
+                        <p>Order ID: <%= order.orderId %>
                         </p>
 
                         <p>Ordered Date: <%= order.date.toLocaleDateString() %>
@@ -128,6 +128,29 @@
      
 
           </div>
+          <div class="modal" id="cancelOrderModal" tabindex="-1" role="dialog" aria-labelledby="cancelOrderModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="cancelOrderModalLabel">Enter Cancel Reason</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form id="cancelOrderForm">
+                    <label for="cancelReason">Cancel Reason:</label>
+                    <input type="text" id="cancelReason" name="cancelReason" required>
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary" id="submitCancelOrder">Submit</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
 
 
 
@@ -143,6 +166,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script> 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <!-- <script>
         // Attach an event listener to the cancel order button
         $(document).on('click', '#cancelOrderButton', function (e) {
@@ -186,8 +210,20 @@
             e.preventDefault();
             const orderId = $(this).data('order-id');
             const productId = $(this).data('product-id');
-            const cancelReason = prompt('Enter cancel reason:'); 
-           
+            
+            // Set the data attributes for the modal
+            $('#cancelOrderModal').attr('data-order-id', orderId);
+            $('#cancelOrderModal').attr('data-product-id', productId);
+    
+            // Open the modal
+            $('#cancelOrderModal').modal('show');
+        });
+    
+        // Handle submit click
+        $('#submitCancelOrder').on('click', function() {
+            const orderId = $('#cancelOrderModal').data('order-id');
+            const productId = $('#cancelOrderModal').data('product-id');
+            const cancelReason = $('#cancelReason').val();
     
             // Send an AJAX request to cancel the order
             $.ajax({
@@ -202,6 +238,7 @@
                         text: 'The order has been successfully cancelled.',
                         icon: 'success',
                     });
+                    location.reload();
                 } else {
                     Swal.fire({
                         title: 'Failed to Cancel Order',
@@ -209,9 +246,14 @@
                         icon: 'error',
                     });
                 }
+    
+                // Close the modal after handling the response
+                $('#cancelOrderModal').modal('hide');
             });
         });
     </script>
+    
+    
     
 </body>
 

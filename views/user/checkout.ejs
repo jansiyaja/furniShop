@@ -45,11 +45,11 @@
                             <img src="assets/images/demos/demo-2/logo.png" alt="Molla Logo" width="105" height="25">
                         </a>
                     </div><!-- End .header-left -->
-        
+
                     <div class="header-center">
                         
                     </div>
-        
+
                     <div class="header-right">
                         <!-- <div class="account">
                             <a href="dashboard.html" title="My account">
@@ -59,7 +59,7 @@
                                 <p>Account</p>
                             </a>
                         </div>End .compare-dropdown -->
-        
+
                         <div class="dropdown cart-dropdown">
                             <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
                                 <div class="icon">
@@ -67,8 +67,7 @@
                                 </div>
                                 <p>Account</p>
                             </a>
-                            
-        
+
                             <div class="dropdown-menu dropdown-menu-right">
                                 <%if(locals.user){ %>
                                 <div class="dropdown-cart-products">
@@ -101,9 +100,9 @@
                                 <%}%>
                             </div><!-- End .dropdown-menu -->
                         </div><!-- End .cart-dropdown -->
-        
+
                         <div class="wishlist">
-                            <a href="wishlist.html" title="Wishlist">
+                            <a href="/wishlist" title="Wishlist">
                                 <div class="icon">
                                     <i class="icon-heart-o"></i>
                                     <span class="wishlist-count badge">3</span>
@@ -111,103 +110,50 @@
                                 <p>Wishlist</p>
                             </a>
                         </div><!-- End .compare-dropdown -->
-        
+
                         <div class="dropdown cart-dropdown">
-                            <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+                            <a href="/cart" class="dropdown-toggle" role="button" >
                                 <div class="icon">
                                     <i class="icon-shopping-cart"></i>
-                                    <span class="cart-count">2</span>
+                                    
                                 </div>
                                 <p>Cart</p>
                             </a>
-        
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <div class="dropdown-cart-products">
-                                    <div class="product">
-                                        <div class="product-cart-details">
-                                            <h4 class="product-title">
-                                                <a href="product.html">Beige knitted elastic runner shoes</a>
-                                            </h4>
-        
-                                            <span class="cart-product-info">
-                                                <span class="cart-product-qty">1</span>
-                                                x $84.00
-                                            </span>
-                                        </div><!-- End .product-cart-details -->
-        
-                                        <figure class="product-image-container">
-                                            <a href="product.html" class="product-image">
-                                                <img src="assets/images/products/cart/product-1.jpg" alt="product">
-                                            </a>
-                                        </figure>
-                                        <a href="#" class="btn-remove" title="Remove Product"><i class="icon-close"></i></a>
-                                    </div><!-- End .product -->
-        
-                                    <div class="product">
-                                        <div class="product-cart-details">
-                                            <h4 class="product-title">
-                                                <a href="product.html">Blue utility pinafore denim dress</a>
-                                            </h4>
-        
-                                            <span class="cart-product-info">
-                                                <span class="cart-product-qty">1</span>
-                                                x $76.00
-                                            </span>
-                                        </div><!-- End .product-cart-details -->
-        
-                                        <figure class="product-image-container">
-                                            <a href="product.html" class="product-image">
-                                                <img src="assets/images/products/cart/product-2.jpg" alt="product">
-                                            </a>
-                                        </figure>
-                                        <a href="#" class="btn-remove" title="Remove Product"><i class="icon-close"></i></a>
-                                    </div><!-- End .product -->
-                                </div><!-- End .cart-product -->
-        
-                                <div class="dropdown-cart-total">
-                                    <span>Total</span>
-        
-                                    <span class="cart-total-price">$160.00</span>
-                                </div><!-- End .dropdown-cart-total -->
-        
-                                <div class="dropdown-cart-action">
-                                    <a href="cart.html" class="btn btn-primary">View Cart</a>
-                                    <a href="checkout.html" class="btn btn-outline-primary-2"><span>Checkout</span><i class="icon-long-arrow-right"></i></a>
-                                </div><!-- End .dropdown-cart-total -->
-                            </div><!-- End .dropdown-menu -->
+
+                          <!-- End .dropdown-menu -->
                         </div><!-- End .cart-dropdown -->
                     </div><!-- End .header-right -->
                 </div><!-- End .container -->
             </div><!-- End .header-middle -->
-        
+
             <div class="header-bottom sticky-header">
                 <div class="container">
                     <div class="header-left">
                         
                     </div><!-- End .header-left -->
-        
+
                     <div class="header-center">
                         <nav class="main-nav">
                             <ul class="menu sf-arrows">
                                 <li class="megamenu-container active">
                                     <a href="/" class="sf-with-ul">Home</a>
-        
+
                                 </li>
                                 <li>
                                     <a href="/shop" class="sf-with-ul">Shop</a>
-        
+
                                    
                                 </li>
                                 <li>
-                                    <a href="contact.html" class="sf-with-ul">Contact</a>
-        
+                                    <a href="/contact" class="sf-with-ul">Contact</a>
+
                                    
                                 </li>
                                 
                                 <li>
                                     <a href="/about" class="sf-with-ul">About</a>
-        
-        
+
+
                                 </li>
                                
                                 
@@ -215,7 +161,7 @@
                             </ul><!-- End .menu -->
                         </nav><!-- End .main-nav -->
                     </div><!-- End .header-center -->
-        
+
                   
                 </div><!-- End .container -->
             </div><!-- End .header-bottom -->
@@ -329,15 +275,25 @@
                                             </tr>
                                         </tbody>
                                     </table>
-                                    <div class="form-group">
+                                    <ul class="selection-list">
                                         <label>Payment Method</label>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="paymentMethod" id="cashOnDelivery"
-                                                value="COD" checked>
-                                            <label class="form-check-label" for="cashOnDelivery">Cash on Delivery</label>
-                                        </div>
+                                        <li>
+                                            <input type="radio" id="wallet" name="paymentMethod" value="wallet">
+                                            <label for="wallet"> Wallet</label>
+                                        </li>
+                                        <li>
+                                            <input type="radio" id="razorpay" name="paymentMethod" value="razorpay">
+                                            <label for="razorpay"> Razor Pay</label>
+                                        </li>
+                                        <li>
+                                            <input type="radio" name="paymentMethod" id="cashOnDelivery" value="COD">
+                                            <label for="cod"> Cash on Delivery</label>
+                                        </li>
+                                    </ul>
+		                				
+                                     
                                        
-                                    </div>
+                                    
             
                                     <div class="form-group pt-3">
                                         <button class="py-3 btn-custom" onclick="placeOrder('<%= subTotal %>')">Place Order</button>
@@ -746,7 +702,7 @@
       
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+<!-- 
     <script>
         function placeOrder(total) {
             console.log("Total:", total);
@@ -816,10 +772,144 @@
                 console.error('AJAX Error:', error);
             }
         }
-    </script>
+    </script> -->
     
     
+    <script>
+        function placeOrder(total) {
+          try {
+            const radioBtnAddress = document.querySelector('input[name="addressRadio"]:checked')
+            const index = radioBtnAddress ? radioBtnAddress.value : null
+            if (index) {
+              const radioBtnPayment = document.querySelector('input[name="paymentMethod"]:checked')
+              const payment = radioBtnPayment ? radioBtnPayment.value : null
+             // console.log("payment",payment);
+              if (payment) {
+                const subTotal = total
+                if (subTotal) {
+                  const data = {
+                    index: index,
+                    payment: payment,
+                    subTotal: subTotal
+                  }
+                //  console.log(data);
+                  $.ajax({
+                    url: '/placeOrder',
+                    method: 'POST',
+                    data: JSON.stringify(data),
+                    contentType: 'application/json'
+                  }).then((response)=>{
+                    if(response.success==true){
+                      location.href = `/orderSuccess/${response.orderId}`                
+                    }else if(response.quan == true){
+                      Swal.fire({
+                        icon:'warning',
+                        text:`Sorry you product ${response.quantityLess} is Out Of Stock'`,
+                        showConfirmButton:false
+                      })
+                    }else if(response.order){
+                      razorpay(response.order)
+                    }
+                  })
+                }
+              } else {
+                Swal.fire({
+                        icon:'warning',
+                        text:"select a payment method",
+                        showConfirmButton:false
+                      })
+              
+              }
+            } else {
+                Swal.fire({
+                        icon:'warning',
+                        text:"select a Address",
+                        showConfirmButton:true
+                      })
+            }
+          } catch (error) {
+            console.log(error.message);
+          }
+    
+        }
+      </script>
+        <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+     <script>
+        function razorpay(order){
+            console.log(order);
+          try {
+            var options = {
+                      "key": "rzp_test_I7YqBUFsSqN4Fh", 
+                      "amount": order.amount,
+                      "currency": "INR",
+                      "name": "MOLLA Furniture",
+                      "description": "Test Transaction",
+                      "image": "",
+                      "order_id": order.id,
+                      handler: (response) => {
+                        verifyPayment(response, order);
+                      },
+                      "prefill": { 
+                          "name": "MOLLA ", //your customer's name
+                          "email": "kunjuvava794gmail.com",
+                          "contact": "9045790000" //Provide the customer's phone number for better conversion rates 
+                      },
+                      "notes": {
+                          "address": "MOlla furniture"
+                      },
+                      "theme": {
+                          "color": "#c96"
+                      }
+                  };
       
+                  var rzp1 = new Razorpay(options);
+      
+                  rzp1.on('payment.failed', (err) => {
+                      console.log(err);
+                  })
+                  rzp1.open();
+      
+          } catch (error) {
+            console.log(error.message);
+          }
+        }   
+
+        function verifyPayment(payment, order) {
+    console.log(order, "order");
+    const data = { payment, order };
+    console.log(data);
+
+    
+    $.ajax({
+        url: "/verify-payment",
+        method: "POST",
+        data: JSON.stringify(data),
+        contentType: "application/json", // Specify content type as JSON
+        success: function (response) {
+            if (response.paymentSuccess == true) {
+                console.log("its commingghgg");
+                window.location.href = `/orderSuccess/${order.receipt}`;
+            } else {
+                Swal.fire({
+                    positon: "center",
+                    icon: "error",
+                    title: "Payment failed",
+                    showConfirmButton: false,
+                    timer: 1500,
+                });
+            }
+        },
+        error: function (error) {
+            console.log("Error in AJAX request:", error);
+        },
+    });
+}
+
+
+
+        </script>
+     
+
       
 </body>
 
