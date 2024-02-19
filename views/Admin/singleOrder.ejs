@@ -320,7 +320,19 @@
                                                                             <option style="color: rgba(65, 189, 27, 0.781);"
                                                                                 value="delivered">Delivered</option>
                                                                         </select>
-                                                                        <%} else if(el.status==='' ) {%>
+                                                                        <%} else if(el.status==='cancelled' ) {%>
+                                                                            <select style="display: none;" data-orderId="<%= order._id %>"
+                                                                                data-productId="<%= el.productId._id%>"
+                                                                                data-index="<%= i%>" data-userId="<%= order.userId._id%>"
+                                                                                class="form-select orderStatus" id="orderStatus"
+                                                                                name="orderStatus"
+                                                                                onchange="changeStatus(this)">
+                                                                                <option >change status</option>
+                                                                                <option value="shipped">Shipped</option>
+                                                                                <option value="outfordelivery">OutForDelivery</option>
+                                                                                <option value="delivered">Delivered</option>
+                                                                                
+                                                                            </select>
                       
                                                                         <%} else {%>
                                                                             <select data-orderId="<%= order._id %>"
@@ -333,7 +345,7 @@
                                                                                 <option value="shipped">Shipped</option>
                                                                                 <option value="outfordelivery">OutForDelivery</option>
                                                                                 <option value="delivered">Delivered</option>
-                                                                                <option value="delivered">Request accept</option>
+                                                                                
                                                                             </select>
                       
                                                                         <%}%>

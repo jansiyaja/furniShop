@@ -2,7 +2,7 @@ const User=require("../models/userModel");
 const bcrypt=require("bcrypt");
 const Order=require('../models/orderModel')
 
-
+//----------------AdminLogin--------------------------//
 
 const adminLogin = (req, res) => {
     const adminCredential = {
@@ -21,13 +21,16 @@ const adminLogin = (req, res) => {
         res.render('login', { title: "Express", logout: "Invalid Admin Credentials" });
     }
 };
-
+//------------------------------------------------------------------------------------------------//
+//-----------Load Home page-- And LOad customer-----------------------------------------------------------------------------------//
 const loadHome=async(req,res)=>{
     res.render('dashboard')
 };
 const loadCustomer=async(req,res)=>{
     res.render('customers')
 };
+//------------------------------------------------------------------------------------------------//
+//-------------------------Admin Logout-----------------------------------------------------------------------//
 
 const adminLogout= async(req,res)=>{
     try {

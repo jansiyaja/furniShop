@@ -167,44 +167,8 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script> 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- <script>
-        // Attach an event listener to the cancel order button
-        $(document).on('click', '#cancelOrderButton', function (e) {
-            e.preventDefault();
-            const orderId = $(this).data('order-id');
-            const productId = $(this).data('product-id');
     
-            // Send an AJAX request to cancel the order
-            $.ajax({
-                url: '/orderCancel',
-                method: 'POST',
-                data: JSON.stringify({ orderId, productId }),
-                contentType: 'application/json'
-            }).then((response) => {
-                if (response.cancel == true) {
-                    // Use Swal.fire to show a confirmation dialog
-                    Swal.fire({
-                        title: 'Are you sure?',
-                        text: 'Do you want to cancel the order?',
-                        icon: 'question',
-                        showCancelButton: true,
-                        confirmButtonText: 'Yes, cancel it!',
-                        cancelButtonText: 'No, keep it',
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            // User confirmed, you can perform additional actions here if needed
-                            console.log('Order canceled successfully');
-                        } else {
-                            // User clicked "No" or closed the dialog
-                            console.log('Order cancellation canceled');
-                        }
-                    });
-                } else {
-                    console.error('Failed to cancel order');
-                }
-            });
-        });
-    </script> -->
+  
     <script>
         $(document).on('click', '#cancelOrderButton', function (e) {
             e.preventDefault();
