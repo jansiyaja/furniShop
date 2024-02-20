@@ -3,7 +3,8 @@ const User = require('../models/userModel')
 const Order = require('../models/orderModel')
 const Razorpay= require('razorpay')
 const Product = require('../models/products');
-const crypto=require('crypto')
+const crypto=require('crypto');
+const Wallet= require('../models/walletModel')
 
 var instance = new Razorpay({ key_id: process.env.KEY_ID,
      key_secret: process.env.KEY_SECRET 
@@ -48,8 +49,8 @@ const placeOrder = async (req, res) => {
         }
 
         const user = await User.findOne({ _id: userId });
-        const status = payment === 'COD' ? 'placed' : 'pending';
-        console.log("ststuass",status);
+        const status = payment.toLowerCase() === 'cod' ? 'placed' : 'pending'; // Ensure consistent case for payment method
+        console.log("status", status);
         const address = user.address[index];
         const date = Date.now();
         const expectedDate = new Date(date);
@@ -64,61 +65,99 @@ const placeOrder = async (req, res) => {
             products: products,
             totalAmount: subTotal,
             date: date,
-            
             deliveryAddress: address,
             paymentMethod: payment,
             expectedDate: expectedDate,
         });
+
         order.products.forEach(product => {
-           
-            product.status = status; 
+            product.status = status;
         });
 
-
         const orderDetails = await order.save();
-       console.log("orderDetails",orderDetails);
+        console.log("orderDetails", orderDetails);
 
-        // If the payment is COD
-        for (const product of orderDetails.products) {
-            
-            const productStatus = product.status;
-            if (productStatus === 'placed') {
+        // Payment with wallet
+        if (orderDetails.paymentMethod.toLowerCase() === 'wallet') {
+            try {
+                console.log("Wallet payment logic");
+               const{subTotal}=req.body;
+               const userId= req.session.user.id;
+               console.log(subTotal);
+               console.log(userId);
+              const wallet= await Wallet.findOne({userId:userId})
+const date=Date.now()
+               if(subTotal<=wallet.amount){
+                console.log("that is true");
+                await Wallet.findOneAndUpdate({userId:userId},
+                    {$inc:{amount:-subTotal},
+                    $push: {
+                    walletHistory: {
+                        Date: new Date(),
+                        orderData: orderDetails.products
+                    }
+                }
+            })
+              
                 await Cart.deleteOne({ userId: userId });
-
                 for (let i = 0; i < products.length; i++) {
                     const productId = products[i].productId;
                     const productQuantity = products[i].quantity;
                     await Product.updateOne({ _id: productId }, { $inc: { stock: -productQuantity } });
                 }
-
-                return res.json({ success: true, orderId });
+               
+                res.json({wallet:true,orderId})
+            }else{
+              res.json({money:true})
             }
-            
-            // If the payment is razorpay
-            else if (productStatus === 'pending') {
-                console.log("iam here");
-                const options = {
-                    amount: subTotal * 100,
-                    currency: "INR",
-                    receipt: "" + orderId,
-                };
-console.log(options);
-                instance.orders.create(options, function (err, order) {
-                    if (err) {
-                        console.log(err);
-                    }
-                    console.log("Razorpay Response:", order);
-                    return res.json({ order });
-                });
                 
+                // If the payment is COD
+                for (const product of orderDetails.products) {
+                    const productStatus = product.status;
+                    if (productStatus === 'placed') {
+                        await Cart.deleteOne({ userId: userId });
+
+                        for (let i = 0; i < products.length; i++) {
+                            const productId = products[i].productId;
+                            const productQuantity = products[i].quantity;
+                            await Product.updateOne({ _id: productId }, { $inc: { stock: -productQuantity } });
+                        }
+
+                        return res.json({ success: true, orderId });
+                    }
+                }
+            } catch (error) {
+                console.error("Error processing wallet payment:", error);
+                return res.status(500).json({ error: "Internal server error" });
             }
         }
 
-       
+        // If the payment is Razorpay
+        else if (orderDetails.paymentMethod.toLowerCase() === 'razorpay') {
+            console.log("Razorpay payment logic");
+            // Create Razorpay order, handle Razorpay response, etc.
+
+            const options = {
+                amount: subTotal * 100,
+                currency: "INR",
+                receipt: "" + orderId,
+            };
+
+            instance.orders.create(options, function (err, order) {
+                if (err) {
+                    console.error(err);
+                    return res.status(500).json({ error: "Error creating Razorpay order" });
+                }
+                console.log("Razorpay Response:", order);
+                return res.json({ order });
+            });
+        }
     } catch (error) {
-        console.log(error);
+        console.error("Error processing order:", error);
+        return res.status(500).json({ error: "Internal server error" });
     }
 };
+
 
 
 
@@ -215,10 +254,10 @@ const loadOrderSuccess = async (req, res) => {
   const loadOrderDetilas = async (req, res) => {
     try {
         const orderId = req.params.id;
-        console.log("this ",orderId);
+      //  console.log("this ",orderId);
 
         const order = await Order.findOne({ orderId });
-        console.log("order", order);
+      //  console.log("order", order);
         if (order) {
             const productIds = order.products.map(product => product.productId);
 
@@ -264,40 +303,94 @@ const loadOrderSuccess = async (req, res) => {
 //-------------Cancel Orders--------------------------------------------------------//
 
 const cancelOrder = async (req, res) => {
-  try {
-      const { orderId, productId, cancelReason } = req.body;
-      console.log(cancelReason);
+    try {
+        const { orderId, productId, cancelReason } = req.body;
+        console.log(req.body);
+        const userId = req.session.user.id;
+        console.log(userId);
 
-     
-      const orderData = await Order.findOneAndUpdate(
        
-          { _id: orderId, 'products.productId': productId },
-          {
-              $set: {
-                  'products.$.status': 'cancelled',
-                  'products.$.cancelReason': cancelReason,
+
+        const orderData = await Order.findOneAndUpdate(
+            { _id: orderId, 'products.productId': productId },
+            {
+                $set: {
+                    'products.$.status': 'cancelled',
+                    'products.$.cancelReason': cancelReason,
+                },
+            },
+            { new: true }
+        );
+        console.log(orderData);
+        
+         if (orderData.paymentMethod === 'razorpay' ||orderData.paymentMethod === 'wallet') {
+            const productDetails = await Order.findOne(
+                { _id: orderId, 'products.productId': productId },
+                { 'products.$': 1 }
+            );
+
+            const productQty = productDetails.products[0].quantity;
+            const totalAmount=orderData.totalAmount
+
                  
-              },
-          },
-          { new: true }
-      );
-      console.log(orderData);
-      const productDetails = await Order.findOne(
-          { _id: orderId, 'products.productId': productId },
-          { 'products.$': 1 }
-      );
+                   await Product.updateOne({ _id: productId }, { $inc: { stock: productQty } });
+                   console.log("I am here above wallet");
+       
+                 
+                   const userWallet = await Wallet.findOne({ userId: userId });
 
-      const productQty = productDetails.products[0].quantity;
+                   if (userWallet) {
+                       const walletUpdateResult = await Wallet.findOneAndUpdate(
+                           { userId: userId },
+                           {
+                               $inc: { amount: totalAmount },
+                               $push: {
+                                   walletHistory: {
+                                       Date: new Date(),
+                                       orderData: orderData.products
+                                   }
+                               }
+                           },
+                           { new: true }
+                       );
+                   
+                       console.log(userId);
+                       console.log(totalAmount);
+                       console.log(walletUpdateResult);
+                   
+                       if (walletUpdateResult) {
+                           console.log("Wallet updated successfully");
+                       } else {
+                           console.log("Wallet not updated");
+                       }
+                   } else {
+                       // Create a new wallet document
+                       const newWallet = new Wallet({
+                           userId: userId,
+                           amount: totalAmount,
+                           walletHistory: [{ Date: new Date(), orderData: orderData.products}]
+                       });
+                       await newWallet.save();
+                       console.log("New wallet created and updated successfully");
+                   }
+                   
 
-      // Update product stock based on order
-      await Product.updateOne({ _id: productId }, { $inc: { stock: productQty } });
-
-      res.json({ cancel: true, orderId });
-  } catch (error) {
-      console.error(error.message);
-      res.status(500).json({ error: 'Internal Server Error' });
-  }
+        res.json({ cancel: true, orderId });
+    }
+ }catch (error) {
+        console.error(error.message);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
 };
+
+const returnOrder= async (req,res)=>{
+try {
+    
+} catch (error) {
+    
+}
+}
+
 
 //--------------------------------------------------------------------------------------------------//
 
@@ -307,5 +400,6 @@ const cancelOrder = async (req, res) => {
     loadOrderSuccess,
     loadOrderDetilas,
     cancelOrder,
-    verifyPayment
+    verifyPayment,
+    returnOrder
   }

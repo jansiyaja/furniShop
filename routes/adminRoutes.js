@@ -71,6 +71,7 @@ admin_route.post('/editCategory',categoryController.editCategory)
 admin_route.get('/orders',adminAuth.isLogout,adminController.loadOrder)
 admin_route.get('/singleOrder',adminAuth.isLogout,adminController.singleProductView)
 admin_route.post('/changeOrderStatus',adminController.changeOrderStatus)
+admin_route.post('/cancelOrder',adminController.cancelOrder)
 
 
 

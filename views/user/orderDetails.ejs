@@ -174,10 +174,12 @@
             e.preventDefault();
             const orderId = $(this).data('order-id');
             const productId = $(this).data('product-id');
+          
             
             // Set the data attributes for the modal
             $('#cancelOrderModal').attr('data-order-id', orderId);
             $('#cancelOrderModal').attr('data-product-id', productId);
+          
     
             // Open the modal
             $('#cancelOrderModal').modal('show');
@@ -187,13 +189,16 @@
         $('#submitCancelOrder').on('click', function() {
             const orderId = $('#cancelOrderModal').data('order-id');
             const productId = $('#cancelOrderModal').data('product-id');
+          
             const cancelReason = $('#cancelReason').val();
-    
+    const data={ orderId, productId, cancelReason }
+    console.log(data);
             // Send an AJAX request to cancel the order
             $.ajax({
                 url: '/orderCancel',
                 method: 'POST',
                 data: JSON.stringify({ orderId, productId, cancelReason }),
+               
                 contentType: 'application/json',
             }).then((response) => {
                 if (response.cancel) {
@@ -202,7 +207,7 @@
                         text: 'The order has been successfully cancelled.',
                         icon: 'success',
                     });
-                    location.reload();
+                   
                 } else {
                     Swal.fire({
                         title: 'Failed to Cancel Order',
@@ -210,11 +215,13 @@
                         icon: 'error',
                     });
                 }
-    
+               
                 // Close the modal after handling the response
                 $('#cancelOrderModal').modal('hide');
             });
+          
         });
+        
     </script>
     
     

@@ -809,6 +809,8 @@
                       })
                     }else if(response.order){
                       razorpay(response.order)
+                    }else if(response.wallet==true){
+                        location.href = `/orderSuccess/${response.orderId}`   
                     }
                   })
                 }
