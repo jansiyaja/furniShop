@@ -56,6 +56,7 @@ const loadaddCategory = async (req, res) => {
 const insertCategory = async (req, res) => {
   try {
     let { name, description } = req.body;
+    console.log(req.body);
     const existCategory = await Category.findOne({ name: name });
 
     if (existCategory) {

@@ -4,12 +4,6 @@ const admin_route = express()
 const multer = require('../middleware/multer')
 const adminAuth = require('../middleware/adminAuth')
 
-
-
-
-const adminController = require('../controllers/adminController')
-const productController = require('../controllers/productController')
-const categoryController = require('../controllers/categoryController')
 const session = require('express-session');
 admin_route.set('view engine','ejs')
 admin_route.set('views','./views/Admin')
@@ -28,6 +22,15 @@ admin_route.use(
 
 admin_route.use(express.json())
 admin_route.use( express.urlencoded({extended : true}))
+
+//----controllers-------------//
+
+const adminController = require('../controllers/adminController')
+const productController = require('../controllers/productController')
+const categoryController = require('../controllers/categoryController')
+const couponController = require('../controllers/couponController')
+
+//-----------------------------------------------------------//
 
 
 
@@ -56,22 +59,31 @@ admin_route.post('/listproduct',productController.listUnlist)
 
 //---------------------- cateory session-----------------------------------------//
 admin_route.get('/category',categoryController.loadCategory)
-
-admin_route.get('/addCategory',categoryController.loadaddCategory)
-admin_route.post('/addCategory',categoryController.insertCategory)
+admin_route.get('/addCategory',  categoryController.loadaddCategory)
+admin_route.post('/addCategory', categoryController.insertCategory)
 admin_route.post('/listCategory',categoryController.listCategory)
 admin_route.get('/editCategory',categoryController.LoadEditCategory)
 admin_route.post('/editCategory',categoryController.editCategory)
 
-
-
-
-
 //------------------------------------------------------------------//
+//-------------------Orders Management-----------------------------------------------//
 admin_route.get('/orders',adminAuth.isLogout,adminController.loadOrder)
 admin_route.get('/singleOrder',adminAuth.isLogout,adminController.singleProductView)
 admin_route.post('/changeOrderStatus',adminController.changeOrderStatus)
 admin_route.post('/cancelOrder',adminController.cancelOrder)
+//------------------------------------------------------------------//
+
+
+//------------Coupon MANAGEMENT------------------------------------------------------//
+admin_route.get('/coupon',  couponController.loadCoupon)
+admin_route.get('/addCoupon',  couponController.LoadAddCoupon)
+admin_route.post('/addCoupon', couponController.addCoupon)
+admin_route.get('/editCoupon',couponController.LoadEditCoupon)
+admin_route.post('/editCoupon',couponController.editCoupon)
+admin_route.post('/listCoupon',couponController.listCoupon)
+
+//------------------------------------------------------------------//
+
 
 
 

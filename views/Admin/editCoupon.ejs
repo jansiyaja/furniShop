@@ -1,0 +1,338 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Nest Dashboard</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="assets/imgs/theme/favicon.svg">
+    <!-- Template CSS -->
+    <link href="assets/css/main.css?v=1.1" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body>
+    <div class="screen-overlay"></div>
+    <aside class="navbar-aside" id="offcanvas_aside">
+        <div class="aside-top">
+            <a href="/admin/dashboard" class="brand-wrap">
+                <img src="assets/imgs/theme/logo.svg" class="logo" alt="Nest Dashboard" />
+            </a>
+            <div>
+                <button class="btn btn-icon btn-aside-minimize"><i class="text-muted material-icons md-menu_open"></i></button>
+            </div>
+        </div>
+        <nav>
+            <ul class="menu-aside">
+                <li class="menu-item active ">
+                    <a class="menu-link" href="/admin/dashboard">
+                        <i class="icon material-icons md-home"></i>
+                        <span class="text">Dashboard</span>
+                    </a>
+                </li>
+                <li class="menu-item ">
+                    <a class="menu-link" href="/admin/customers">
+                        <i class="icon material-icons md-home"></i>
+                        <span class="text">customers</span>
+                    </a>
+                </li>
+                <li class="menu-item ">
+                    <a class="menu-link" href="/admin/Products">
+                        <i class="icon material-icons md-shopping_bag"></i>
+                        <span class="text">Products</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="/admin/addProduct">Add Product </a>
+                        <a href="/admin/editProduct">Edit Product </a>
+                       
+                    </div>
+                </li>
+                <li class="menu-item">
+                    <a class="menu-link" href="/admin/Category">
+                        <i class="icon material-icons md-category"></i>
+                        <span class="text">Category</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="/admin/addCategory">Add Category </a>
+                        <a href="/admin/editCategory">Edit Category</a>
+                       
+                    </div>
+                </li>
+                <li class="menu-item has-submenu">
+                    <a class="menu-link" href="page-orders-1.html">
+                        <i class="icon material-icons md-shopping_cart"></i>
+                        <span class="text">Orders</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="/admin/orders">Order list 1</a>
+                        
+                    </div>
+                </li>
+                
+               
+               
+                <li class="menu-item has-submenu">
+                    <a class="menu-link" href="#">
+                        <i class="icon material-icons md-person"></i>
+                        <span class="text">Account</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="page-account-login.html">User login</a>
+                        <a href="page-account-register.html">User registration</a>
+                        <a href="page-error-404.html">Error 404</a>
+                    </div>
+                </li>
+                <!-- <li class="menu-item">
+                    <a class="menu-link" href="page-reviews.html">
+                        <i class="icon material-icons md-comment"></i>
+                        <span class="text">Reviews</span>
+                    </a>
+                </li> -->
+                
+                <li class="menu-item">
+                    <a class="menu-link" disabled href="#">
+                        <i class="icon material-icons md-pie_chart"></i>
+                        <span class="text">Statistics</span>
+                    </a>
+                </li>
+            </ul>
+            <hr />
+            <ul class="menu-aside">
+                <li class="menu-item has-submenu">
+                    <a class="menu-link" href="#">
+                        <i class="icon material-icons md-settings"></i>
+                        <span class="text">Settings</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="page-settings-1.html">Setting sample 1</a>
+                        <a href="page-settings-2.html">Setting sample 2</a>
+                    </div>
+                </li>
+                <!-- <li class="menu-item">
+                    <a class="menu-link" href="page-blank.html">
+                        <i class="icon material-icons md-local_offer"></i>
+                        <span class="text"> Starter page </span>
+                    </a>
+                </li> -->
+            </ul>
+            <br />
+            <br />
+        </nav>
+    </aside>
+    <main class="main-wrap">
+        <header class="main-header navbar">
+            <div class="col-search">
+               
+            </div>
+            <div class="col-nav">
+                <button class="btn btn-icon btn-mobile me-auto" data-trigger="#offcanvas_aside"> <i class="material-icons md-apps"></i> </button>
+                <ul class="nav">
+                    <li class="nav-item">
+                        <a class="nav-link btn-icon" href="#">
+                            <i class="material-icons md-notifications animation-shake"></i>
+                            <span class="badge rounded-pill">3</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn-icon darkmode" href="#"> <i class="material-icons md-nights_stay"></i> </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="requestfullscreen nav-link btn-icon"><i class="material-icons md-cast"></i></a>
+                    </li>
+                    <li class="dropdown nav-item">
+                        <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownLanguage" aria-expanded="false"><i class="material-icons md-public"></i></a>
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownLanguage">
+                            <a class="dropdown-item text-brand" href="#"><img src="assets/imgs/theme/flag-us.png" alt="English">English</a>
+                            <a class="dropdown-item" href="#"><img src="assets/imgs/theme/flag-fr.png" alt="Français">Français</a>
+                            <a class="dropdown-item" href="#"><img src="assets/imgs/theme/flag-jp.png" alt="Français">日本語</a>
+                            <a class="dropdown-item" href="#"><img src="assets/imgs/theme/flag-cn.png" alt="Français">中国人</a>
+                        </div>
+                    </li>
+                    <li class="dropdown nav-item">
+                        <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownAccount" aria-expanded="false"> <img class="img-xs rounded-circle" src="assets/imgs/people/avatar-2.png" alt="User"></a>
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
+                            <a class="dropdown-item" href="#"><i class="material-icons md-perm_identity"></i>Edit Profile</a>
+                            <a class="dropdown-item" href="#"><i class="material-icons md-settings"></i>Account Settings</a>
+                            <a class="dropdown-item" href="#"><i class="material-icons md-account_balance_wallet"></i>Wallet</a>
+                            <a class="dropdown-item" href="#"><i class="material-icons md-receipt"></i>Billing</a>
+                            <a class="dropdown-item" href="#"><i class="material-icons md-help_outline"></i>Help center</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item text-danger" href="#"><i class="material-icons md-exit_to_app"></i>Logout</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </header>
+        <section class="content-main">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <form action="/admin/editCoupon" method="post" onsubmit="return validateCategory()">
+         
+                                <% if (messages.error) { %>
+                                  <div class="alert alert-danger d-flex align-items-center  " role="alert" id="error-alert">
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2 " viewBox="0 0 16 16" role="img" aria-label="Warning:">
+                                        <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                                      </svg>
+                                      <div >
+                                          <strong>Hey !</strong>
+                                        <%= messages.error %>
+                                      </div>
+                                    </div>
+                              <% } %> 
+                      
+                              
+                              <input type="text" name="editid" value="<%= couponEdit.id %>" hidden>
+
+                               
+                                <div class="col-md-9">
+                                    <div class="mb-4">
+                                        <div class="form-group">
+                                            <label for="name">Coupon Name</label>
+                                            <input type="text" class="form-control" id="name" name="couponName" value="<%= couponEdit.couponName %>" placeholder="Enter your Coupon name">
+                                          </div>
+                                    </div>
+                                
+                                    <div class="mb-4">
+                                        <div class="form-group">
+                                            <label for="name">Coupon code</label>
+                                            <input type="text" class="form-control" id="code" name="code" value="<%= couponEdit.code %>" placeholder="Enter your code">
+                                          </div>
+                                    </div>
+                                    <div class="mb-4">
+                                        <div class="form-group">
+                                            <label for="name">Coupon discount</label>
+                                            <input type="number" class="form-control" id="discount" name="discount" value="<%= couponEdit.discount %>" >
+                                          </div>
+                                    </div>
+                                    <div class="mb-4">
+                                        <div class="form-group">
+                                            <label for="name">Starting Date</label>
+                                            <input type="date" class="form-control" id="startingDate" name="startingDate"value="<%= couponEdit.startingDate %>">
+                                          </div>
+                                    </div>
+                                    <div class="mb-4">
+                                        <div class="form-group">
+                                            <label for="name">Expairy  Date</label>
+                                            <input type="date" class="form-control" id="expairyDate" name="expairyDate" value="<%= couponEdit.expairyDate %>">
+                                          </div>
+                                    </div>
+                                    <div class="mb-4">
+                                        <div class="form-group">
+                                            <label for="name">Up To</label>
+                                            <input type="number" class="form-control" id="minAmount" name="minAmount" value="<%= couponEdit.minAmount %>">
+                                          </div>
+                                    </div>
+
+                               
+                              
+                                    <div class="mt-4"> <button type="submit" class="btn btn-primary ">Update</button>
+                                        <a href="/admin/coupon" class="btn btn-primary">
+                                            <span class="text" >Back</span>
+                                          </a></div>
+                               
+                              </form>
+                              
+                              
+                              
+                            
+                            
+                              
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section><!-- content-main end// -->
+      
+        <footer class="main-footer font-xs">
+            <div class="row pb-30 pt-15">
+                <div class="col-sm-6">
+                    <script>
+                    document.write(new Date().getFullYear())
+                    </script> &copy; Nest - HTML Ecommerce Template .
+                </div>
+                <div class="col-sm-6">
+                    <div class="text-sm-end">
+                        All rights reserved
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </main>
+    <script src="assets/js/vendors/jquery-3.6.0.min.js"></script>
+    <script src="assets/js/vendors/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/vendors/select2.min.js"></script>
+    <script src="assets/js/vendors/perfect-scrollbar.js"></script>
+    <script src="assets/js/vendors/jquery.fullscreen.min.js"></script>
+    <!-- Main Script -->
+    <script src="assets/js/main.js?v=1.1" type="text/javascript"></script>
+    
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+
+
+
+<script>
+    const existingCategories = []; // Maintain a list of existing categories
+  
+    function validateCategory() {
+        console.log("cat");
+      const nameInput = document.getElementById('name');
+      const descriptionInput = document.getElementById('description');
+      const lettersRegex = /^[A-Za-z ]+$/;
+  
+      // Reset previous error styles
+      nameInput.classList.remove('error');
+      descriptionInput.classList.remove('error');
+  
+      if (nameInput.value.trim() === '') {
+        alertAndFocus(nameInput, 'Please fill in the category name properly and remove any blank spaces.');
+        return false;
+      } else if (!lettersRegex.test(nameInput.value)) {
+        alertAndFocus(nameInput, 'Category name should contain only letters.');
+        return false;
+      } else if (descriptionInput.value.trim().length <= 10) {
+        alertAndFocus(descriptionInput, 'Please enter a description with more than 10 characters.');
+        return false;
+      }
+  
+      // Check if the category name already exists
+      console.log(existingCategories);
+      const categoryName = nameInput.value.trim();
+      if (existingCategories.includes(categoryName)) {
+        alertAndFocus(nameInput, 'Category with this name already exists. Please choose a different name.');
+        return false;
+      }
+  
+      return true;
+    }
+  
+    function alertAndFocus(inputElement, message) {
+      alert(message);
+      inputElement.classList.add('error');
+      inputElement.focus();
+    }
+  </script>
+  
+
+
+  
+  
+
+
+
+
+
+    
+</body>
+
+</html>

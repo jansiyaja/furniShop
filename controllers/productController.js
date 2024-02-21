@@ -379,38 +379,7 @@ const productView = async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 }
-// const productView = async (req, res) => {
-//   try {
-//     const productId = req.query.id;
-//     const userid = req.session.user;
-    
-// const products = await Product.findById(productId).populate('category');
 
-// const existscart = await Cart.findOne({ userId: userid });
-// console.log(existscart);
-
-// // Add more console.log statements to identify the flow of your program
-
-// if (userid) {
-//   if (existscart) {
-//     const existsProduct = existscart.products.find((pro) => pro.productId.toString() === productId);
-
-//     if (existsProduct) {
-//       console.log('In existsProduct block');
-//       return res.render('productDetails', { products,  inCart: true });
-//     }
-//   }
-// }
-
-// console.log('Before render');
-// res.render('productDetails', { products,inCart: false });
-
-
-//   } catch (error) {
-//     console.log(error.message);
-//     res.render('errorPage', { errorMessage: 'An error occurred while loading the product details.' });
-//   }
-// }
 
 //------------------------------------------------------------------------------------------//
 

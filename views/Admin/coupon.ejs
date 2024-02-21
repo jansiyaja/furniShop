@@ -130,7 +130,7 @@
                 <div class="container">
                     <div class="head-title">
                         <div class="left">
-                            <h1>Categories</h1>
+                            <h1>Coupon</h1>
                         </div>
                     </div>
             
@@ -195,9 +195,9 @@
             <section class="content-main">
                 <div class="container-fluid">
                    
-                    <div class="content-header">
+                    <div class="right">
                        
-                        <a href="addCategory" class="btn btn-primary btn-sm rounded">Create new</a>
+                        <a href="addCoupon" class="btn btn-primary btn-sm rounded">Create new</a>
                     </div>
                  
         
@@ -213,26 +213,34 @@
                                                 <tr>
                                                     <th scope="col"><center>Sl.No.</center></th>
                                                     <th scope="col"><center>Name</center></th>
-                                                    <th scope="col"><center>Description</center></th>
+                                                    <th scope="col"><center>Code</center></th>
+                                                    <th scope="col"><center>Discount Amount</center></th>
+                                                    <th scope="col"><center>Amount</center></th>
+                                                    <th scope="col"><center>Starting Date</center></th>
+                                                    <th scope="col"><center>Ending Date</center></th>
                                                     <th scope="col"><center>Edit</center></th>
                                                     <th scope="col"><center>List/Unlist</center></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                              <% if(category.length>0){ %>
-                                                  <% if(category.map((value,index)=>{ %>
+                                              <% if(coupons.length>0){ %>
+                                                  <% if(coupons.map((value,index)=>{ %>
                                                     <tr>
                                                         <td  width="10%" class="text-center" ><%= index+1 %></td>
-                                                        <td width="10%"  class="text-center"><%= value.name%></td>
-                                                        <td width="80%"  class="text-center" ><%= value.description%></td>
-                                                      
-                                                        <td><a href="/admin/editCategory?id=<%= value._id %>" class="btn btn-sm font-sm rounded btn-brand"><i class="material-icons md-edit"></i> Edit</a></td>
+                                                        <td width="25%"  class="text-center"><%= value.couponName%></td>
+                                                        <td width="15%"  class="text-center" ><%= value.code%></td>
+                                                        <td width="10%"  class="text-center" ><%= value.discount%></td>
+                                                        <td width="10%"  class="text-center" ><%= value.minAmount%></td>
+                                                        <td width="10%" class="text-center"><%= value.startingDate ? value.startingDate.toLocaleString() : '' %></td>
+                                                        <td width="10%" class="text-center"><%= value.expairyDate ? value.expairyDate.toLocaleString() : '' %></td>
+                                                        
+                                                        <td><a href="/admin/editCoupon?id=<%= value._id %>" class="btn btn-sm font-sm rounded btn-brand"><i class="material-icons md-edit"></i> Edit</a></td>
 
                                                       
                                                         <td class="text-end m-3">
                                                             <button type="button" id="button-<%= value._id %>" class="btn btn-sm btn-danger rounded font-sm mt-15"
                                                                     data-user-id="<%= value._id  %>" data-initial-status="<%= value.is_listed %>"
-                                                                    onclick="block('<%= value._id %>')" >
+                                                                    onclick="block('<%= value._id %>', <%= value.isListed %>)">
                                                                     <%= value.isListed?"Unlist":"List"  %>
                                                             </button>
                                                         </td>
@@ -309,14 +317,15 @@
     <!-- Main Script -->
     <script src="assets/js/main.js?v=1.1" type="text/javascript"></script>
     <script>
-        async function block( userId,listedStatus) {
+        async function block(userId,listedStatus) {
+            console.log("iam clicked");
           // Show a confirmation alert
-          const confirmationMessage = `Are you sure you want to ${listedStatus ? 'Unlist' : 'List'} this category?`;
+          const confirmationMessage = `Are you sure you want to ${listedStatus ? 'Unlist' : 'List'} this coupon ?`;
           const userConfirmed = window.confirm(confirmationMessage);
       
           if (userConfirmed) {
             try {
-              const backendURL = '/admin/listCategory';
+              const backendURL = '/admin/listCoupon';
               const response = await fetch(backendURL, {
                 method: 'POST',
                 headers: {
@@ -329,7 +338,6 @@
               console.log('Success:', data);
       
               updateButtonStatus(userId, data.newListStatus);
-              location.reload();
       
             } catch (error) {
               console.error('Error:', error);
@@ -337,8 +345,8 @@
           } else {
             alert('Operation canceled.'); 
           }
+          location.reload();
         }
-
       
         function updateButtonStatus(userId, newListedStatus) {
           const button = document.getElementById('button-' + userId);
@@ -348,7 +356,6 @@
             button.textContent = newListedStatus ? 'Unlist' : 'List';
           }
         }
-        
       </script>
       
 </body>
