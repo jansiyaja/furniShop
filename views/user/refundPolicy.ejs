@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<!-- molla/elements-accordions.html  22 Nov 2019 10:05:17 GMT -->
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Molla - Bootstrap eCommerce Template</title>
+    <meta name="keywords" content="HTML5 Template">
+    <meta name="description" content="Molla - Bootstrap eCommerce Template">
+    <meta name="author" content="p-themes">
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/images/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/images/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/icons/favicon-16x16.png">
+    <link rel="manifest" href="assets/images/icons/site.html">
+    <link rel="mask-icon" href="assets/images/icons/safari-pinned-tab.svg" color="#666666">
+    <link rel="shortcut icon" href="assets/images/icons/favicon.ico">
+    <meta name="apple-mobile-web-app-title" content="Molla">
+    <meta name="application-name" content="Molla">
+    <meta name="msapplication-TileColor" content="#cc9966">
+    <meta name="msapplication-config" content="assets/images/icons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+    <!-- Plugins CSS File -->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <!-- Main CSS File -->
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <header class="header header-2 header-intro-clearance">
+
+            <div class="header-middle">
+                <div class="container">
+                    <div class="header-left">
+                        <button class="mobile-menu-toggler">
+                            <span class="sr-only">Toggle mobile menu</span>
+                            <i class="icon-bars"></i>
+                        </button>
+                        
+                        <a href="index.html" class="logo">
+                            <img src="assets/images/demos/demo-2/logo.png" alt="Molla Logo" width="105" height="25">
+                        </a>
+                    </div><!-- End .header-left -->
+
+                    <div class="header-center">
+                        
+                    </div>
+
+                    <div class="header-right">
+                        <!-- <div class="account">
+                            <a href="dashboard.html" title="My account">
+                                <div class="icon">
+                                    <i class="icon-user"></i>
+                                </div>
+                                <p>Account</p>
+                            </a>
+                        </div>End .compare-dropdown -->
+
+                        <div class="dropdown cart-dropdown">
+                            <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+                                <div class="icon">
+                                    <i class="icon-user"></i>
+                                </div>
+                                <p>Account</p>
+                            </a>
+
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <%if(locals.user){ %>
+                                <div class="dropdown-cart-products">
+                                    <div class="product">
+                                        <div class="product-cart-details">
+                                            <h4 class="product-title">
+                                                <a href="/user">Your Account</a>
+                                            </h4>
+                                        </div><!-- End .product-cart-details -->
+                                    </div><!-- End .product -->
+        
+                                    <div class="product">
+                                        <div class="product-cart-details">
+                                            <h4 class="product-title">
+                                                <a href="/logout">Logout</a>
+                                            </h4>
+                                        </div><!-- End .product-cart-details -->
+        
+                                    </div><!-- End .product -->
+                                </div><!-- End .cart-product -->
+                                <%} else{%>
+                                <div class="product">
+                                    <div class="product-cart-details">
+                                        <h4 class="product-title">
+                                            <a href="/login">Login</a>
+                                        </h4>
+                                    </div><!-- End .product-cart-details -->
+        
+                                </div><!-- End .product -->
+                                <%}%>
+                            </div><!-- End .dropdown-menu -->
+                        </div><!-- End .cart-dropdown -->
+
+                        <div class="wishlist">
+                            <a href="/wishlist" title="Wishlist">
+                                <div class="icon">
+                                    <i class="icon-heart-o"></i>
+                                    <span class="wishlist-count badge">3</span>
+                                </div>
+                                <p>Wishlist</p>
+                            </a>
+                        </div><!-- End .compare-dropdown -->
+
+                        <div class="dropdown cart-dropdown">
+                            <a href="/cart" class="dropdown-toggle" role="button" >
+                                <div class="icon">
+                                    <i class="icon-shopping-cart"></i>
+                                    
+                                </div>
+                                <p>Cart</p>
+                            </a>
+
+                          <!-- End .dropdown-menu -->
+                        </div><!-- End .cart-dropdown -->
+                    </div><!-- End .header-right -->
+                </div><!-- End .container -->
+            </div><!-- End .header-middle -->
+
+            <div class="header-bottom sticky-header">
+                <div class="container">
+                    <div class="header-left">
+                        
+                    </div><!-- End .header-left -->
+
+                    <div class="header-center">
+                        <nav class="main-nav">
+                            <ul class="menu sf-arrows">
+                                <li class="megamenu-container active">
+                                    <a href="/" class="sf-with-ul">Home</a>
+
+                                </li>
+                                <li>
+                                    <a href="/shop" class="sf-with-ul">Shop</a>
+
+                                   
+                                </li>
+                                <li>
+                                    <a href="/contact" class="sf-with-ul">Contact</a>
+
+                                   
+                                </li>
+                                
+                                <li>
+                                    <a href="/about" class="sf-with-ul">About</a>
+
+
+                                </li>
+                               
+                                
+                               
+                            </ul><!-- End .menu -->
+                        </nav><!-- End .main-nav -->
+                    </div><!-- End .header-center -->
+
+                  
+                </div><!-- End .container -->
+            </div><!-- End .header-bottom -->
+        </header><!-- End .header -->
+
+
+        <h2 class="title mb-3">Refunds Policy</h2><!-- End .title -->
+
+                	<div class="row">
+                		<div class="col-md-8">
+                			<div class="accordion" id="accordion-1">
+							    <div class="card">
+							        <div class="card-header" id="heading-1">
+							            <h2 class="card-title">
+							                <a role="button" data-toggle="collapse" href="#collapse-1" aria-expanded="true" aria-controls="collapse-1">
+							                    Cash on Delivery (COD)
+							                </a>
+							            </h2>
+							        </div><!-- End .card-header -->
+							        <div id="collapse-1" class="collapse show" aria-labelledby="heading-1" data-parent="#accordion-1">
+							            <div class="card-body">
+							                <p>
+                                                Our Cash on Delivery (COD) policy allows you to pay for your order with cash when it is delivered to your doorstep. Please note the following:
+                                            </p>
+                                            <ul>
+                                                <li>COD orders cannot be canceled once confirmed.</li>
+                                                <li>Exact change is required for COD orders.</li>
+                                                <li>Return requests for COD orders are subject to verification.</li>
+                                                <!-- Add more specific details as needed -->
+                                            </ul>
+							            </div><!-- End .card-body -->
+							        </div><!-- End .collapse -->
+							    </div><!-- End .card -->
+
+							    <div class="card">
+							        <div class="card-header" id="heading-2">
+							            <h2 class="card-title">
+							                <a class="collapsed" role="button" data-toggle="collapse" href="#collapse-2" aria-expanded="false" aria-controls="collapse-2">
+                                                Razorpay
+							                </a>
+							            </h2>
+							        </div><!-- End .card-header -->
+							        <div id="collapse-2" class="collapse" aria-labelledby="heading-2" data-parent="#accordion-1">
+							            <div class="card-body">
+                                            <p>
+                                                For orders paid through Razorpay, please be aware of the following terms and conditions:
+                                            </p>
+                                            <ul>
+                                                <li>Orders paid through Razorpay can be canceled before they are shipped.</li>
+                                                <li>Refunds for canceled orders will be processed within [number] business days.</li>
+                                                <li>Return requests for delivered orders must be submitted within [number] days.</li>
+                                               
+                                            </ul>
+							            </div><!-- End .card-body -->
+							        </div><!-- End .collapse -->
+							    </div><!-- End .card -->
+
+							    <div class="card">
+							        <div class="card-header" id="heading-3">
+							            <h2 class="card-title">
+							                <a class="collapsed" role="button" data-toggle="collapse" href="#collapse-3" aria-expanded="false" aria-controls="collapse-3">
+                                                Wallet Payments
+							                </a>
+							            </h2>
+							        </div><!-- End .card-header -->
+							        <div id="collapse-3" class="collapse" aria-labelledby="heading-3" data-parent="#accordion-1">
+							            <div class="card-body">
+                                            <p>
+                                                If you choose to make payments using your wallet, please consider the following guidelines:
+                                            </p>
+                                            <ul>
+                                                <li>Wallet payments are non-refundable.</li>
+                                                <li>Wallet balance can be used for future purchases on our platform.</li>
+                                                <li>Ensure sufficient wallet balance before placing an order.</li>
+                                                <!-- Add more specific details as needed -->
+                                            </ul>
+							            </div><!-- End .card-body -->
+							        </div><!-- End .collapse -->
+							    </div><!-- End .card -->
+							</div><!-- End .accordion -->
+                		</div><!-- End .col-md-6 -->
+
+                		
+                	</div><!-- End .row -->
+      
+    
+        <footer class="footer">
+        	<div class="footer-middle">
+	            <div class="container">
+	            	<div class="row">
+	            		<div class="col-sm-6 col-lg-3">
+	            			<div class="widget widget-about">
+	            				<img src="assets/images/logo.png" class="footer-logo" alt="Footer Logo" width="105" height="25">
+	            				<p>Praesent dapibus, neque id cursus ucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. </p>
+
+	            				<div class="social-icons">
+	            					<a href="#" class="social-icon" target="_blank" title="Facebook"><i class="icon-facebook-f"></i></a>
+	            					<a href="#" class="social-icon" target="_blank" title="Twitter"><i class="icon-twitter"></i></a>
+	            					<a href="#" class="social-icon" target="_blank" title="Instagram"><i class="icon-instagram"></i></a>
+	            					<a href="#" class="social-icon" target="_blank" title="Youtube"><i class="icon-youtube"></i></a>
+	            					<a href="#" class="social-icon" target="_blank" title="Pinterest"><i class="icon-pinterest"></i></a>
+	            				</div><!-- End .soial-icons -->
+	            			</div><!-- End .widget about-widget -->
+	            		</div><!-- End .col-sm-6 col-lg-3 -->
+
+	            		<div class="col-sm-6 col-lg-3">
+	            			<div class="widget">
+	            				<h4 class="widget-title">Useful Links</h4><!-- End .widget-title -->
+
+	            				<ul class="widget-list">
+	            					<li><a href="about.html">About Molla</a></li>
+	            					<li><a href="#">How to shop on Molla</a></li>
+	            					<li><a href="#">FAQ</a></li>
+	            					<li><a href="contact.html">Contact us</a></li>
+	            					<li><a href="login.html">Log in</a></li>
+	            				</ul><!-- End .widget-list -->
+	            			</div><!-- End .widget -->
+	            		</div><!-- End .col-sm-6 col-lg-3 -->
+
+	            		<div class="col-sm-6 col-lg-3">
+	            			<div class="widget">
+	            				<h4 class="widget-title">Customer Service</h4><!-- End .widget-title -->
+
+	            				<ul class="widget-list">
+	            					<li><a href="#">Payment Methods</a></li>
+	            					<li><a href="#">Money-back guarantee!</a></li>
+	            					<li><a href="#">Returns</a></li>
+	            					<li><a href="#">Shipping</a></li>
+	            					<li><a href="#">Terms and conditions</a></li>
+	            					<li><a href="#">Privacy Policy</a></li>
+	            				</ul><!-- End .widget-list -->
+	            			</div><!-- End .widget -->
+	            		</div><!-- End .col-sm-6 col-lg-3 -->
+
+	            		<div class="col-sm-6 col-lg-3">
+	            			<div class="widget">
+	            				<h4 class="widget-title">My Account</h4><!-- End .widget-title -->
+
+	            				<ul class="widget-list">
+	            					<li><a href="#">Sign In</a></li>
+	            					<li><a href="cart.html">View Cart</a></li>
+	            					<li><a href="#">My Wishlist</a></li>
+	            					<li><a href="#">Track My Order</a></li>
+	            					<li><a href="#">Help</a></li>
+	            				</ul><!-- End .widget-list -->
+	            			</div><!-- End .widget -->
+	            		</div><!-- End .col-sm-6 col-lg-3 -->
+	            	</div><!-- End .row -->
+	            </div><!-- End .container -->
+	        </div><!-- End .footer-middle -->
+
+	        <div class="footer-bottom">
+	        	<div class="container">
+	        		<p class="footer-copyright">Copyright © 2019 Molla Store. All Rights Reserved.</p><!-- End .footer-copyright -->
+	        		<figure class="footer-payments">
+	        			<img src="assets/images/payments.png" alt="Payment methods" width="272" height="20">
+	        		</figure><!-- End .footer-payments -->
+	        	</div><!-- End .container -->
+	        </div><!-- End .footer-bottom -->
+        </footer><!-- End .footer -->
+    </div>
+
+       <!-- Plugins JS File -->
+       <script src="assets/js/jquery.min.js"></script>
+       <script src="assets/js/bootstrap.bundle.min.js"></script>
+       <script src="assets/js/jquery.hoverIntent.min.js"></script>
+       <script src="assets/js/jquery.waypoints.min.js"></script>
+       <script src="assets/js/superfish.min.js"></script>
+       <script src="assets/js/owl.carousel.min.js"></script>
+       <!-- Main JS File -->
+       <script src="assets/js/main.js"></script>
+   </body>
+   
+   
+   <!-- molla/elements-accordions.html  22 Nov 2019 10:05:17 GMT -->
+   </html>

@@ -83,17 +83,16 @@ const placeOrder = async (req, res) => {
                 console.log("Wallet payment logic");
                const{subTotal}=req.body;
                const userId= req.session.user.id;
-               console.log(subTotal);
-               console.log(userId);
+               const date=Date.now()
               const wallet= await Wallet.findOne({userId:userId})
-const date=Date.now()
+           
                if(subTotal<=wallet.amount){
                 console.log("that is true");
                 await Wallet.findOneAndUpdate({userId:userId},
                     {$inc:{amount:-subTotal},
                     $push: {
                     walletHistory: {
-                        Date: new Date(),
+                        Date: date,
                         orderData: orderDetails.products
                     }
                 }
@@ -321,24 +320,25 @@ const cancelOrder = async (req, res) => {
             },
             { new: true }
         );
-        console.log(orderData);
+       // console.log(orderData);
         
-         if (orderData.paymentMethod === 'razorpay' ||orderData.paymentMethod === 'wallet') {
+      
             const productDetails = await Order.findOne(
                 { _id: orderId, 'products.productId': productId },
                 { 'products.$': 1 }
-            );
+              ).populate('products.productId')
 
-            const productQty = productDetails.products[0].quantity;
-            const totalAmount=orderData.totalAmount
-
+           
+            const totalAmount= productDetails.products[0].productId.price * productDetails.products[0].quantity;
+            if(orderData.paymentMethod == 'razorpay' || orderData.paymentMethod == 'wallet'){
+            
+           
                  
-                   await Product.updateOne({ _id: productId }, { $inc: { stock: productQty } });
                    console.log("I am here above wallet");
        
                  
                    const userWallet = await Wallet.findOne({ userId: userId });
-
+                    const date=Date.now()
                    if (userWallet) {
                        const walletUpdateResult = await Wallet.findOneAndUpdate(
                            { userId: userId },
@@ -346,7 +346,7 @@ const cancelOrder = async (req, res) => {
                                $inc: { amount: totalAmount },
                                $push: {
                                    walletHistory: {
-                                       Date: new Date(),
+                                    date: date,
                                        orderData: orderData.products
                                    }
                                }
@@ -364,34 +364,122 @@ const cancelOrder = async (req, res) => {
                            console.log("Wallet not updated");
                        }
                    } else {
-                       // Create a new wallet document
+                       const date=Date.now()
                        const newWallet = new Wallet({
                            userId: userId,
                            amount: totalAmount,
-                           walletHistory: [{ Date: new Date(), orderData: orderData.products}]
+                           walletHistory: [{ date:date, orderData: orderData.products}]
                        });
                        await newWallet.save();
                        console.log("New wallet created and updated successfully");
                    }
-                   
+          
+                           
 
-        res.json({ cancel: true, orderId });
+       
     }
+    const productQty = productDetails.products[0].quantity;
+    await Product.updateOne({ _id: productId }, { $inc: { stock: productQty } }); 
+    res.json({ cancel: true, orderId });
  }catch (error) {
         console.error(error.message);
         res.status(500).json({ error: 'Internal Server Error' });
     }
 };
-
+//--------------------------------------------------------------------------------------------------//
+//---------------Return order-----------------------------------------------------------------------------------//
 const returnOrder= async (req,res)=>{
-try {
+ try {
+    const { orderId, productId, returnReason } = req.body;
+    console.log(req.body);
+    const userId = req.session.user.id;
+    console.log(userId);
+       
+    const orderData = await Order.findOneAndUpdate(
+        { _id: orderId, 'products.productId': productId },
+        {
+            $set: {
+                'products.$.status': 'returned',
+                'products.$.returnReason': returnReason,
+            },
+        },
+        { new: true }
+    );
+    console.log(orderData);
+    const productDetails = await Order.findOne(
+        { _id: orderId, 'products.productId': productId },
+        { 'products.$': 1 }
+      ).populate('products.productId')
+    const totalAmount= productDetails.products[0].productId.price * productDetails.products[0].quantity;
+    if(orderData.paymentMethod == 'razorpay' || orderData.paymentMethod == 'wallet'||orderData.paymentMethod == 'COD'){
     
-} catch (error) {
-    
+   
+         
+           console.log("I am here above wallet");
+
+         
+           const userWallet = await Wallet.findOne({ userId: userId });
+            const date= Date.now();
+           if (userWallet) {
+               const walletUpdateResult = await Wallet.findOneAndUpdate(
+                   { userId: userId },
+                   {
+                       $inc: { amount: totalAmount },
+                       $push: {
+                           walletHistory: {
+                            date: date,
+                               orderData: orderData.products
+                           }
+                       }
+                   },
+                   { new: true }
+               );
+           
+               console.log(userId);
+               console.log(totalAmount);
+               console.log(walletUpdateResult);
+           
+               if (walletUpdateResult) {
+                   console.log("Wallet updated successfully");
+               } else {
+                   console.log("Wallet not updated");
+               }
+           } else {
+               // Create a new wallet document
+               
+               const newWallet = new Wallet({
+                   userId: userId,
+                   amount: totalAmount,
+                 
+                   walletHistory: [{ date: date, orderData: orderData.products}]
+               });
+               await newWallet.save();
+               console.log("New wallet created and updated successfully");
+           }
+  
+                   
+
+
 }
+
+        res.json({ return: true });
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
 }
 
 
+//--------------------------------------------------------------------------------------------------//
+//--------------------------------------------------------------------------------------------------//
+const refundPolicy=async(req,res)=>{
+    try {
+        res.render('refundPOlicy');
+        
+    } catch (error) {
+        console.log(error);
+    }
+}
 //--------------------------------------------------------------------------------------------------//
 
 
@@ -401,5 +489,6 @@ try {
     loadOrderDetilas,
     cancelOrder,
     verifyPayment,
-    returnOrder
+    returnOrder,
+     refundPolicy
   }

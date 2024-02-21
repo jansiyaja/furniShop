@@ -1,7 +1,7 @@
 const User=require("../models/userModel");
 const bcrypt=require("bcrypt");
 const Order=require('../models/orderModel')
-
+const Product=require('../models/products')
 //----------------AdminLogin--------------------------//
 
 const adminLogin = (req, res) => {
@@ -52,6 +52,8 @@ const adminLogout= async(req,res)=>{
         res.status(500).send('Internal Server Error');
       };
     };
+//------------------------------------------------------------------------------------------------//
+//----------userManagementSystem--------------------------------------------------------------------------------------//
 
     const userManagementSystem = async (req,res)=>{
         try {
@@ -89,6 +91,9 @@ const adminLogout= async(req,res)=>{
           console.log(error.message);
         }
       };
+//------------------------------------------------------------------------------------------------//
+//------blockUser------------------------------------------------------------------------------------------//
+
       const blockUser = async (req, res) => {
         try {
             const id = req.body.id;
@@ -108,6 +113,8 @@ const adminLogout= async(req,res)=>{
             res.status(500).json({ error: 'Internal Server Error' });
         }
     };
+//------------------------------------------------------------------------------------------------//
+//-----------loadOrder-------------------------------------------------------------------------------------//
       
     const loadOrder = async (req, res) => {
       try {
@@ -120,6 +127,8 @@ const adminLogout= async(req,res)=>{
         console.log(error.message);
       }
     } 
+//------------------------------------------------------------------------------------------------//
+//------------singleProductView------------------------------------------------------------------------------------//
     
     const singleProductView = async (req, res) => {
       try {
@@ -131,6 +140,8 @@ const adminLogout= async(req,res)=>{
       }
     }
    
+//------------------------------------------------------------------------------------------------//
+//----------changeOrderStatus--------------------------------------------------------------------------------------//
   
     const changeOrderStatus = async (req, res) => {
       try {
@@ -155,6 +166,29 @@ const adminLogout= async(req,res)=>{
       }
   }
   
+//------------------------------------------------------------------------------------------------//
+//------------------------------------------------------------------------------------------------//
+const cancelOrder = async (req, res) => {
+  try {
+    const { orderId, productId } = req.body;
+
+    const orderData = await Order.findOneAndUpdate(
+      { OrderId: orderId, 'products.productId': productId },
+      { $set: { 'products.$.status': 'cancelled' } })
+    const productDetails = await Order.findOne(
+      { _id: orderId, 'products.productId': productId },
+      { 'products.$': 1 }
+    );
+
+    const productQty = productDetails.products[0].quantity;
+
+    await Product.updateOne({ _id: productId }, { $inc: { stock: productQty } })
+    res.json({ cancel: true })
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+//------------------------------------------------------------------------------------------------//
   
 
 module.exports={
@@ -167,5 +201,6 @@ module.exports={
    loadOrder,
    singleProductView,
    changeOrderStatus,
+   cancelOrder
 
 }

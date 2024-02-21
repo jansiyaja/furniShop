@@ -202,8 +202,11 @@
 								    <li class="nav-item">
 								        <a class="nav-link" id="tab-account-link" data-toggle="tab" href="#tab-account" role="tab" aria-controls="tab-account" aria-selected="false">Account Details</a>
 								    </li>
+                                    <li class="nav-item">
+								        <a class="nav-link" id="tab-account-link" data-toggle="tab" href="#tab-wallet" role="tab" aria-controls="tab-account" aria-selected="false">Wallet</a>
+								    </li>
 								    <li class="nav-item">
-								        <a class="nav-link" href="#">Sign Out</a>
+								        <a class="nav-link" href="/logout">Sign Out</a>
 								    </li>
 								</ul>
 	                		</aside><!-- End .col-lg-3 -->
@@ -429,6 +432,37 @@
 			            						<i class="icon-long-arrow-right"></i>
 			                				</button>
 			                			</form>
+								    </div><!-- .End .tab-pane -->
+                                    <div class="tab-pane fade" id="tab-wallet" role="tabpanel" aria-labelledby="tab-wallet-link">
+								    	<section class="content-body p-xl-4 hidden" id="orders-section">
+                                            <h3>Wallet</h3>
+                                            <% if (wallet) { %>
+                                                <p>Amount: <%= wallet.amount %></p>
+                                                <% if (wallet.walletHistory.length > 0) { %>
+                                                    <ul>
+                                                        <% wallet.walletHistory.forEach(entry => { %>
+                                                            <li>
+                                                                <span class="transaction-date"><%= entry.date%></span>
+                                                                <span class="transaction-type credit">Credit</span>
+                                                                <span class="transaction-amount">$<%= entry.amount %></span>
+                                                                <span class="transaction-description"><%= entry.orderData ? `Payment received for order #${entry.orderData[0].orderId}` : 'No order data' %></span>
+                                                            </li>
+                                                        <% }); %>
+                                                    </ul>
+                                                <% } else { %>
+                                                    No wallet history available.
+                                                <% } %>
+                                            <% } else { %>
+                                                No wallet information available.
+                                            <% } %>
+                                        </section>
+                                        
+                                        
+                                        
+                                        
+                              
+                                                            
+                                                            <a href="/shop" class="btn btn-outline-primary-2"><span>GO SHOP</span><i class="icon-long-arrow-right"></i></a>
 								    </div><!-- .End .tab-pane -->
 								</div>
 	                		</div><!-- End .col-lg-9 -->

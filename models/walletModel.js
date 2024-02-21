@@ -14,9 +14,10 @@ const wallet = mongoose.Schema({
       walletHistory :[
         {
         
-          date:{
-            type : Date
-          },
+            date:{
+                type:Date,
+                
+              },
           orderData:{
             type:Array()
           }

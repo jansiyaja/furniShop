@@ -6,7 +6,7 @@ const userOtpVerification = require('../models/userOtpVerification');
 const Token= require('../models/tokenModel')
 const Order= require('../models/orderModel')
 const Cart=require('../models/cartModel')
-
+const Wallet=require('../models/walletModel')
 
 //------Home page----------------------------//
 const loadHome = async (req, res) => {
@@ -371,8 +371,9 @@ const loadDashboard = async (req, res) => {
       console.log(orders);
 
       const user = await User.findOne({ _id: userId });
-
-      res.render('userProfile', { userDetails: user, orders: orders });
+      const wallet= await Wallet.findOne({userId:userId})
+console.log("wallwtt",wallet);
+      res.render('userProfile', { userDetails: user, orders: orders,wallet:wallet });
     } else {
       req.flash('error', 'Please log in.');
       res.redirect('/login');

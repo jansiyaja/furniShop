@@ -811,6 +811,12 @@
                       razorpay(response.order)
                     }else if(response.wallet==true){
                         location.href = `/orderSuccess/${response.orderId}`   
+                    }else{
+                        Swal.fire({
+                        icon:'warning',
+                        text:"there is no balance",
+                        showConfirmButton:true
+                      })
                     }
                   })
                 }

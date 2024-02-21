@@ -79,7 +79,10 @@ user_route.post('/placeOrder',orderController.placeOrder)
 user_route.get('/orderSuccess/:id',orderController.loadOrderSuccess)
 user_route.get('/orderDetailes/:id',orderController.loadOrderDetilas)
 user_route.post('/orderCancel',orderController.cancelOrder)
+user_route.post('/returnOrder',orderController.returnOrder)
 user_route.post('/verify-payment',orderController.verifyPayment)
 
+
+user_route.get('/refundPolicy',orderController.refundPolicy)
 
 module.exports = user_route;
