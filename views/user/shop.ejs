@@ -158,7 +158,18 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-9">
+                            <div class="search-bar">
+                                <form action="/shop" method="get">
+                                  <div class="input-group">
+                                    <input type="text" class="form-control" name="search" placeholder="Search products...">
+                                    <div class="input-group-append">
+                                      <button class="btn btn-outline-secondary" type="submit">Search</button>
+                                    </div>
+                                  </div>
+                                </form>
+                              </div>
                             <div class="toolbox">
+                               
                                 <div class="toolbox-left">
                                     <div>
                                         <% if (messages && messages.length> 0) { %>
@@ -169,9 +180,10 @@
                                     </div>
 
                                 </div><!-- End .toolbox-left -->
-
+                               
 
                             </div><!-- End .toolbox -->
+                            
                             <div class="products mb-3">
                                 <style>
                                     .addToCartBtn {
