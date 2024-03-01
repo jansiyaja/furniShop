@@ -18,10 +18,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    image:{
-        type:String,
-       
-    },
+  
   
      address : [{
             fullName : {
@@ -54,10 +51,7 @@ const userSchema = new mongoose.Schema({
         type: Boolean
         
     },
-    is_admin: {
-        type: Number,
-        default: true,
-    },
+   
     Blocked :{
         type:Boolean,
         default:false

@@ -2,6 +2,7 @@ const User=require("../models/userModel");
 const bcrypt=require("bcrypt");
 const Order=require('../models/orderModel')
 const Product=require('../models/products')
+const Return=require('../models/returnModel')
 //----------------AdminLogin--------------------------//
 
 const adminLogin = (req, res) => {
@@ -143,28 +144,74 @@ const adminLogout= async(req,res)=>{
 //------------------------------------------------------------------------------------------------//
 //----------changeOrderStatus--------------------------------------------------------------------------------------//
   
-    const changeOrderStatus = async (req, res) => {
-      try {
-        const { orderId, productId, status, userId } = req.body;
-        console.log('Received request to change order status:', orderId, productId, status, userId);
+  //   const changeOrderStatus = async (req, res) => {
+  //     try {
+  //       const { orderId, productId, status, userId } = req.body;
+  //       console.log('Received request to change order status:', orderId, productId, status, userId);
         
-          const orderData = await Order.findOneAndUpdate(
-              { _id: orderId, userId: userId, 'products.productId': productId },
-              { $set: {
-                'products.$.status': status,
+  //         const orderData = await Order.findOneAndUpdate(
+  //             { _id: orderId, userId: userId, 'products.productId': productId },
+  //             { $set: {
+  //               'products.$.status': status,
                 
-            } },
-              { new: true }
+  //           } },
+  //             { new: true }
+  //         );
+  
+  //         console.log('Updated order data:', orderData);
+  //         res.json({ change: true, orderData });
+  
+  //     } catch (error) {
+  //         console.log(error.message);
+  //         res.status(500).json({ change: false, error: error.message });
+  //     }
+  // }
+  const changeOrderStatus = async (req, res) => {
+    try {
+      const { orderId, productId, status, userId } = req.body;
+      console.log('Received request to change order status:', orderId, productId, status, userId);
+  
+      // Update order products' status
+      const orderData = await Order.findOneAndUpdate(
+        { _id: orderId, userId: userId, 'products.productId': productId },
+        {
+          $set: {
+            'products.$.status': status,
+          },
+        },
+        { new: true }
+      );
+  
+      // If the new status is 'returned', update the return status to 'accepted'
+      if (status === 'returned') {
+        // Check if there is a corresponding return request
+        const returnRequest = await Return.findOne({
+          orderId,
+          productId,
+          userId,
+          returnStatus: 'requested',
+        });
+  
+        if (returnRequest) {
+          // Update the return status to 'accepted'
+          await Return.findOneAndUpdate(
+            { orderId, productId, userId, returnStatus: 'requested' },
+            { $set: { returnStatus: 'accepted' } }
           );
-  
-          console.log('Updated order data:', orderData);
-          res.json({ change: true, orderData });
-  
-      } catch (error) {
-          console.log(error.message);
-          res.status(500).json({ change: false, error: error.message });
+        } else {
+          // Handle the case when there is no corresponding return request
+          return res.json({ change: false, message: "No return request found" });
+        }
       }
-  }
+  
+      console.log('Updated order data:', orderData);
+      res.json({ change: true, orderData });
+    } catch (error) {
+      console.log(error.message);
+      res.status(500).json({ change: false, error: error.message });
+    }
+  };
+  
   
 //------------------------------------------------------------------------------------------------//
 //------------------------------------------------------------------------------------------------//

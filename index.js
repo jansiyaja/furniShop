@@ -1,4 +1,5 @@
 require("dotenv").config();
+const nocache = require("nocache");
 
 const express = require("express");
 const app = express();
@@ -10,8 +11,9 @@ app.use('/', userRoute)
 const AdminRoutes = require("./routes/adminRoutes")
 app.use('/admin', AdminRoutes)
 const { connectDB } = require("./config/db");
-connectDB();
 
+connectDB();
+app.use(nocache());
 app.use(express.static(path.join(__dirname, 'public')));
 
 const PORT = process.env.PORT;

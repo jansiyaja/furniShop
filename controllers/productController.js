@@ -22,7 +22,7 @@ const loadProduct = async (req, res) => {
     if (req.query.id) {
       page = req.query.id
     }
-    let limit = 9;
+    let limit = 8;
     let Next = page + 1;
     let previous = page > 1 ? page - 1 : 1
 
@@ -209,6 +209,49 @@ const editProductLoad = async (req, res) => {
 //--------------------Edit product----------------------------------------------------------------------//
 
 
+// const editProduct = async (req, res) => {
+//   try {
+//     const id = req.query.id;
+//     const newname = req.body.name;
+//     const newprevious_price = req.body.previous_price;
+//     const newprice = req.body.price;
+//     const newquantity = req.body.quantity;
+//     const newcategory = req.body.category;
+//     const newdescription = req.body.description;
+    
+
+//     const arrimages = [];
+//     for (let i = 0; i < req.files.length; i++) {
+//       const result = await cloudinary.uploader.upload(req.files[i].path, {
+//         width: 500,
+//         height: 500,
+//         crop: 'fill',
+//         folder: 'productImages'
+//       });
+//       arrimages.push(result.secure_url);
+//     }
+
+//     await Product.updateOne(
+//       { _id: id },
+//       {
+//         $set: {
+//           name: newname,
+//           previous_price: newprevious_price,
+//           price: newprice,
+//           stock: newquantity,
+//           category: newcategory,
+//           description: newdescription,
+//           images: arrimages
+//         }
+//       }
+//     );
+
+//     res.redirect('/admin/products');
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
+
 const editProduct = async (req, res) => {
   try {
     const id = req.query.id;
@@ -218,9 +261,14 @@ const editProduct = async (req, res) => {
     const newquantity = req.body.quantity;
     const newcategory = req.body.category;
     const newdescription = req.body.description;
-    
 
-    const arrimages = [];
+    const existingProduct = await Product.findById(id);
+
+    // Handle existing images
+    const existingImages = existingProduct.images || [];
+    const arrimages = [...existingImages];
+
+    // Handle new images
     for (let i = 0; i < req.files.length; i++) {
       const result = await cloudinary.uploader.upload(req.files[i].path, {
         width: 500,
@@ -228,7 +276,11 @@ const editProduct = async (req, res) => {
         crop: 'fill',
         folder: 'productImages'
       });
-      arrimages.push(result.secure_url);
+
+      // Check if the new image URL is different from the existing ones
+      if (!arrimages.includes(result.secure_url)) {
+        arrimages.push(result.secure_url);
+      }
     }
 
     await Product.updateOne(
@@ -253,22 +305,19 @@ const editProduct = async (req, res) => {
 };
 
 
-
 //------------------------------------------------------------------------------------------//
 
 
 //------------------------loading shoap------------------------------------------------------------------//
 
-
 // const loadShop = async (req, res) => {
 //   try {
-//     const itemsPerPage = 10; // Set the number of items to display per page
-
+//     const itemsPerPage = 8; 
 //     let products;
 //     let category = await Category.find({ isListed: false });
 //     let id = req.query.id;
 //     let priceFilter = req.query.priceFilter;
-//     let page = req.query.page || 1; // Get the page from the query parameters
+//     let page = req.query.page || 1; 
 
 //     let query = {};
 
@@ -276,11 +325,17 @@ const editProduct = async (req, res) => {
 //       query.category = id;
 //     }
 
+   
+//     if (req.query.search) {
+      
+//       query.name = { $regex: new RegExp(req.query.search, 'i') };
+//     }
+
 //     if (priceFilter === 'highToLow') {
 //       products = await Product.find(query)
 //         .sort({ price: -1 })
-//         .skip((page - 1) * itemsPerPage) // Skip items based on the current page
-//         .limit(itemsPerPage); // Limit the number of items per page
+//         .skip((page - 1) * itemsPerPage) 
+//         .limit(itemsPerPage); 
 //     } else if (priceFilter === 'lowToHigh') {
 //       products = await Product.find(query)
 //         .sort({ price: 1 })
@@ -292,7 +347,7 @@ const editProduct = async (req, res) => {
 //         .limit(itemsPerPage);
 //     }
 
-//     const totalProducts = await Product.countDocuments(query); // Get the total number of products for pagination
+//     const totalProducts = await Product.countDocuments(query); 
 //     const totalPages = Math.ceil(totalProducts / itemsPerPage);
 
 //     const messages = req.flash('error');
@@ -310,12 +365,13 @@ const editProduct = async (req, res) => {
 // };
 const loadShop = async (req, res) => {
   try {
-    const itemsPerPage = 10; 
+   
+    const itemsPerPage = 8;
     let products;
     let category = await Category.find({ isListed: false });
     let id = req.query.id;
     let priceFilter = req.query.priceFilter;
-    let page = req.query.page || 1; 
+    let page = req.query.page || 1;
 
     let query = {};
 
@@ -323,29 +379,35 @@ const loadShop = async (req, res) => {
       query.category = id;
     }
 
-   
     if (req.query.search) {
-      
       query.name = { $regex: new RegExp(req.query.search, 'i') };
     }
 
-    if (priceFilter === 'highToLow') {
-      products = await Product.find(query)
-        .sort({ price: -1 })
-        .skip((page - 1) * itemsPerPage) 
-        .limit(itemsPerPage); 
+   
+      // Apply price filter only if there is an 'id' in the request
+      if (priceFilter === 'highToLow') {
+        products = await Product.find(query)
+            .sort({ price: -1 })
+            .skip((page - 1) * itemsPerPage)
+            .limit(itemsPerPage);
     } else if (priceFilter === 'lowToHigh') {
-      products = await Product.find(query)
-        .sort({ price: 1 })
-        .skip((page - 1) * itemsPerPage)
-        .limit(itemsPerPage);
+        products = await Product.find(query)
+            .sort({ price: 1 })
+            .skip((page - 1) * itemsPerPage)
+            .limit(itemsPerPage);
     } else {
-      products = await Product.find(query)
-        .skip((page - 1) * itemsPerPage)
-        .limit(itemsPerPage);
+        products = await Product.find(query)
+            .skip((page - 1) * itemsPerPage)
+            .limit(itemsPerPage);
     }
+    // } else {
+    //   // If there is no 'id', retrieve products without applying the price filter
+    //   products = await Product.find(query)
+    //     .skip((page - 1) * itemsPerPage)
+    //     .limit(itemsPerPage);
+    // }
 
-    const totalProducts = await Product.countDocuments(query); 
+    const totalProducts = await Product.countDocuments(query);
     const totalPages = Math.ceil(totalProducts / itemsPerPage);
 
     const messages = req.flash('error');
@@ -353,6 +415,7 @@ const loadShop = async (req, res) => {
     res.render('shop', {
       products,
       category,
+      user: req.session.user,
       messages,
       currentPage: parseInt(page),
       totalPages,
@@ -361,6 +424,8 @@ const loadShop = async (req, res) => {
     console.log(error.message);
   }
 };
+
+
 
 
 //------------------------------------------------------------------------------------------//
@@ -372,7 +437,7 @@ const productView = async (req, res) => {
   try {
     const productId = req.query.id;
     const products = [await Product.findById(productId)];
-    res.render('productDetails', { products, inCart: false });
+    res.render('productDetails', { products, inCart: false ,user: req.session.user});
   } catch (error) {
     console.log("cart",error.message);
    

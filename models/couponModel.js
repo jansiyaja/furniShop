@@ -31,6 +31,11 @@ const couponSchema = new Schema({
         type:Boolean,
         required:true,
         default:false
+      },
+      userUsed:{
+        type:Array,
+        ref:'User',
+        default:[]
       }
     
 })

@@ -1,5 +1,7 @@
 const Coupon=require('../models/couponModel');
 
+const Cart=require('../models/cartModel'); 
+
 
 //-----------LoadIng Coupon Dashboard----------------------------------------------------------------------//
 const loadCoupon = async (req, res) => {
@@ -39,81 +41,81 @@ const loadCoupon = async (req, res) => {
 
 //---------------------------------------------------------------------------------//
 
-//----------Adding the Coupon-----------------------------------------------------------------------//
-const LoadAddCoupon= async(req,res)=>{
-    try {
-        res.render('addCoupon')
-    } catch (error) {
-      console.log(error);  
-    }
+//---------- load adding the Coupon-----------------------------------------------------------------------//
+const LoadAddCoupon = async (req,res)=>{
+  try {
+    res.render('addCoupon')
+  } catch (error) {
+    console.log(error.message);
+  }
 }
 
 
 //---------------------------------------------------------------------------------//
-//---------------------------------------------------------------------------------/
-const addCoupon = async(req,res)=>{
-    try {
-        console.log(req.body);
-        const{couponName,
-        code,
-        discount,
-        startingDate,
-        expairyDate,
-        minAmount}=req.body
+//-------------Adding the Coupon--------------------------------------------------------------------/
 
-      
-            const existCoupon = await Coupon.findOne({ couponName: couponName })
-            if (existCoupon) {
-              req.flash('error', 'already exists a coupon with this name')
-              res.redirect('/admin/addCoupon')
-            } else {
-        
-              const coupon = new Coupon({
-                couponName: req.body.couponName,
-                code: code,
-                discount:discount,
-                startingDate:startingDate,
-                expairyDate:expairyDate,
-                minAmount:minAmount,
-                isListed: false
-              })
-              await coupon.save();
-           //console.log("ccoooppp",coupon);
+const addCoupon = async (req,res)=>{
+  try {
+    console.log(req.body);
+             const{couponName,
+             
+             discount,
+             startingDate,
+             expairyDate,
+           minAmount}=req.body
+    const firstName = couponName.split('').splice(1,3).join('')
+    const randomString = Math.random().toString(36).substring(2, 7);
+    const randomNumber = `${Math.floor(1000 + Math.random() * 9000)}`;
+    const existName = await Coupon.findOne({couponName:couponName})
+    if(existName){
+      req.flash('exists','this coupon name is already exists')
+      res.redirect('/admin/addCoupon')
+    }else{
+      const newCoupon = new Coupon({
+        couponName:couponName,
+        code:`${firstName}${randomString}${randomNumber}`,
+        startingDate:startingDate,
+        expairyDate:expairyDate,
+        minAmount:minAmount,
+        discount:discount
+      })
+  
+      await newCoupon.save()
+      res.redirect('/admin/addCoupon')
+    }
 
-              res.redirect('/admin/addCoupon')
-            }
-          } catch (error) {
-            console.log(error.messsage);
-          }
-        }
+
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
    
 
 //---------------------------------------------------------------------------------//
+
+
 //------- Loading the Edit the category----------------------------------------------------------//
 
-const LoadEditCoupon = async (req, res) => {
+
+  const LoadEditCoupon = async (req,res)=>{
     try {
-      const couponId = req.query.id;
-      const couponEdit = await Coupon.findOne({ _id: couponId });
-      
-      if (!couponEdit) {
-       
-        req.flash('error', 'Invalid category ID');
-        res.redirect('/admin/coupon');
-        return;
-      }
-  
-      res.render('editCoupon', { couponEdit });
+      const id = req.query.id;
+      const coupon = await Coupon.findOne({_id:id})
+      console.log(coupon);
+      res.render('editCoupon',{coupon:coupon})
     } catch (error) {
-      console.log(error);
-      res.status(500).send('Internal Server Error');
+      console.log(error.message);
     }
   }
+  
   //-------------------------------------------------------------------------------------//
   
   //------- Edit the coupon----------------------------------------------------------//
   const editCoupon = async (req, res) => {
+    
     try {
+      console.log(req.body);
         const id= req.body.editid;
         const newname = req.body.couponName; 
         const newcode = req.body.code; 
@@ -149,35 +151,106 @@ const LoadEditCoupon = async (req, res) => {
 
              } });
         
-        res.redirect('/admin/coupon');
+       
       }
     } catch (error) {
       console.log(error.message);
-      res.status(500).send('Internal Server Error');
+      res.redirect('/error404');
     }
   }
+  
   //-------------------------------------------------------------------------------------//
 
   //-------------------------------------------------------------------------------------//
-
   const listCoupon = async (req, res) => {
     try {
-  
-      const couponid = req.body.id
-      console.log("id",couponid);
-      const CouponData = await Coupon.findOne({ _id: couponid })
-      if (CouponData.isListed === true) {
-  
-        await Coupon.findByIdAndUpdate({ _id: couponid }, { $set: { isListed: false } })
-      } else {
-  
-        await Coupon.findByIdAndUpdate({ _id: couponid }, { $set: { isListed: true } })
-      }
-      res.json({ list: true })
+        const couponid = req.body.id;
+        console.log("id", couponid);
+        const CouponData = await Coupon.findOne({ _id: couponid });
+
+        if (CouponData.isListed === true) {
+            await Coupon.findByIdAndUpdate({ _id: couponid }, { $set: { isListed: false } });
+        } else {
+            await Coupon.findByIdAndUpdate({ _id: couponid }, { $set: { isListed: true } });
+        }
+
+        const updatedCouponData = await Coupon.findOne({ _id: couponid });
+        res.json({ newListStatus: updatedCouponData.isListed });
     } catch (error) {
-      console.log(error.message);
+        console.log(error.message);
+        res.status(500).json({ error: 'Internal Server Error' });
     }
-  }
+};
+
+  //-------------------------------------------------------------------------------------//
+  //---------Add Coupon----------------------------------------------------------------------------//
+ 
+    const couponApply = async (req, res) => {
+      try {
+          const cCode = req.body.couponCode;
+         // console.log(cCode);
+          const userId = req.session.user.id;
+          const couponCode = await Coupon.findOne({ code: cCode });
+          console.log(couponCode);
+          console.log(userId);
+  
+          if (couponCode) {
+              const alreadyUsed = couponCode.userUsed.find((user) => user.userId === userId);
+            //  const alreadyUsed = couponCode.userUsed.find((user) => user.userId === userId);
+              //console.log("alreadyUsed",alreadyUsed);
+              if (!alreadyUsed) {
+                  const currentDate = new Date();
+  console.log(currentDate);
+                  if (couponCode.expairyDate > currentDate) {
+                      const cartData = await Cart.findOne({ userId: userId });
+                      console.log("cartData",cartData);
+  
+                      if (cartData) {
+                          const total = cartData.products.reduce((acc, value) => acc += value.totalPrice, 0);
+                          console.log("total",total);
+  
+                          if (total >= couponCode.minAmount) {
+                              let discount = 0;
+                              let cartAmount = 0;
+  
+                              if (couponCode.discount) {
+                                  const dics = couponCode.discount / cartData.products.length;
+                                  console.log(dics);
+                                  discount = Math.round(dics);
+  
+                                  cartAmount = cartData.products.reduce((acc, value) => {
+                                      if (value.totalPrice >= discount) {
+                                          return acc += (value.totalPrice - discount);
+                                      } else {
+                                          return acc += value.totalPrice;
+                                      }
+                                  }, 0);
+                              }
+                              console.log("cartAmount",cartAmount);
+                              res.json({ success: true, subTotal: cartAmount });
+                          } else {
+                              res.json({ min: true, message: 'Minimum amount needed' });
+                          }
+                      } else {
+                          res.json({ notAvailable: true, message: 'Shopping cart not found' });
+                      }
+                  } else {
+                      res.json({ expired: true, message: 'This coupon is expired' });
+                  }
+              } else {
+                  res.json({ alreadyUsed: true, message: 'This coupon is already used' });
+              }
+          } else {
+              res.json({ notAvailable: true, message: 'Coupon is not available' });
+          }
+      } catch (error) {
+          console.log(error.message);
+          
+      res.redirect('/error404');
+      }
+  };
+  
+  //-------------------------------------------------------------------------------------//
   //-------------------------------------------------------------------------------------//
 
 module.exports={
@@ -186,5 +259,6 @@ module.exports={
     loadCoupon,
     editCoupon,
     LoadEditCoupon,
-    listCoupon
+    listCoupon,
+    couponApply
 }

@@ -4,7 +4,8 @@ const userController = require('../controllers/userController');
 const productController=require('../controllers/productController')
 const cartController=require('../controllers/cartController')
 const orderController=require('../controllers/orderController')
-const { userUpload } = require('../middleware/multer');
+const couponController=require('../controllers/couponController')
+const auth = require('../middleware/auth');
 
 
 
@@ -25,13 +26,16 @@ user_route.use(
   })
 );
 
-const auth=require('../middleware/auth')
+
 
  
 //------------------Register and Login session-----------------------------------//
-user_route.get('/',userController.loadHome);
-user_route.get('/login', userController.loadLogin);
+user_route.get('/', userController.loadHome);
+// user_route.get('/login',auth.isLogin, userController.loadLogin);
+user_route.get('/login',auth.isLogout, userController.loadLogin);
+// user_route.post('/login',auth.isLogin, userController.UserLogin);
 user_route.post('/login', userController.UserLogin);
+// user_route.get('/logout', auth.isLogout, userController.logout);
 user_route.get('/logout', userController.logout);
 user_route.get('/otp', userController.loadOtp);
 user_route.post('/otp', userController.verifyOtp);
@@ -42,11 +46,11 @@ user_route.post('/register',userController.insertUser)
 //-----------------Rendering the pages---------------------------------------------------------------//
 user_route.get('/shop',productController.loadShop)
 user_route.get('/productView',productController.productView)
-user_route.get('/about',userController.loadAbout);
-user_route.get('/contact',userController.loadContact);
+user_route.get('/error404',userController.error404)
 
 
-user_route.get('/user',userController.loadDashboard);
+
+user_route.get('/user',auth.isLogin,userController.loadDashboard);
 user_route.post('/user',userController.editProfile);
 user_route.get('/edit-address/:userId/:addressIndex',userController.editAddress);
 user_route.post('/edit-address/:userId/:addressIndex',userController. updateAddress);
@@ -84,5 +88,8 @@ user_route.post('/verify-payment',orderController.verifyPayment)
 
 
 user_route.get('/refundPolicy',orderController.refundPolicy)
+
+user_route.post('/applyCoupon',couponController.couponApply)
+
 
 module.exports = user_route;

@@ -1,140 +1,6 @@
 <%- include ('../Layout/user/header.ejs') -%>
     <div class="page-wrapper">
-        <header class="header header-2 header-intro-clearance">
-
-            <div class="header-middle">
-                <div class="container">
-                    <div class="header-left">
-                        <button class="mobile-menu-toggler">
-                            <span class="sr-only">Toggle mobile menu</span>
-                            <i class="icon-bars"></i>
-                        </button>
-                        
-                        <a href="index.html" class="logo">
-                            <img src="assets/images/demos/demo-2/logo.png" alt="Molla Logo" width="105" height="25">
-                        </a>
-                    </div><!-- End .header-left -->
-
-                    <div class="header-center">
-                        
-                    </div>
-
-                    <div class="header-right">
-                        <!-- <div class="account">
-                            <a href="dashboard.html" title="My account">
-                                <div class="icon">
-                                    <i class="icon-user"></i>
-                                </div>
-                                <p>Account</p>
-                            </a>
-                        </div>End .compare-dropdown -->
-
-                        <div class="dropdown cart-dropdown">
-                            <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
-                                <div class="icon">
-                                    <i class="icon-user"></i>
-                                </div>
-                                <p>Account</p>
-                            </a>
-
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <%if(locals.user){ %>
-                                <div class="dropdown-cart-products">
-                                    <div class="product">
-                                        <div class="product-cart-details">
-                                            <h4 class="product-title">
-                                                <a href="/user">Your Account</a>
-                                            </h4>
-                                        </div><!-- End .product-cart-details -->
-                                    </div><!-- End .product -->
-        
-                                    <div class="product">
-                                        <div class="product-cart-details">
-                                            <h4 class="product-title">
-                                                <a href="/logout">Logout</a>
-                                            </h4>
-                                        </div><!-- End .product-cart-details -->
-        
-                                    </div><!-- End .product -->
-                                </div><!-- End .cart-product -->
-                                <%} else{%>
-                                <div class="product">
-                                    <div class="product-cart-details">
-                                        <h4 class="product-title">
-                                            <a href="/login">Login</a>
-                                        </h4>
-                                    </div><!-- End .product-cart-details -->
-        
-                                </div><!-- End .product -->
-                                <%}%>
-                            </div><!-- End .dropdown-menu -->
-                        </div><!-- End .cart-dropdown -->
-
-                        <div class="wishlist">
-                            <a href="/wishlist" title="Wishlist">
-                                <div class="icon">
-                                    <i class="icon-heart-o"></i>
-                                    <span class="wishlist-count badge">3</span>
-                                </div>
-                                <p>Wishlist</p>
-                            </a>
-                        </div><!-- End .compare-dropdown -->
-
-                        <div class="dropdown cart-dropdown">
-                            <a href="/cart" class="dropdown-toggle" role="button" >
-                                <div class="icon">
-                                    <i class="icon-shopping-cart"></i>
-                                    
-                                </div>
-                                <p>Cart</p>
-                            </a>
-
-                          <!-- End .dropdown-menu -->
-                        </div><!-- End .cart-dropdown -->
-                    </div><!-- End .header-right -->
-                </div><!-- End .container -->
-            </div><!-- End .header-middle -->
-
-            <div class="header-bottom sticky-header">
-                <div class="container">
-                    <div class="header-left">
-                        
-                    </div><!-- End .header-left -->
-
-                    <div class="header-center">
-                        <nav class="main-nav">
-                            <ul class="menu sf-arrows">
-                                <li class="megamenu-container active">
-                                    <a href="/" class="sf-with-ul">Home</a>
-
-                                </li>
-                                <li>
-                                    <a href="/shop" class="sf-with-ul">Shop</a>
-
-                                   
-                                </li>
-                                <li>
-                                    <a href="/contact" class="sf-with-ul">Contact</a>
-
-                                   
-                                </li>
-                                
-                                <li>
-                                    <a href="/about" class="sf-with-ul">About</a>
-
-
-                                </li>
-                               
-                                
-                               
-                            </ul><!-- End .menu -->
-                        </nav><!-- End .main-nav -->
-                    </div><!-- End .header-center -->
-
-                  
-                </div><!-- End .container -->
-            </div><!-- End .header-bottom -->
-        </header><!-- End .header -->
+        <%- include ('../Layout/user/navbar.ejs') -%>
 
         <main class="main">
             <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
@@ -231,19 +97,10 @@
 
                                     <div class="cart-bottom">
                                         <div class="cart-discount">
-                                            <form action="#">
-                                                <div class="input-group">
-                                                    <input type="text" class="form-control" required
-                                                        placeholder="coupon code">
-                                                    <div class="input-group-append">
-                                                        <button class="btn btn-outline-primary-2" type="submit"><i
-                                                                class="icon-long-arrow-right"></i></button>
-                                                    </div><!-- .End .input-group-append -->
-                                                </div><!-- End .input-group -->
-                                            </form>
+                                           
                                         </div><!-- End .cart-discount -->
 
-                                        <a href="#" class="btn btn-outline-dark-2">
+                                        <a href="/shop" class="btn btn-outline-dark-2">
                                             <span>UPDATE CART</span><i class="icon-refresh"></i>
                                         </a>
                                     </div>
@@ -251,7 +108,7 @@
 
                                 <aside class="col-lg-3">
                                     <div class="summary summary-cart">
-                                        <h3 class="summary-title">Cart Total</h3><!-- End .summary-title -->
+                                       
                                         <table class="table table-summary">
                                             <!-- Remaining code for the summary table -->
                                         </table><!-- End .table table-summary -->
@@ -259,21 +116,24 @@
                                             class="btn btn-outline-primary-2 btn-order btn-block">PROCEED TO
                                             CHECKOUT</a>
                                     </div><!-- End .summary -->
-                                    <a href="category.html" class="btn btn-outline-dark-2 btn-block mb-3">
+                                    <a href="/shop" class="btn btn-outline-dark-2 btn-block mb-3">
                                         <span>CONTINUE SHOPPING</span><i class="icon-refresh"></i>
                                     </a>
                                 </aside><!-- End .col-lg-3 -->
                             </div><!-- End .row -->
                         </div><!-- End .container -->
                         <% } else { %>
-                            <div class="goto">
-                                <div class="shop-container">
+                           
+                            <div class="error-content text-center" >
+                                <div class="container">
                                     <h3>Your Cart is Empty</h3>
-                                    <a href="/shop">
-                                        <button>Go to Shop</button>
+                                    <p>We are sorry, Your cart is empty</p>
+                                    <a href="/shop" class="btn btn-outline-primary-2 btn-minwidth-lg">
+                                        <span>BACK TO SHOP</span>
+                                        <i class="icon-long-arrow-right"></i>
                                     </a>
-                                </div>
-                            </div>
+                                </div><!-- End .container -->
+                            </div><!-- End .error-content text-center -->
                             <% } %>
                 </div>
                 <!-- End .cart -->

@@ -3,6 +3,7 @@
 
 
 <!-- molla/checkout.html  22 Nov 2019 09:55:06 GMT -->
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -40,14 +41,14 @@
                             <span class="sr-only">Toggle mobile menu</span>
                             <i class="icon-bars"></i>
                         </button>
-                        
+
                         <a href="index.html" class="logo">
                             <img src="assets/images/demos/demo-2/logo.png" alt="Molla Logo" width="105" height="25">
                         </a>
                     </div><!-- End .header-left -->
 
                     <div class="header-center">
-                        
+
                     </div>
 
                     <div class="header-right">
@@ -61,7 +62,8 @@
                         </div>End .compare-dropdown -->
 
                         <div class="dropdown cart-dropdown">
-                            <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+                            <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false" data-display="static">
                                 <div class="icon">
                                     <i class="icon-user"></i>
                                 </div>
@@ -70,34 +72,34 @@
 
                             <div class="dropdown-menu dropdown-menu-right">
                                 <%if(locals.user){ %>
-                                <div class="dropdown-cart-products">
-                                    <div class="product">
-                                        <div class="product-cart-details">
-                                            <h4 class="product-title">
-                                                <a href="/user">Your Account</a>
-                                            </h4>
-                                        </div><!-- End .product-cart-details -->
-                                    </div><!-- End .product -->
-        
-                                    <div class="product">
-                                        <div class="product-cart-details">
-                                            <h4 class="product-title">
-                                                <a href="/logout">Logout</a>
-                                            </h4>
-                                        </div><!-- End .product-cart-details -->
-        
-                                    </div><!-- End .product -->
-                                </div><!-- End .cart-product -->
-                                <%} else{%>
-                                <div class="product">
-                                    <div class="product-cart-details">
-                                        <h4 class="product-title">
-                                            <a href="/login">Login</a>
-                                        </h4>
-                                    </div><!-- End .product-cart-details -->
-        
-                                </div><!-- End .product -->
-                                <%}%>
+                                    <div class="dropdown-cart-products">
+                                        <div class="product">
+                                            <div class="product-cart-details">
+                                                <h4 class="product-title">
+                                                    <a href="/user">Your Account</a>
+                                                </h4>
+                                            </div><!-- End .product-cart-details -->
+                                        </div><!-- End .product -->
+
+                                        <div class="product">
+                                            <div class="product-cart-details">
+                                                <h4 class="product-title">
+                                                    <a href="/logout">Logout</a>
+                                                </h4>
+                                            </div><!-- End .product-cart-details -->
+
+                                        </div><!-- End .product -->
+                                    </div><!-- End .cart-product -->
+                                    <%} else{%>
+                                        <div class="product">
+                                            <div class="product-cart-details">
+                                                <h4 class="product-title">
+                                                    <a href="/login">Login</a>
+                                                </h4>
+                                            </div><!-- End .product-cart-details -->
+
+                                        </div><!-- End .product -->
+                                        <%}%>
                             </div><!-- End .dropdown-menu -->
                         </div><!-- End .cart-dropdown -->
 
@@ -112,15 +114,15 @@
                         </div><!-- End .compare-dropdown -->
 
                         <div class="dropdown cart-dropdown">
-                            <a href="/cart" class="dropdown-toggle" role="button" >
+                            <a href="/cart" class="dropdown-toggle" role="button">
                                 <div class="icon">
                                     <i class="icon-shopping-cart"></i>
-                                    
+
                                 </div>
                                 <p>Cart</p>
                             </a>
 
-                          <!-- End .dropdown-menu -->
+                            <!-- End .dropdown-menu -->
                         </div><!-- End .cart-dropdown -->
                     </div><!-- End .header-right -->
                 </div><!-- End .container -->
@@ -129,7 +131,7 @@
             <div class="header-bottom sticky-header">
                 <div class="container">
                     <div class="header-left">
-                        
+
                     </div><!-- End .header-left -->
 
                     <div class="header-center">
@@ -142,37 +144,37 @@
                                 <li>
                                     <a href="/shop" class="sf-with-ul">Shop</a>
 
-                                   
+
                                 </li>
                                 <li>
                                     <a href="/contact" class="sf-with-ul">Contact</a>
 
-                                   
+
                                 </li>
-                                
+
                                 <li>
                                     <a href="/about" class="sf-with-ul">About</a>
 
 
                                 </li>
-                               
-                                
-                               
+
+
+
                             </ul><!-- End .menu -->
                         </nav><!-- End .main-nav -->
                     </div><!-- End .header-center -->
 
-                  
+
                 </div><!-- End .container -->
             </div><!-- End .header-bottom -->
         </header><!-- End .header -->
 
         <main class="main">
-        	<div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
-        		<div class="container">
-        			<h1 class="page-title">Checkout<span>Shop</span></h1>
-        		</div><!-- End .container -->
-        	</div><!-- End .page-header -->
+            <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
+                <div class="container">
+                    <h1 class="page-title">Checkout<span>Shop</span></h1>
+                </div><!-- End .container -->
+            </div><!-- End .page-header -->
             <nav aria-label="breadcrumb" class="breadcrumb-nav">
                 <div class="container">
                     <ol class="breadcrumb">
@@ -191,52 +193,62 @@
                             <div class="col-md-6">
                                 <h2 class="h3 mb-3 text-black">Delivery Address</h2>
                                 <form class="formm">
-                                    <% if(user.address && user.address.length > 0) { %>
-                                        <% user.address.forEach((address, index) => { %>
+                                    <% if(user.address && user.address.length> 0) { %>
+                                        <% user.address.forEach((address, index)=> { %>
                                             <label class="custom-radio">
-                                                <input type="radio" value="<%= index %>" name="addressRadio" id="address">
+                                                <input type="radio" value="<%= index %>" name="addressRadio"
+                                                    id="address">
                                                 <span class="checkmark" style="color:black;">
-                                                    Name: <%= address.fullName %>, Location: <%= address.streetAddress %>,
-                                                    State: <%= address.state %>, City: <%= address.city %>, Pin: <%= address.pincode %>,
-                                                    Phone: <%= address.phone %>
+                                                    Name: <%= address.fullName %>, Location: <%= address.streetAddress
+                                                            %>,
+                                                            State: <%= address.state %>, City: <%= address.city %>, Pin:
+                                                                    <%= address.pincode %>,
+                                                                        Phone: <%= address.phone %>
                                                 </span>
                                             </label>
                                             <hr>
-                                        <% }); %>
-                                    <% } %>
-                                    <button type="submit" class="btn btn-dark">Use Selected Address</button>
-                                    
+                                            <% }); %>
+                                                <% } %>
+                                                    <button type="submit" class="btn btn-dark">Use Selected
+                                                        Address</button>
+
                                 </form>
                                 <form action="/addAddress" id="add-address-form" class="hidden" method="post">
                                     <div class="mb-3">
-                                      <label for="fullName" class="form-label">Full Name:</label>
-                                      <input type="text" class="form-control" id="fullName" name="fullName" placeholder="Enter full name">
+                                        <label for="fullName" class="form-label">Full Name:</label>
+                                        <input type="text" class="form-control" id="fullName" name="fullName"
+                                            placeholder="Enter full name">
                                     </div>
-                                        <div class="mb-3">
-                                          <label for="streetAddress" class="form-label">Street Address:</label>
-                                          <input type="text" class="form-control" id="streetAddress" name="streetAddress" placeholder="Enter street address">
-                                        </div>
-                                        <div class="mb-3">
-                                          <label for="city" class="form-label">City:</label>
-                                          <input type="text" class="form-control" id="city" name="city" placeholder="Enter city">
-                                        </div>
-                                        <div class="mb-3">
-                                          <label for="city" class="form-label">Phone:</label>
-                                          <input type="text" class="form-control" id="phone" name="phone" placeholder="Enter city">
-                                        </div>
-                                        <div class="mb-3">
-                                          <label for="state" class="form-label">State:</label>
-                                          <input type="text" class="form-control" id="state" name="state" placeholder="Enter state">
-                                        </div>
-                                        <div class="mb-3">
-                                          <label for="zipCode" class="form-label">Zip Code:</label>
-                                          <input type="text" class="form-control" id="zipCode" name="zipCode" placeholder="Enter zip code">
-                                        </div>
-                                
-                                        <button class="btn btn-primary"  type="submit">Submit</button>
-                                  </form>
+                                    <div class="mb-3">
+                                        <label for="streetAddress" class="form-label">Street Address:</label>
+                                        <input type="text" class="form-control" id="streetAddress" name="streetAddress"
+                                            placeholder="Enter street address">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="city" class="form-label">City:</label>
+                                        <input type="text" class="form-control" id="city" name="city"
+                                            placeholder="Enter city">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="city" class="form-label">Phone:</label>
+                                        <input type="text" class="form-control" id="phone" name="phone"
+                                            placeholder="Enter city">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="state" class="form-label">State:</label>
+                                        <input type="text" class="form-control" id="state" name="state"
+                                            placeholder="Enter state">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="zipCode" class="form-label">Zip Code:</label>
+                                        <input type="text" class="form-control" id="zipCode" name="zipCode"
+                                            placeholder="Enter zip code">
+                                    </div>
+
+                                    <button class="btn btn-primary" type="submit">Submit</button>
+                                </form>
                             </div>
-            
+
                             <!-- order Section -->
                             <div class="col-md-6">
                                 <h2 class="h3 mb-3 text-black">Your Order</h2>
@@ -250,29 +262,41 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <% let subTotal = 0; %>
-                                            <% if(cart && cart.length > 0) { %>
-                                                <% cart.forEach((product) => { %>
-                                                    <tr>
-                                                        <td> <img src="<%= product.productId.images[0] %>" alt="" style="max-width: 50px;"></td>
-                                                        <td>
-                                                            <%= product.productId.name %>
-                                                            <strong class="mx-2">x</strong>
-                                                            <%= product.quantity %>
-                                                        </td>
-                                                        <td>₹<%= product.productId.price * product.quantity %></td>
-                                                    </tr>
-                                                    <% subTotal += product.productId.price * product.quantity; %>
-                                                <% }); %>
-                                            <% } %>
-                                            <tr>
-                                                <td class="text-black font-weight-bold"><strong>Cart Subtotal</strong></td>
-                                                <td class="text-black">₹<%= subTotal %></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="text-black font-weight-bold"><strong>Order Total</strong></td>
-                                                <td class="text-black font-weight-bold"><strong>₹<%= subTotal %></strong></td>
-                                            </tr>
+                                            <% let subTotal=0; %>
+                                                <% if(cart && cart.length> 0) { %>
+                                                    <% cart.forEach((product)=> { %>
+                                                        <tr>
+                                                            <td> <img src="<%= product.productId.images[0] %>" alt=""
+                                                                    style="max-width: 50px;"></td>
+                                                            <td>
+                                                                <%= product.productId.name %>
+                                                                    <strong class="mx-2">x</strong>
+                                                                    <%= product.quantity %>
+                                                            </td>
+                                                            <td>₹<%= product.productId.price * product.quantity %>
+                                                            </td>
+                                                        </tr>
+                                                        <% subTotal +=product.productId.price * product.quantity; %>
+                                                            <% }); %>
+                                                                <% } %>
+                                                                    <tr>
+                                                                        <td class="text-black font-weight-bold">
+                                                                            <strong>Cart Subtotal</strong></td>
+                                                                        <td class="text-black">₹<%= subTotal %>
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <tr>
+
+                                                                        <td class="text-black font-weight-bold">
+                                                                            <strong>Order Total</strong></td>
+                                                                        <td class="text-black font-weight-bold"><strong
+                                                                                id="total">₹<%= subTotal %>
+                                                                        </td>
+
+
+                                                                    </tr>
+
                                         </tbody>
                                     </table>
                                     <ul class="selection-list">
@@ -290,115 +314,158 @@
                                             <label for="cod"> Cash on Delivery</label>
                                         </li>
                                     </ul>
-		                				
-                                     
-                                       
-                                    
-            
+
+
+
+
+
                                     <div class="form-group pt-3">
-                                        <button class="py-3 btn-custom" onclick="placeOrder('<%= subTotal %>')">Place Order</button>
+                                        <button class="py-3 btn-custom" id="placeOrder"
+                                            onclick="placeOrder('<%= subTotal %>')">Place Order</button>
                                     </div>
                                 </div>
                             </div>
-                            
-                           
+
+
                         </div>
-            
+
                         <!-- Your coupon Section -->
-                        <div class="row">
-                            <div class="col-md-6">
-                                <h2 class="h3 mb-3 text-black">Coupon Code</h2>
-                                <div class="p-3 p-lg-5 border bg-white">
-                                    <label for="c_code" class="text-black mb-3">Enter your coupon code if you have one</label>
-                                    <div class="input-group w-75 couponcode-wrap">
-                                        <input type="text" class="form-control me-2" id="c_code" placeholder="Coupon Code"
-                                            aria-label="Coupon Code" aria-describedby="button-addon2">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-pill btn-custom" type="button" id="button-addon2">Apply</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>  
+
+
+                        <div class="checkout-discount mt-5">
+                           
+                            <% if (coupon && coupon.length> 0) { %>
+                                <h4>Coupons</h4>
+                                <div class="cart-bottom d-block">
+                                    <div class="cart-discount">
+                                      
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" required id="checkout-discount-input">
+                                                <label for="checkout-discount-input" class="text-truncate" id="c_code"></label>
+                                               
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-outline-primary" style="height: 43px;"type="button"
+                                                    onclick="applyCoupon('<%= subTotal %>')">
+                                                    <i class="icon-long-arrow-right"></i> 
+                                                </button>
+                                                    <button class="btn btn-outline-danger" style="height: 43px;" type="button"
+                                                    onclick="removeCoupon('<%= subTotal %>')">
+                                                    <i class="icon-close"></i> 
+                                                </button>
+                                                </div><!-- .End .input-group-append -->
+                                            </div><!-- End .input-group -->
+                                       
+                                    </div><!-- End .cart-discount -->
+    
+                                    
+                                </div><!-- End .cart-bottom -->
+                                
+                               
+                                <% } %>
                         </div>
+
+
+                        <div class="form">
+                            <% coupon.forEach((cod, index)=> { %>
+                                <label class="custom-radio" onclick="copyCouponCode('<%= cod.code %>')">
+                                    <input type="radio" value="<%= index %>" name="addressRadio" id="address">
+                                    <span class="checkmark" style="color:rgb(7, 10, 9);">
+                                        Name: <%= cod.couponName %>
+                                            code: <%= cod.code %>
+                                    </span>
+                                </label>
+                                <br>
+                                <% }); %>
+                        </div>
+
                     </div>
+
                 </div>
             </div>
             <!-- End .page-content -->
         </main><!-- End .main -->
 
         <footer class="footer">
-        	<div class="footer-middle">
-	            <div class="container">
-	            	<div class="row">
-	            		<div class="col-sm-6 col-lg-3">
-	            			<div class="widget widget-about">
-	            				<img src="assets/images/logo.png" class="footer-logo" alt="Footer Logo" width="105" height="25">
-	            				<p>Praesent dapibus, neque id cursus ucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. </p>
+            <div class="footer-middle">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="widget widget-about">
+                                <img src="assets/images/logo.png" class="footer-logo" alt="Footer Logo" width="105"
+                                    height="25">
+                                <p>Praesent dapibus, neque id cursus ucibus, tortor neque egestas augue, eu vulputate
+                                    magna eros eu erat. </p>
 
-	            				<div class="social-icons">
-	            					<a href="#" class="social-icon" target="_blank" title="Facebook"><i class="icon-facebook-f"></i></a>
-	            					<a href="#" class="social-icon" target="_blank" title="Twitter"><i class="icon-twitter"></i></a>
-	            					<a href="#" class="social-icon" target="_blank" title="Instagram"><i class="icon-instagram"></i></a>
-	            					<a href="#" class="social-icon" target="_blank" title="Youtube"><i class="icon-youtube"></i></a>
-	            					<a href="#" class="social-icon" target="_blank" title="Pinterest"><i class="icon-pinterest"></i></a>
-	            				</div><!-- End .soial-icons -->
-	            			</div><!-- End .widget about-widget -->
-	            		</div><!-- End .col-sm-6 col-lg-3 -->
+                                <div class="social-icons">
+                                    <a href="#" class="social-icon" target="_blank" title="Facebook"><i
+                                            class="icon-facebook-f"></i></a>
+                                    <a href="#" class="social-icon" target="_blank" title="Twitter"><i
+                                            class="icon-twitter"></i></a>
+                                    <a href="#" class="social-icon" target="_blank" title="Instagram"><i
+                                            class="icon-instagram"></i></a>
+                                    <a href="#" class="social-icon" target="_blank" title="Youtube"><i
+                                            class="icon-youtube"></i></a>
+                                    <a href="#" class="social-icon" target="_blank" title="Pinterest"><i
+                                            class="icon-pinterest"></i></a>
+                                </div><!-- End .soial-icons -->
+                            </div><!-- End .widget about-widget -->
+                        </div><!-- End .col-sm-6 col-lg-3 -->
 
-	            		<div class="col-sm-6 col-lg-3">
-	            			<div class="widget">
-	            				<h4 class="widget-title">Useful Links</h4><!-- End .widget-title -->
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="widget">
+                                <h4 class="widget-title">Useful Links</h4><!-- End .widget-title -->
 
-	            				<ul class="widget-list">
-	            					<li><a href="about.html">About Molla</a></li>
-	            					<li><a href="#">How to shop on Molla</a></li>
-	            					<li><a href="#">FAQ</a></li>
-	            					<li><a href="contact.html">Contact us</a></li>
-	            					<li><a href="login.html">Log in</a></li>
-	            				</ul><!-- End .widget-list -->
-	            			</div><!-- End .widget -->
-	            		</div><!-- End .col-sm-6 col-lg-3 -->
+                                <ul class="widget-list">
+                                    <li><a href="about.html">About Molla</a></li>
+                                    <li><a href="#">How to shop on Molla</a></li>
+                                    <li><a href="#">FAQ</a></li>
+                                    <li><a href="contact.html">Contact us</a></li>
+                                    <li><a href="login.html">Log in</a></li>
+                                </ul><!-- End .widget-list -->
+                            </div><!-- End .widget -->
+                        </div><!-- End .col-sm-6 col-lg-3 -->
 
-	            		<div class="col-sm-6 col-lg-3">
-	            			<div class="widget">
-	            				<h4 class="widget-title">Customer Service</h4><!-- End .widget-title -->
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="widget">
+                                <h4 class="widget-title">Customer Service</h4><!-- End .widget-title -->
 
-	            				<ul class="widget-list">
-	            					<li><a href="#">Payment Methods</a></li>
-	            					<li><a href="#">Money-back guarantee!</a></li>
-	            					<li><a href="#">Returns</a></li>
-	            					<li><a href="#">Shipping</a></li>
-	            					<li><a href="#">Terms and conditions</a></li>
-	            					<li><a href="#">Privacy Policy</a></li>
-	            				</ul><!-- End .widget-list -->
-	            			</div><!-- End .widget -->
-	            		</div><!-- End .col-sm-6 col-lg-3 -->
+                                <ul class="widget-list">
+                                    <li><a href="#">Payment Methods</a></li>
+                                    <li><a href="#">Money-back guarantee!</a></li>
+                                    <li><a href="#">Returns</a></li>
+                                    <li><a href="#">Shipping</a></li>
+                                    <li><a href="#">Terms and conditions</a></li>
+                                    <li><a href="#">Privacy Policy</a></li>
+                                </ul><!-- End .widget-list -->
+                            </div><!-- End .widget -->
+                        </div><!-- End .col-sm-6 col-lg-3 -->
 
-	            		<div class="col-sm-6 col-lg-3">
-	            			<div class="widget">
-	            				<h4 class="widget-title">My Account</h4><!-- End .widget-title -->
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="widget">
+                                <h4 class="widget-title">My Account</h4><!-- End .widget-title -->
 
-	            				<ul class="widget-list">
-	            					<li><a href="#">Sign In</a></li>
-	            					<li><a href="cart.html">View Cart</a></li>
-	            					<li><a href="#">My Wishlist</a></li>
-	            					<li><a href="#">Track My Order</a></li>
-	            					<li><a href="#">Help</a></li>
-	            				</ul><!-- End .widget-list -->
-	            			</div><!-- End .widget -->
-	            		</div><!-- End .col-sm-6 col-lg-3 -->
-	            	</div><!-- End .row -->
-	            </div><!-- End .container -->
-	        </div><!-- End .footer-middle -->
+                                <ul class="widget-list">
+                                    <li><a href="#">Sign In</a></li>
+                                    <li><a href="cart.html">View Cart</a></li>
+                                    <li><a href="#">My Wishlist</a></li>
+                                    <li><a href="#">Track My Order</a></li>
+                                    <li><a href="#">Help</a></li>
+                                </ul><!-- End .widget-list -->
+                            </div><!-- End .widget -->
+                        </div><!-- End .col-sm-6 col-lg-3 -->
+                    </div><!-- End .row -->
+                </div><!-- End .container -->
+            </div><!-- End .footer-middle -->
 
-	        <div class="footer-bottom">
-	        	<div class="container">
-	        		<p class="footer-copyright">Copyright © 2019 Molla Store. All Rights Reserved.</p><!-- End .footer-copyright -->
-	        		<figure class="footer-payments">
-	        			<img src="assets/images/payments.png" alt="Payment methods" width="272" height="20">
-	        		</figure><!-- End .footer-payments -->
-	        	</div><!-- End .container -->
-	        </div><!-- End .footer-bottom -->
+            <div class="footer-bottom">
+                <div class="container">
+                    <p class="footer-copyright">Copyright © 2019 Molla Store. All Rights Reserved.</p>
+                    <!-- End .footer-copyright -->
+                    <figure class="footer-payments">
+                        <img src="assets/images/payments.png" alt="Payment methods" width="272" height="20">
+                    </figure><!-- End .footer-payments -->
+                </div><!-- End .container -->
+            </div><!-- End .footer-bottom -->
         </footer><!-- End .footer -->
     </div><!-- End .page-wrapper -->
     <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
@@ -412,10 +479,11 @@
 
             <form action="#" method="get" class="mobile-search">
                 <label for="mobile-search" class="sr-only">Search</label>
-                <input type="search" class="form-control" name="mobile-search" id="mobile-search" placeholder="Search in..." required>
+                <input type="search" class="form-control" name="mobile-search" id="mobile-search"
+                    placeholder="Search in..." required>
                 <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
             </form>
-            
+
             <nav class="mobile-nav">
                 <ul class="mobile-menu">
                     <li class="active">
@@ -455,10 +523,12 @@
                             <li><a href="category-2cols.html">Shop Grid 2 Columns</a></li>
                             <li><a href="category.html">Shop Grid 3 Columns</a></li>
                             <li><a href="category-4cols.html">Shop Grid 4 Columns</a></li>
-                            <li><a href="category-boxed.html"><span>Shop Boxed No Sidebar<span class="tip tip-hot">Hot</span></span></a></li>
+                            <li><a href="category-boxed.html"><span>Shop Boxed No Sidebar<span
+                                            class="tip tip-hot">Hot</span></span></a></li>
                             <li><a href="category-fullwidth.html">Shop Fullwidth No Sidebar</a></li>
                             <li><a href="product-category-boxed.html">Product Category Boxed</a></li>
-                            <li><a href="product-category-fullwidth.html"><span>Product Category Fullwidth<span class="tip tip-new">New</span></span></a></li>
+                            <li><a href="product-category-fullwidth.html"><span>Product Category Fullwidth<span
+                                            class="tip tip-new">New</span></span></a></li>
                             <li><a href="cart.html">Cart</a></li>
                             <li><a href="checkout.html">Checkout</a></li>
                             <li><a href="wishlist.html">Wishlist</a></li>
@@ -470,7 +540,8 @@
                         <ul>
                             <li><a href="product.html">Default</a></li>
                             <li><a href="product-centered.html">Centered</a></li>
-                            <li><a href="product-extended.html"><span>Extended Info<span class="tip tip-new">New</span></span></a></li>
+                            <li><a href="product-extended.html"><span>Extended Info<span
+                                            class="tip tip-new">New</span></span></a></li>
                             <li><a href="product-gallery.html">Gallery</a></li>
                             <li><a href="product-sticky.html">Sticky Info</a></li>
                             <li><a href="product-sidebar.html">Boxed With Sidebar</a></li>
@@ -588,23 +659,28 @@
                         <div class="form-tab">
                             <ul class="nav nav-pills nav-fill" role="tablist">
                                 <li class="nav-item">
-                                    <a class="nav-link active" id="signin-tab" data-toggle="tab" href="#signin" role="tab" aria-controls="signin" aria-selected="true">Sign In</a>
+                                    <a class="nav-link active" id="signin-tab" data-toggle="tab" href="#signin"
+                                        role="tab" aria-controls="signin" aria-selected="true">Sign In</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="register-tab" data-toggle="tab" href="#register" role="tab" aria-controls="register" aria-selected="false">Register</a>
+                                    <a class="nav-link" id="register-tab" data-toggle="tab" href="#register" role="tab"
+                                        aria-controls="register" aria-selected="false">Register</a>
                                 </li>
                             </ul>
                             <div class="tab-content" id="tab-content-5">
-                                <div class="tab-pane fade show active" id="signin" role="tabpanel" aria-labelledby="signin-tab">
+                                <div class="tab-pane fade show active" id="signin" role="tabpanel"
+                                    aria-labelledby="signin-tab">
                                     <form action="#">
                                         <div class="form-group">
                                             <label for="singin-email">Username or email address *</label>
-                                            <input type="text" class="form-control" id="singin-email" name="singin-email" required>
+                                            <input type="text" class="form-control" id="singin-email"
+                                                name="singin-email" required>
                                         </div><!-- End .form-group -->
 
                                         <div class="form-group">
                                             <label for="singin-password">Password *</label>
-                                            <input type="password" class="form-control" id="singin-password" name="singin-password" required>
+                                            <input type="password" class="form-control" id="singin-password"
+                                                name="singin-password" required>
                                         </div><!-- End .form-group -->
 
                                         <div class="form-footer">
@@ -614,8 +690,10 @@
                                             </button>
 
                                             <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" id="signin-remember">
-                                                <label class="custom-control-label" for="signin-remember">Remember Me</label>
+                                                <input type="checkbox" class="custom-control-input"
+                                                    id="signin-remember">
+                                                <label class="custom-control-label" for="signin-remember">Remember
+                                                    Me</label>
                                             </div><!-- End .custom-checkbox -->
 
                                             <a href="#" class="forgot-link">Forgot Your Password?</a>
@@ -643,12 +721,14 @@
                                     <form action="#">
                                         <div class="form-group">
                                             <label for="register-email">Your email address *</label>
-                                            <input type="email" class="form-control" id="register-email" name="register-email" required>
+                                            <input type="email" class="form-control" id="register-email"
+                                                name="register-email" required>
                                         </div><!-- End .form-group -->
 
                                         <div class="form-group">
                                             <label for="register-password">Password *</label>
-                                            <input type="password" class="form-control" id="register-password" name="register-password" required>
+                                            <input type="password" class="form-control" id="register-password"
+                                                name="register-password" required>
                                         </div><!-- End .form-group -->
 
                                         <div class="form-footer">
@@ -658,8 +738,10 @@
                                             </button>
 
                                             <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" id="register-policy" required>
-                                                <label class="custom-control-label" for="register-policy">I agree to the <a href="#">privacy policy</a> *</label>
+                                                <input type="checkbox" class="custom-control-input" id="register-policy"
+                                                    required>
+                                                <label class="custom-control-label" for="register-policy">I agree to the
+                                                    <a href="#">privacy policy</a> *</label>
                                             </div><!-- End .custom-checkbox -->
                                         </div><!-- End .form-footer -->
                                     </form>
@@ -698,229 +780,260 @@
     <script src="assets/js/owl.carousel.min.js"></script>
     <!-- Main JS File -->
     <script src="assets/js/main.js"></script>
-    
-      
+
+
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<!-- 
+
+
+
     <script>
         function placeOrder(total) {
-            console.log("Total:", total);
             try {
-
-                console.log("iam clicked");
-                const radioBtnAddress = document.querySelector('input[name="addressRadio"]:checked');
-                const index = radioBtnAddress ? radioBtnAddress.value : null;
-    
+                const radioBtnAddress = document.querySelector('input[name="addressRadio"]:checked')
+                const index = radioBtnAddress ? radioBtnAddress.value : null
                 if (index) {
-                    const radioBtnPayment = document.querySelector('input[name="paymentMethod"]:checked');
-                    const payment = radioBtnPayment ? radioBtnPayment.value : null;
-    
+                    const radioBtnPayment = document.querySelector('input[name="paymentMethod"]:checked')
+                    const payment = radioBtnPayment ? radioBtnPayment.value : null
+
                     if (payment) {
+
+                        const total = parseFloat(document.getElementById('placeOrder').getAttribute('data-subTotal')); // Parse as float
+                        const coupon = document.getElementById('placeOrder').getAttribute('data-couponApplied') === '1'; // Check against '1'
+                        const value = coupon ? document.getElementById('placeOrder').getAttribute('data-couponCode') : false;
                         const subTotal = total;
-                        
-                        if (subTotal) {
+
+                        if (!isNaN(subTotal)) {
                             const data = {
                                 index: index,
                                 payment: payment,
-                                subTotal: subTotal
+                                subTotal: subTotal,
+                                couponCode: value
                             };
-    
-                            console.log("Sending AJAX request with data:",data);
-    
+                            console.log(data);
                             $.ajax({
                                 url: '/placeOrder',
                                 method: 'POST',
                                 data: JSON.stringify(data),
                                 contentType: 'application/json'
                             }).then((response) => {
-                                console.log("Ajax success callback reached");
-                                console.log("After AJAX success:", response);
-                                if (response.orderId) {
-                                    console.log("iam comming");
+                                if (response.success == true) {
+                                    console.log("Server response:", response);
+                                    location.href = `/orderSuccess/${response.orderId}`
+                                } else if (response.quan == true) {
                                     Swal.fire({
-                                        icon: 'success',
-                                        title: 'Order Placed!',
-                                        text: `Your order (ID: ${response.orderId}) has been successfully placed.`,
-                                    }).then(() => {
-                                        location.href = `/orderSuccess/${response.orderId}`;
-                                    });
-                                } else if (response.quan) {
+                                        icon: 'warning',
+                                        text: `Sorry you product ${response.quantityLess} is Out Of Stock'`,
+                                        showConfirmButton: false
+                                    })
+                                } else if (response.order) {
+                                    razorpay(response.order)
+                                } else if (response.wallet == true) {
+                                    location.href = `/orderSuccess/${response.orderId}`
+                                } else {
                                     Swal.fire({
-                                        icon: 'error',
-                                        title: 'Out of Stock',
-                                        text: `Sorry, the product ${response.quantityLess} is out of stock.`,
-                                    });
+                                        icon: 'warning',
+                                        text: "there is no balance",
+                                        showConfirmButton: true
+                                    })
                                 }
-                            });
+                            })
                         }
                     } else {
                         Swal.fire({
                             icon: 'warning',
-                            title: 'Payment Method',
-                            text: 'Please select a payment method.',
-                        });
+                            text: "select a payment method",
+                            showConfirmButton: false
+                        })
+
                     }
                 } else {
                     Swal.fire({
                         icon: 'warning',
-                        title: 'Address',
-                        text: 'Please select an address.',
-                    });
+                        text: "select a Address",
+                        showConfirmButton: true
+                    })
                 }
             } catch (error) {
-                console.error('AJAX Error:', error);
+                console.log(error.message);
             }
+
         }
-    </script> -->
-    
-    
+    </script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script>
-        function placeOrder(total) {
-          try {
-            const radioBtnAddress = document.querySelector('input[name="addressRadio"]:checked')
-            const index = radioBtnAddress ? radioBtnAddress.value : null
-            if (index) {
-              const radioBtnPayment = document.querySelector('input[name="paymentMethod"]:checked')
-              const payment = radioBtnPayment ? radioBtnPayment.value : null
-             // console.log("payment",payment);
-              if (payment) {
-                const subTotal = total
-                if (subTotal) {
-                  const data = {
-                    index: index,
-                    payment: payment,
-                    subTotal: subTotal
-                  }
-                //  console.log(data);
-                  $.ajax({
-                    url: '/placeOrder',
-                    method: 'POST',
-                    data: JSON.stringify(data),
-                    contentType: 'application/json'
-                  }).then((response)=>{
-                    if(response.success==true){
-                      location.href = `/orderSuccess/${response.orderId}`                
-                    }else if(response.quan == true){
-                      Swal.fire({
-                        icon:'warning',
-                        text:`Sorry you product ${response.quantityLess} is Out Of Stock'`,
-                        showConfirmButton:false
-                      })
-                    }else if(response.order){
-                      razorpay(response.order)
-                    }else if(response.wallet==true){
-                        location.href = `/orderSuccess/${response.orderId}`   
-                    }else{
-                        Swal.fire({
-                        icon:'warning',
-                        text:"there is no balance",
-                        showConfirmButton:true
-                      })
-                    }
-                  })
-                }
-              } else {
-                Swal.fire({
-                        icon:'warning',
-                        text:"select a payment method",
-                        showConfirmButton:false
-                      })
-              
-              }
-            } else {
-                Swal.fire({
-                        icon:'warning',
-                        text:"select a Address",
-                        showConfirmButton:true
-                      })
-            }
-          } catch (error) {
-            console.log(error.message);
-          }
-    
-        }
-      </script>
-        <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-     <script>
-        function razorpay(order){
+        function razorpay(order) {
             console.log(order);
-          try {
-            var options = {
-                      "key": "rzp_test_I7YqBUFsSqN4Fh", 
-                      "amount": order.amount,
-                      "currency": "INR",
-                      "name": "MOLLA Furniture",
-                      "description": "Test Transaction",
-                      "image": "",
-                      "order_id": order.id,
-                      handler: (response) => {
+            try {
+                var options = {
+                    "key": "rzp_test_I7YqBUFsSqN4Fh",
+                    "amount": order.amount,
+                    "currency": "INR",
+                    "name": "MOLLA Furniture",
+                    "description": "Test Transaction",
+                    "image": "",
+                    "order_id": order.id,
+                    handler: (response) => {
                         verifyPayment(response, order);
-                      },
-                      "prefill": { 
-                          "name": "MOLLA ", //your customer's name
-                          "email": "kunjuvava794gmail.com",
-                          "contact": "9045790000" //Provide the customer's phone number for better conversion rates 
-                      },
-                      "notes": {
-                          "address": "MOlla furniture"
-                      },
-                      "theme": {
-                          "color": "#c96"
-                      }
-                  };
-      
-                  var rzp1 = new Razorpay(options);
-      
-                  rzp1.on('payment.failed', (err) => {
-                      console.log(err);
-                  })
-                  rzp1.open();
-      
-          } catch (error) {
-            console.log(error.message);
-          }
-        }   
+                    },
+                    "prefill": {
+                        "name": "MOLLA ", //your customer's name
+                        "email": "kunjuvava794gmail.com",
+                        "contact": "9045790000" //Provide the customer's phone number for better conversion rates 
+                    },
+                    "notes": {
+                        "address": "MOlla furniture"
+                    },
+                    "theme": {
+                        "color": "#c96"
+                    }
+                };
+
+                var rzp1 = new Razorpay(options);
+
+                rzp1.on('payment.failed', (err) => {
+                    console.log(err);
+                })
+                rzp1.open();
+
+            } catch (error) {
+                console.log(error.message);
+            }
+        }
 
         function verifyPayment(payment, order) {
-    console.log(order, "order");
-    const data = { payment, order };
-    console.log(data);
+            console.log(order, "order");
+            const data = { payment, order };
+            console.log(data);
 
-    
-    $.ajax({
-        url: "/verify-payment",
-        method: "POST",
-        data: JSON.stringify(data),
-        contentType: "application/json", // Specify content type as JSON
-        success: function (response) {
-            if (response.paymentSuccess == true) {
-                console.log("its commingghgg");
-                window.location.href = `/orderSuccess/${order.receipt}`;
+
+            $.ajax({
+                url: "/verify-payment",
+                method: "POST",
+                data: JSON.stringify(data),
+                contentType: "application/json", // Specify content type as JSON
+                success: function (response) {
+                    if (response.paymentSuccess == true) {
+                        console.log("its commingghgg");
+                        window.location.href = `/orderSuccess/${order.receipt}`;
+                    } else {
+                        Swal.fire({
+                            positon: "center",
+                            icon: "error",
+                            title: "Payment failed",
+                            showConfirmButton: false,
+                            timer: 1500,
+                        });
+                    }
+                },
+                error: function (error) {
+                    console.log("Error in AJAX request:", error);
+                },
+            });
+        }
+
+
+
+    </script>
+    <script>
+        function fireSwal(message) {
+            Swal.fire({
+                icon: 'info',
+                title: 'Coupon Application',
+                text: message,
+                showConfirmButton: false,
+                timer: 3000
+            });
+        }
+
+// fiunction to remove the coupon
+        function removeCoupon(subTotal) {
+            console.log("I am called");
+            console.log(subTotal);
+
+
+            document.getElementById('total').setAttribute('data-subTotal', subTotal);
+
+
+            document.getElementById('checkout-discount-input').value = '';
+
+
+            document.getElementById('total').innerText = '₹' + subTotal;
+        }
+
+
+
+        function copyCouponCode(code) {
+            console.log("code", code);
+            var couponInput = document.getElementById('checkout-discount-input');
+            var couponText = document.getElementById('coupon-text');
+            var clickHereText = document.getElementById('click-here');
+
+            if (couponInput.value.trim() !== code) {
+
+                couponInput.value = code;
+
+
+                couponText.style.display = 'none';
+                clickHereText.style.display = 'none';
             } else {
-                Swal.fire({
-                    positon: "center",
-                    icon: "error",
-                    title: "Payment failed",
-                    showConfirmButton: false,
-                    timer: 1500,
+
+                couponInput.value = '';
+                couponText.style.display = 'block'; // Adjust 'block' based on the initial display style
+                clickHereText.style.display = 'block'; // Adjust 'block' based on the initial display style
+            }
+
+
+        }
+
+
+        function applyCoupon(subTotal) {
+            var couponInput = document.getElementById('checkout-discount-input');
+
+
+            let couponCode = couponInput.value;
+            console.log("code", couponCode);
+
+            if (couponCode) {
+                document.getElementById('placeOrder').setAttribute('data-couponCode', `${couponCode}`);
+                let data = { couponCode: couponCode, totalPrice: subTotal };
+                console.log(data);
+
+                $.ajax({
+                    method: 'POST',
+                    url: '/applyCoupon',
+                    data: JSON.stringify(data),
+                    contentType: 'application/json',
+                    success: function (response) {
+                        console.log(response);
+                        if (response.notAvailable == true || response.min == true || response.expired == true || response.alreadyUsed == true) {
+                            fireSwal(response.message);
+                        } else if (response.success == true) {
+                            document.getElementById('placeOrder').setAttribute('data-subTotal', `${response.subTotal}`);
+                            document.getElementById('total').innerText = '₹' + response.subTotal;
+                            document.getElementById('placeOrder').setAttribute('data-couponApplied', '1');
+
+
+                            fireSwal(response.message);
+                        }
+                    },
+                    error: function (error) {
+                        console.error('Error:', error);
+
+                        // Show error message using SweetAlert
+                        fireSwal('An error occurred while applying the coupon');
+                    }
                 });
             }
-        },
-        error: function (error) {
-            console.log("Error in AJAX request:", error);
-        },
-    });
-}
+        }
 
 
 
-        </script>
-     
+    </script>
 
-      
 </body>
 
 
 <!-- molla/checkout.html  22 Nov 2019 09:55:06 GMT -->
+
 </html>

@@ -231,22 +231,7 @@
                         </div>
       
       
-                        <!-- <div class="form-group">
-                          <label for="">Product Images</label>
-                          <div class="row">
-                            <% for(let i=0; i< 4;i++){ %>
-                              <div class="col-lg-6 col-md-6 mb-3 rounded-image-preview">
-                                <label for="imageInput<%= i %>" class="image-label">Image <%= i %>
-                                    <div class="rounded-image-preview">
-                                      <img id="imagePreview<%= i %>" alt="Preview" src="/assets/product/sharpedproduct/<%= product.images[i] %>" style="height: 150px; width: 150px;">
-                                    </div>
-                                    <input name="images" type="file" accept="image/*" id="imageInput<%= i %>"
-                                      class="imageInput" onchange="previewImage(this, 'imagePreview<%= i %>')">
-                                </label>
-                              </div>
-                              <%}%>
-                          </div>
-                        </div> -->
+                      
                         <div class="form-group">
                             <label for="imageInput">Product Images</label>
                             <div class="row">
@@ -254,7 +239,7 @@
                                     <div class="col-lg-3 col-md-3 mb-3 rounded-image-preview">
                                         <label for="imageInput<%= i %>" class="image-label">Image <%= i %>
                                             <div class="rounded-image-preview">
-                                                <img id="imagePreview<%= i %>" alt="Preview" src="/assets/product/sharpedproduct/<%= product.images[i] %>" style="height: 150px; width: 150px;">
+                                                <img id="imagePreview<%= i %>" alt="Preview" src="<%= product.images[i] %>" style="height: 150px; width: 150px;">
                                             </div>
                                             <input name="images" type="file" accept="image/*" id="imageInput<%= i %>" class="imageInput" multiple onchange="previewImage(this, 'imagePreview<%= i %>')">
                                         </label>

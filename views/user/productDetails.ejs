@@ -1,415 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
 
-<%- include ('../Layout/user/header.ejs') -%>
 
+<!-- molla/product.html  22 Nov 2019 09:54:50 GMT -->
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Molla - Bootstrap eCommerce Template</title>
+    <meta name="keywords" content="HTML5 Template">
+    <meta name="description" content="Molla - Bootstrap eCommerce Template">
+    <meta name="author" content="p-themes">
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/images/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/images/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/icons/favicon-16x16.png">
+    <link rel="manifest" href="assets/images/icons/site.html">
+    <link rel="mask-icon" href="assets/images/icons/safari-pinned-tab.svg" color="#666666">
+    <link rel="shortcut icon" href="assets/images/icons/favicon.ico">
+    <meta name="apple-mobile-web-app-title" content="Molla">
+    <meta name="application-name" content="Molla">
+    <meta name="msapplication-TileColor" content="#cc9966">
+    <meta name="msapplication-config" content="assets/images/icons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+    <!-- Plugins CSS File -->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/plugins/owl-carousel/owl.carousel.css">
+    <link rel="stylesheet" href="assets/css/plugins/magnific-popup/magnific-popup.css">
+    <!-- Main CSS File -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/plugins/nouislider/nouislider.css">
+</head>
 
+<body>
     <div class="page-wrapper">
-        <header class="header header-2 header-intro-clearance">
-
-            <div class="header-middle">
+        <%- include ('../Layout/user/navbar.ejs') -%>
+        <main class="main">
+            <div class="page-content">
                 <div class="container">
-                    <div class="header-left">
-                        <button class="mobile-menu-toggler">
-                            <span class="sr-only">Toggle mobile menu</span>
-                            <i class="icon-bars"></i>
-                        </button>
-                        
-                        <a href="index.html" class="logo">
-                            <img src="assets/images/demos/demo-2/logo.png" alt="Molla Logo" width="105" height="25">
-                        </a>
-                    </div><!-- End .header-left -->
-
-                    <div class="header-center">
-                        
-                    </div>
-
-                    <div class="header-right">
-                        <!-- <div class="account">
-                            <a href="dashboard.html" title="My account">
-                                <div class="icon">
-                                    <i class="icon-user"></i>
-                                </div>
-                                <p>Account</p>
-                            </a>
-                        </div>End .compare-dropdown -->
-
-                        <div class="dropdown cart-dropdown">
-                            <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
-                                <div class="icon">
-                                    <i class="icon-user"></i>
-                                </div>
-                                <p>Account</p>
-                            </a>
-
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <%if(locals.user){ %>
-                                <div class="dropdown-cart-products">
-                                    <div class="product">
-                                        <div class="product-cart-details">
-                                            <h4 class="product-title">
-                                                <a href="/user">Your Account</a>
-                                            </h4>
-                                        </div><!-- End .product-cart-details -->
-                                    </div><!-- End .product -->
-        
-                                    <div class="product">
-                                        <div class="product-cart-details">
-                                            <h4 class="product-title">
-                                                <a href="/logout">Logout</a>
-                                            </h4>
-                                        </div><!-- End .product-cart-details -->
-        
-                                    </div><!-- End .product -->
-                                </div><!-- End .cart-product -->
-                                <%} else{%>
-                                <div class="product">
-                                    <div class="product-cart-details">
-                                        <h4 class="product-title">
-                                            <a href="/login">Login</a>
-                                        </h4>
-                                    </div><!-- End .product-cart-details -->
-        
-                                </div><!-- End .product -->
-                                <%}%>
-                            </div><!-- End .dropdown-menu -->
-                        </div><!-- End .cart-dropdown -->
-
-                        <div class="wishlist">
-                            <a href="/wishlist" title="Wishlist">
-                                <div class="icon">
-                                    <i class="icon-heart-o"></i>
-                                    <span class="wishlist-count badge">3</span>
-                                </div>
-                                <p>Wishlist</p>
-                            </a>
-                        </div><!-- End .compare-dropdown -->
-
-                        <div class="dropdown cart-dropdown">
-                            <a href="/cart" class="dropdown-toggle" role="button" >
-                                <div class="icon">
-                                    <i class="icon-shopping-cart"></i>
-                                    
-                                </div>
-                                <p>Cart</p>
-                            </a>
-
-                          <!-- End .dropdown-menu -->
-                        </div><!-- End .cart-dropdown -->
-                    </div><!-- End .header-right -->
-                </div><!-- End .container -->
-            </div><!-- End .header-middle -->
-
-            <div class="header-bottom sticky-header">
-                <div class="container">
-                    <div class="header-left">
-                        
-                    </div><!-- End .header-left -->
-
-                    <div class="header-center">
-                        <nav class="main-nav">
-                            <ul class="menu sf-arrows">
-                                <li class="megamenu-container active">
-                                    <a href="/" class="sf-with-ul">Home</a>
-
-                                </li>
-                                <li>
-                                    <a href="/shop" class="sf-with-ul">Shop</a>
-
-                                   
-                                </li>
-                                <li>
-                                    <a href="/contact" class="sf-with-ul">Contact</a>
-
-                                   
-                                </li>
-                                
-                                <li>
-                                    <a href="/about" class="sf-with-ul">About</a>
-
-
-                                </li>
-                               
-                                
-                               
-                            </ul><!-- End .menu -->
-                        </nav><!-- End .main-nav -->
-                    </div><!-- End .header-center -->
-
-                  
-                </div><!-- End .container -->
-            </div><!-- End .header-bottom -->
-        </header><!-- End .header -->
-
-        <div class="page-wrapper">
-            <main class="main">
-                <div class="page-content">
-                    <div class="container">
-                        <div class="product-details-top">
-                            <% if (products && products.length > 0) { %>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="product-gallery product-gallery-vertical">
-                                        <div class="row">
-                                            <figure class="product-main-image">
-                                                <% if (products[0].images && products[0].images[0]) { %>
-                                                    <img id="product-zoom" src="<%= products[0].images[0] %>" data-zoom-image="<%= products[0].images[0] %>" alt="product image" >
-                                                <% } else { %>
-                                                    <img id="product-zoom" src="/path/to/default/image.jpg" alt="default image">
-                                                <% } %>
-                                                <a href="#" id="btn-product-gallery" class="btn-product-gallery">
-                                                    <i class="icon-arrows"></i>
-                                                </a>
-                                            </figure><!-- End .product-main-image -->
-                                           
-                                            <div id="product-zoom-gallery" class="product-image-gallery">
-                                                <% products[0].images.forEach(function(image, index) { %>
-                                                    <a class="product-gallery-item <%= index === 0 ? 'active' : '' %>" href="#" data-image="<%= image %>" data-zoom-image="<%= image %>">
-                                                        <img src="<%= image %>" alt="product image <%= index + 1 %>">
-                                                    </a>
-                                                <% }); %>
-                                            </div><!-- End .product-image-gallery -->
-                                            
-                                        </div><!-- End .row -->
-                                    </div><!-- End .product-gallery -->
-                                </div><!-- End .col-md-6 -->
-                    
-                              
-                                <div class="col-md-6">
-                                    <div class="product-details">
-                                        <h1 class="product-title"><%=products[0].name %></h1><!-- End .product-title -->
+                    <div class="product-details-top">
+                        <% if (products && products.length > 0) { %>
+                        <div class="row">
                             
+                            <div class="col-md-6">
+                                <div class="product-gallery product-gallery-vertical">
+                                    <div class="row">
                                        
-                            
-                                        <div class="product-price">
-                                            ₹<%= products[0].price %>
-                                        </div><!-- End .product-price -->
-                            
-                                        <div class="product-content">
-                                            <p><%= products[0].description %></p>
-                                        </div><!-- End .product-content -->
-                            
-                                        <div class="details-filter-row details-row-size">
-                                            <label for="qty">Qty:</label>
-                                            <p><%= products[0].quantity %></p>
-                                            <div class="product-details-quantity">
-                                                <input type="number" id="qty" class="form-control" value="1" min="1" max="10" step="1" data-decimals="0" required>
-                                            </div><!-- End .product-details-quantity -->
-                                        </div><!-- End .details-filter-row -->
-                            
-                                        <div class="product-details-action">
-                                            <a href="/addToCart" id="addToCartBtn" class="btn-product btn-cart">
-                                                <span>Add to Cart</span>
+                                        <figure class="product-main-image">
+                                            <% if (products[0].images && products[0].images[0]) { %>
+                                                <img id="product-zoom" src="<%= products[0].images[0] %>" data-zoom-image="<%= products[0].images[0] %>" alt="product image" >
+                                            <% } else { %>
+                                                <img id="product-zoom" src="/path/to/default/image.jpg" alt="default image">
+                                            <% } %>
+                                            <a href="#" id="btn-product-gallery" class="btn-product-gallery">
+                                                <i class="icon-arrows"></i>
                                             </a>
-                            
-                                            <a href="/cart" id="viewCartBtn" class="btn-product btn-cart">
-                                                <span>View Cart</span>
-                                            </a>
-                            
-                                            <div class="details-action-wrapper">
-                                                
-                                               
-                                                 <button id="wishlistBtn" class="btn-product btn-wishlist" title="Wishlist" onclick="addToWishlist('<%= products[0]._id %>')" style="padding: 7px;
-                                                   background: white;border: white; ">Add to Wishlist</button>
-                                                   
-                                                
-                                            </div><!-- End .details-action-wrapper -->
-                                        </div><!-- End .product-details-action -->
-                                    </div><!-- End .product-details -->
-                                </div><!-- End .col-md-6 -->
-                            </div>
-                            <% } else { %>
-                                <p>No products available</p>
-                            <% } %>
-                            <!-- End .row -->
-                        </div><!-- End .product-details-top -->
-    
-                        <div class="product-details-tab">
-                            <ul class="nav nav-pills justify-content-center" role="tablist">
-                                <li class="nav-item">
-                                    <a class="nav-link active" id="product-desc-link" data-toggle="tab" href="#product-desc-tab" role="tab" aria-controls="product-desc-tab" aria-selected="true">Description</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" id="product-info-link" data-toggle="tab" href="#product-info-tab" role="tab" aria-controls="product-info-tab" aria-selected="false">Additional information</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" id="product-shipping-link" data-toggle="tab" href="#product-shipping-tab" role="tab" aria-controls="product-shipping-tab" aria-selected="false">Shipping & Returns</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" id="product-review-link" data-toggle="tab" href="#product-review-tab" role="tab" aria-controls="product-review-tab" aria-selected="false">Reviews (2)</a>
-                                </li>
-                            </ul>
-                            <div class="tab-content">
-                                <div class="tab-pane fade show active" id="product-desc-tab" role="tabpanel" aria-labelledby="product-desc-link">
-                                    <div class="product-desc-content">
-                                        <h3>Product Information</h3>
-    
-                                        <p><%= products[0].description %></p>
+                                        </figure><!-- End .product-main-image -->
+                                       
+                                        <div id="product-zoom-gallery" class="product-image-gallery">
+                                            <% products[0].images.forEach(function(image, index) { %>
+                                                <a class="product-gallery-item <%= index === 0 ? 'active' : '' %>" href="#" data-image="<%= image %>" data-zoom-image="<%= image %>">
+                                                    <img src="<%= image %>" alt="product image <%= index + 1 %>">
+                                                </a>
+                                            <% }); %>
+                                        </div><!-- End .product-image-gallery -->
                                         
-                                    </div><!-- End .product-desc-content -->
-                                </div><!-- .End .tab-pane -->
-                                <div class="tab-pane fade" id="product-info-tab" role="tabpanel" aria-labelledby="product-info-link">
-                                    <div class="product-desc-content">
-                                        <h3>Information</h3>
-                                        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna viverra non, semper suscipit, posuere a, pede. Donec nec justo eget felis facilisis fermentum. Aliquam porttitor mauris sit amet orci. </p>
-    
-                                        <h3>Fabric & care</h3>
-                                        <ul>
-                                            <li>Faux suede fabric</li>
-                                            <li>Gold tone metal hoop handles.</li>
-                                            <li>RI branding</li>
-                                            <li>Snake print trim interior </li>
-                                            <li>Adjustable cross body strap</li>
-                                            <li> Height: 31cm; Width: 32cm; Depth: 12cm; Handle Drop: 61cm</li>
-                                        </ul>
-    
-                                        <h3>Size</h3>
-                                        <p>one size</p>
-                                    </div><!-- End .product-desc-content -->
-                                </div><!-- .End .tab-pane -->
-                                <div class="tab-pane fade" id="product-shipping-tab" role="tabpanel" aria-labelledby="product-shipping-link">
-                                    <div class="product-desc-content">
-                                        <h3>Delivery & returns</h3>
-                                        <p>We deliver to over 100 countries around the world. For full details of the delivery options we offer, please view our <a href="#">Delivery information</a><br>
-                                        We hope you’ll love every purchase, but if you ever need to return an item you can do so within a month of receipt. For full details of how to make a return, please view our <a href="#">Returns information</a></p>
-                                    </div><!-- End .product-desc-content -->
-                                </div><!-- .End .tab-pane -->
-                                <div class="tab-pane fade" id="product-review-tab" role="tabpanel" aria-labelledby="product-review-link">
-                                    <div class="reviews">
-                                        <h3>Reviews (2)</h3>
-                                        <div class="review">
-                                            <div class="row no-gutters">
-                                                <div class="col-auto">
-                                                    <h4><a href="#">Samanta J.</a></h4>
-                                                    <div class="ratings-container">
-                                                        <div class="ratings">
-                                                            <div class="ratings-val" style="width: 80%;"></div><!-- End .ratings-val -->
-                                                        </div><!-- End .ratings -->
-                                                    </div><!-- End .rating-container -->
-                                                    <span class="review-date">6 days ago</span>
-                                                </div><!-- End .col -->
-                                                <div class="col">
-                                                    <h4>Good, perfect size</h4>
-    
-                                                    <div class="review-content">
-                                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus cum dolores assumenda asperiores facilis porro reprehenderit animi culpa atque blanditiis commodi perspiciatis doloremque, possimus, explicabo, autem fugit beatae quae voluptas!</p>
-                                                    </div><!-- End .review-content -->
-    
-                                                    <div class="review-action">
-                                                        <a href="#"><i class="icon-thumbs-up"></i>Helpful (2)</a>
-                                                        <a href="#"><i class="icon-thumbs-down"></i>Unhelpful (0)</a>
-                                                    </div><!-- End .review-action -->
-                                                </div><!-- End .col-auto -->
-                                            </div><!-- End .row -->
-                                        </div><!-- End .review -->
-    
-                                        <div class="review">
-                                            <div class="row no-gutters">
-                                                <div class="col-auto">
-                                                    <h4><a href="#">John Doe</a></h4>
-                                                    <div class="ratings-container">
-                                                        <div class="ratings">
-                                                            <div class="ratings-val" style="width: 100%;"></div><!-- End .ratings-val -->
-                                                        </div><!-- End .ratings -->
-                                                    </div><!-- End .rating-container -->
-                                                    <span class="review-date">5 days ago</span>
-                                                </div><!-- End .col -->
-                                                <div class="col">
-                                                    <h4>Very good</h4>
-    
-                                                    <div class="review-content">
-                                                        <p>Sed, molestias, tempore? Ex dolor esse iure hic veniam laborum blanditiis laudantium iste amet. Cum non voluptate eos enim, ab cumque nam, modi, quas iure illum repellendus, blanditiis perspiciatis beatae!</p>
-                                                    </div><!-- End .review-content -->
-    
-                                                    <div class="review-action">
-                                                        <a href="#"><i class="icon-thumbs-up"></i>Helpful (0)</a>
-                                                        <a href="#"><i class="icon-thumbs-down"></i>Unhelpful (0)</a>
-                                                    </div><!-- End .review-action -->
-                                                </div><!-- End .col-auto -->
-                                            </div><!-- End .row -->
-                                        </div><!-- End .review -->
-                                    </div><!-- End .reviews -->
-                                </div><!-- .End .tab-pane -->
-                            </div><!-- End .tab-content -->
-                        </div><!-- End .product-details-tab -->
-                    </div><!-- End .container -->
-                </div><!-- End .page-content -->
-            </main><!-- End .main --><!-- End .main -->
+                                    </div><!-- End .row -->
+                                </div><!-- End .product-gallery -->
+                            </div><!-- End .col-md-6 -->
+                
+                          
+                            <div class="col-md-6">
+                                <div class="product-details">
+                                    <h1 class="product-title"><%=products[0].name %></h1><!-- End .product-title -->
+                        
+                                   
+                        
+                                    <div class="product-price">
+                                        ₹<%= products[0].price %>
+                                    </div><!-- End .product-price -->
+                        
+                                    <div class="product-content">
+                                        <p><%= products[0].description %></p>
+                                    </div><!-- End .product-content -->
+                        
+                                    <div class="details-filter-row details-row-size">
+                                        <label for="qty">Qty:</label>
+                                        <p><%= products[0].quantity %></p>
+                                        <div class="product-details-quantity">
+                                            <input type="number" id="qty" class="form-control" value="1" min="1" max="10" step="1" data-decimals="0" required>
+                                        </div><!-- End .product-details-quantity -->
+                                    </div><!-- End .details-filter-row -->
+                        
+                                    <div class="product-details-action">
+                                        <a href="/addToCart" id="addToCartBtn" class="btn-product btn-cart">
+                                            <span>Add to Cart</span>
+                                        </a>
+                        
+                                        <a href="/cart" id="viewCartBtn" class="btn-product btn-cart">
+                                            <span>View Cart</span>
+                                        </a>
+                        
+                                        <div class="details-action-wrapper">
+                                            
+                                           
+                                             <button id="wishlistBtn" class="btn-product btn-wishlist" title="Wishlist" onclick="addToWishlist('<%= products[0]._id %>')" style="padding: 7px;
+                                               background: white;border: white; ">Add to Wishlist</button>
+                                               
+                                            
+                                        </div><!-- End .details-action-wrapper -->
+                                    </div><!-- End .product-details-action -->
+                                </div><!-- End .product-details -->
+                            </div><!-- End .col-md-6 -->
+                        </div>
+                        <% } else { %>
+                            <p>No products available</p>
+                        <% } %>
+                        <!-- End .row -->
+                    </div><!-- End .product-details-top -->
 
-        <footer class="footer">
-        	<div class="footer-middle">
-	            <div class="container">
-	            	<div class="row">
-	            		<div class="col-sm-6 col-lg-3">
-	            			<div class="widget widget-about">
-	            				<img src="assets/images/logo.png" class="footer-logo" alt="Footer Logo" width="105" height="25">
-	            				<p>Praesent dapibus, neque id cursus ucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. </p>
+                    <div class="product-details-tab">
+                        <ul class="nav nav-pills justify-content-center" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="product-desc-link" data-toggle="tab" href="#product-desc-tab" role="tab" aria-controls="product-desc-tab" aria-selected="true">Description</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="product-info-link" data-toggle="tab" href="#product-info-tab" role="tab" aria-controls="product-info-tab" aria-selected="false">Additional information</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="product-shipping-link" data-toggle="tab" href="#product-shipping-tab" role="tab" aria-controls="product-shipping-tab" aria-selected="false">Shipping & Returns</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="product-review-link" data-toggle="tab" href="#product-review-tab" role="tab" aria-controls="product-review-tab" aria-selected="false">Reviews (2)</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane fade show active" id="product-desc-tab" role="tabpanel" aria-labelledby="product-desc-link">
+                                <div class="product-desc-content">
+                                    <h3>Product Information</h3>
 
-	            				<div class="social-icons">
-	            					<a href="#" class="social-icon" target="_blank" title="Facebook"><i class="icon-facebook-f"></i></a>
-	            					<a href="#" class="social-icon" target="_blank" title="Twitter"><i class="icon-twitter"></i></a>
-	            					<a href="#" class="social-icon" target="_blank" title="Instagram"><i class="icon-instagram"></i></a>
-	            					<a href="#" class="social-icon" target="_blank" title="Youtube"><i class="icon-youtube"></i></a>
-	            					<a href="#" class="social-icon" target="_blank" title="Pinterest"><i class="icon-pinterest"></i></a>
-	            				</div><!-- End .soial-icons -->
-	            			</div><!-- End .widget about-widget -->
-	            		</div><!-- End .col-sm-6 col-lg-3 -->
+                                    <p><%= products[0].description %></p>
+                                    
+                                </div><!-- End .product-desc-content -->
+                            </div><!-- .End .tab-pane -->
+                            <div class="tab-pane fade" id="product-info-tab" role="tabpanel" aria-labelledby="product-info-link">
+                                <div class="product-desc-content">
+                                    <h3>Information</h3>
+                                    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna viverra non, semper suscipit, posuere a, pede. Donec nec justo eget felis facilisis fermentum. Aliquam porttitor mauris sit amet orci. </p>
 
-	            		<div class="col-sm-6 col-lg-3">
-	            			<div class="widget">
-	            				<h4 class="widget-title">Useful Links</h4><!-- End .widget-title -->
+                                    <h3>Fabric & care</h3>
+                                    <ul>
+                                        <li>Faux suede fabric</li>
+                                        <li>Gold tone metal hoop handles.</li>
+                                        <li>RI branding</li>
+                                        <li>Snake print trim interior </li>
+                                        <li>Adjustable cross body strap</li>
+                                        <li> Height: 31cm; Width: 32cm; Depth: 12cm; Handle Drop: 61cm</li>
+                                    </ul>
 
-	            				<ul class="widget-list">
-	            					<li><a href="about.html">About Molla</a></li>
-	            					<li><a href="#">How to shop on Molla</a></li>
-	            					<li><a href="#">FAQ</a></li>
-	            					<li><a href="contact.html">Contact us</a></li>
-	            					<li><a href="login.html">Log in</a></li>
-	            				</ul><!-- End .widget-list -->
-	            			</div><!-- End .widget -->
-	            		</div><!-- End .col-sm-6 col-lg-3 -->
+                                    <h3>Size</h3>
+                                    <p>one size</p>
+                                </div><!-- End .product-desc-content -->
+                            </div><!-- .End .tab-pane -->
+                            <div class="tab-pane fade" id="product-shipping-tab" role="tabpanel" aria-labelledby="product-shipping-link">
+                                <div class="product-desc-content">
+                                    <h3>Delivery & returns</h3>
+                                    <p>We deliver to over 100 countries around the world. For full details of the delivery options we offer, please view our <a href="#">Delivery information</a><br>
+                                    We hope you’ll love every purchase, but if you ever need to return an item you can do so within a month of receipt. For full details of how to make a return, please view our <a href="#">Returns information</a></p>
+                                </div><!-- End .product-desc-content -->
+                            </div><!-- .End .tab-pane -->
+                            <div class="tab-pane fade" id="product-review-tab" role="tabpanel" aria-labelledby="product-review-link">
+                                <div class="reviews">
+                                    <h3>Reviews (2)</h3>
+                                    <div class="review">
+                                        <div class="row no-gutters">
+                                            <div class="col-auto">
+                                                <h4><a href="#">Samanta J.</a></h4>
+                                                <div class="ratings-container">
+                                                    <div class="ratings">
+                                                        <div class="ratings-val" style="width: 80%;"></div><!-- End .ratings-val -->
+                                                    </div><!-- End .ratings -->
+                                                </div><!-- End .rating-container -->
+                                                <span class="review-date">6 days ago</span>
+                                            </div><!-- End .col -->
+                                            <div class="col">
+                                                <h4>Good, perfect size</h4>
 
-	            		<div class="col-sm-6 col-lg-3">
-	            			<div class="widget">
-	            				<h4 class="widget-title">Customer Service</h4><!-- End .widget-title -->
+                                                <div class="review-content">
+                                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus cum dolores assumenda asperiores facilis porro reprehenderit animi culpa atque blanditiis commodi perspiciatis doloremque, possimus, explicabo, autem fugit beatae quae voluptas!</p>
+                                                </div><!-- End .review-content -->
 
-	            				<ul class="widget-list">
-	            					<li><a href="#">Payment Methods</a></li>
-	            					<li><a href="#">Money-back guarantee!</a></li>
-	            					<li><a href="#">Returns</a></li>
-	            					<li><a href="#">Shipping</a></li>
-	            					<li><a href="#">Terms and conditions</a></li>
-	            					<li><a href="#">Privacy Policy</a></li>
-	            				</ul><!-- End .widget-list -->
-	            			</div><!-- End .widget -->
-	            		</div><!-- End .col-sm-6 col-lg-3 -->
+                                                <div class="review-action">
+                                                    <a href="#"><i class="icon-thumbs-up"></i>Helpful (2)</a>
+                                                    <a href="#"><i class="icon-thumbs-down"></i>Unhelpful (0)</a>
+                                                </div><!-- End .review-action -->
+                                            </div><!-- End .col-auto -->
+                                        </div><!-- End .row -->
+                                    </div><!-- End .review -->
 
-	            		<div class="col-sm-6 col-lg-3">
-	            			<div class="widget">
-	            				<h4 class="widget-title">My Account</h4><!-- End .widget-title -->
+                                    <div class="review">
+                                        <div class="row no-gutters">
+                                            <div class="col-auto">
+                                                <h4><a href="#">John Doe</a></h4>
+                                                <div class="ratings-container">
+                                                    <div class="ratings">
+                                                        <div class="ratings-val" style="width: 100%;"></div><!-- End .ratings-val -->
+                                                    </div><!-- End .ratings -->
+                                                </div><!-- End .rating-container -->
+                                                <span class="review-date">5 days ago</span>
+                                            </div><!-- End .col -->
+                                            <div class="col">
+                                                <h4>Very good</h4>
 
-	            				<ul class="widget-list">
-	            					<li><a href="#">Sign In</a></li>
-	            					<li><a href="cart.html">View Cart</a></li>
-	            					<li><a href="#">My Wishlist</a></li>
-	            					<li><a href="#">Track My Order</a></li>
-	            					<li><a href="#">Help</a></li>
-	            				</ul><!-- End .widget-list -->
-	            			</div><!-- End .widget -->
-	            		</div><!-- End .col-sm-6 col-lg-3 -->
-	            	</div><!-- End .row -->
-	            </div><!-- End .container -->
-	        </div><!-- End .footer-middle -->
+                                                <div class="review-content">
+                                                    <p>Sed, molestias, tempore? Ex dolor esse iure hic veniam laborum blanditiis laudantium iste amet. Cum non voluptate eos enim, ab cumque nam, modi, quas iure illum repellendus, blanditiis perspiciatis beatae!</p>
+                                                </div><!-- End .review-content -->
 
-	        <div class="footer-bottom">
-	        	<div class="container">
-	        		<p class="footer-copyright">Copyright © 2019 Molla Store. All Rights Reserved.</p><!-- End .footer-copyright -->
-	        		<figure class="footer-payments">
-	        			<img src="assets/images/payments.png" alt="Payment methods" width="272" height="20">
-	        		</figure><!-- End .footer-payments -->
-	        	</div><!-- End .container -->
-	        </div><!-- End .footer-bottom -->
-        </footer><!-- End .footer -->
-    </div><!-- End .page-wrapper -->
+                                                <div class="review-action">
+                                                    <a href="#"><i class="icon-thumbs-up"></i>Helpful (0)</a>
+                                                    <a href="#"><i class="icon-thumbs-down"></i>Unhelpful (0)</a>
+                                                </div><!-- End .review-action -->
+                                            </div><!-- End .col-auto -->
+                                        </div><!-- End .row -->
+                                    </div><!-- End .review -->
+                                </div><!-- End .reviews -->
+                            </div><!-- .End .tab-pane -->
+                        </div><!-- End .tab-content -->
+                    </div><!-- End .product-details-tab -->
+                </div><!-- End .container -->
+            </div><!-- End .page-content -->
+        </main><!-- End .main --><!-- End .main -->
+
+    <footer class="footer">
+        <div class="footer-middle">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-6 col-lg-3">
+                        <div class="widget widget-about">
+                            <img src="assets/images/logo.png" class="footer-logo" alt="Footer Logo" width="105" height="25">
+                            <p>Praesent dapibus, neque id cursus ucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. </p>
+
+                            <div class="social-icons">
+                                <a href="#" class="social-icon" target="_blank" title="Facebook"><i class="icon-facebook-f"></i></a>
+                                <a href="#" class="social-icon" target="_blank" title="Twitter"><i class="icon-twitter"></i></a>
+                                <a href="#" class="social-icon" target="_blank" title="Instagram"><i class="icon-instagram"></i></a>
+                                <a href="#" class="social-icon" target="_blank" title="Youtube"><i class="icon-youtube"></i></a>
+                                <a href="#" class="social-icon" target="_blank" title="Pinterest"><i class="icon-pinterest"></i></a>
+                            </div><!-- End .soial-icons -->
+                        </div><!-- End .widget about-widget -->
+                    </div><!-- End .col-sm-6 col-lg-3 -->
+
+                    <div class="col-sm-6 col-lg-3">
+                        <div class="widget">
+                            <h4 class="widget-title">Useful Links</h4><!-- End .widget-title -->
+
+                            <ul class="widget-list">
+                                <li><a href="about.html">About Molla</a></li>
+                                <li><a href="#">How to shop on Molla</a></li>
+                                <li><a href="#">FAQ</a></li>
+                                <li><a href="contact.html">Contact us</a></li>
+                                <li><a href="login.html">Log in</a></li>
+                            </ul><!-- End .widget-list -->
+                        </div><!-- End .widget -->
+                    </div><!-- End .col-sm-6 col-lg-3 -->
+
+                    <div class="col-sm-6 col-lg-3">
+                        <div class="widget">
+                            <h4 class="widget-title">Customer Service</h4><!-- End .widget-title -->
+
+                            <ul class="widget-list">
+                                <li><a href="#">Payment Methods</a></li>
+                                <li><a href="#">Money-back guarantee!</a></li>
+                                <li><a href="#">Returns</a></li>
+                                <li><a href="#">Shipping</a></li>
+                                <li><a href="#">Terms and conditions</a></li>
+                                <li><a href="#">Privacy Policy</a></li>
+                            </ul><!-- End .widget-list -->
+                        </div><!-- End .widget -->
+                    </div><!-- End .col-sm-6 col-lg-3 -->
+
+                    <div class="col-sm-6 col-lg-3">
+                        <div class="widget">
+                            <h4 class="widget-title">My Account</h4><!-- End .widget-title -->
+
+                            <ul class="widget-list">
+                                <li><a href="#">Sign In</a></li>
+                                <li><a href="cart.html">View Cart</a></li>
+                                <li><a href="#">My Wishlist</a></li>
+                                <li><a href="#">Track My Order</a></li>
+                                <li><a href="#">Help</a></li>
+                            </ul><!-- End .widget-list -->
+                        </div><!-- End .widget -->
+                    </div><!-- End .col-sm-6 col-lg-3 -->
+                </div><!-- End .row -->
+            </div><!-- End .container -->
+        </div><!-- End .footer-middle -->
+
+        <div class="footer-bottom">
+            <div class="container">
+                <p class="footer-copyright">Copyright © 2019 Molla Store. All Rights Reserved.</p><!-- End .footer-copyright -->
+                <figure class="footer-payments">
+                    <img src="assets/images/payments.png" alt="Payment methods" width="272" height="20">
+                </figure><!-- End .footer-payments -->
+            </div><!-- End .container -->
+        </div><!-- End .footer-bottom -->
+    </footer><!-- End .footer -->
+</div>
     <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
+
+    <!-- Sticky Bar -->
+    <div class="sticky-bar">
+        <div class="container">
+            <div class="row">
+                <div class="col-6">
+                    <figure class="product-media">
+                        <a href="product.html">
+                            <img src="<%= products[0].images[0] %>"  alt="Product image">
+                        </a>
+                    </figure><!-- End .product-media -->
+                    <h4 class="product-title"><a href="product.html"><%= products[0].name %> </a></h4><!-- End .product-title -->
+                </div><!-- End .col-6 -->
+
+                <div class="col-6 justify-content-end">
+                    <div class="product-price">
+                        <%= products[0].price %> 
+                    </div><!-- End .product-price -->
+                   
+                    <div class="product-details-action">
+                        <a href="/addToCart" class="btn-product btn-cart"><span>add to cart</span></a>
+                        <a href="/wishlist" class="btn-product btn-wishlist" title="Wishlist"><span>Add to Wishlist</span></a>
+                    </div><!-- End .product-details-action -->
+                </div><!-- End .col-6 -->
+            </div><!-- End .row -->
+        </div><!-- End .container -->
+    </div><!-- End .sticky-bar -->
 
     <!-- Mobile Menu -->
     <div class="mobile-menu-overlay"></div><!-- End .mobil-menu-overlay -->
@@ -583,136 +507,135 @@
         </div><!-- End .mobile-menu-wrapper -->
     </div><!-- End .mobile-menu-container -->
 
-    <%- include ('../Layout/user/footer.ejs') -%>
-   
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>  
-<link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.min.css'></link>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Sign in / Register Modal -->
+    <div class="modal fade" id="signin-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><i class="icon-close"></i></span>
+                    </button>
 
-<script>
+                    <div class="form-box">
+                        <div class="form-tab">
+                            <ul class="nav nav-pills nav-fill" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="signin-tab" data-toggle="tab" href="#signin" role="tab" aria-controls="signin" aria-selected="true">Sign In</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="register-tab" data-toggle="tab" href="#register" role="tab" aria-controls="register" aria-selected="false">Register</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content" id="tab-content-5">
+                                <div class="tab-pane fade show active" id="signin" role="tabpanel" aria-labelledby="signin-tab">
+                                    <form action="#">
+                                        <div class="form-group">
+                                            <label for="singin-email">Username or email address *</label>
+                                            <input type="text" class="form-control" id="singin-email" name="singin-email" required>
+                                        </div><!-- End .form-group -->
 
-    $(document).ready(function () {
-        // Initialize product gallery
-        $('#product-zoom-gallery').on('click', '.product-gallery-item', function (e) {
-            e.preventDefault();
+                                        <div class="form-group">
+                                            <label for="singin-password">Password *</label>
+                                            <input type="password" class="form-control" id="singin-password" name="singin-password" required>
+                                        </div><!-- End .form-group -->
 
-            // Update the main product image and zoom image
-            var imageSrc = $(this).data('image');
-            $('#product-zoom').attr('src', imageSrc).data('zoom-image', imageSrc);
+                                        <div class="form-footer">
+                                            <button type="submit" class="btn btn-outline-primary-2">
+                                                <span>LOG IN</span>
+                                                <i class="icon-long-arrow-right"></i>
+                                            </button>
 
-            // Remove 'active' class from all gallery items and add it to the clicked one
-            $('.product-gallery-item').removeClass('active');
-            $(this).addClass('active');
-        });
-    });
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" id="signin-remember">
+                                                <label class="custom-control-label" for="signin-remember">Remember Me</label>
+                                            </div><!-- End .custom-checkbox -->
 
+                                            <a href="#" class="forgot-link">Forgot Your Password?</a>
+                                        </div><!-- End .form-footer -->
+                                    </form>
+                                    <div class="form-choice">
+                                        <p class="text-center">or sign in with</p>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <a href="#" class="btn btn-login btn-g">
+                                                    <i class="icon-google"></i>
+                                                    Login With Google
+                                                </a>
+                                            </div><!-- End .col-6 -->
+                                            <div class="col-sm-6">
+                                                <a href="#" class="btn btn-login btn-f">
+                                                    <i class="icon-facebook-f"></i>
+                                                    Login With Facebook
+                                                </a>
+                                            </div><!-- End .col-6 -->
+                                        </div><!-- End .row -->
+                                    </div><!-- End .form-choice -->
+                                </div><!-- .End .tab-pane -->
+                                <div class="tab-pane fade" id="register" role="tabpanel" aria-labelledby="register-tab">
+                                    <form action="#">
+                                        <div class="form-group">
+                                            <label for="register-email">Your email address *</label>
+                                            <input type="email" class="form-control" id="register-email" name="register-email" required>
+                                        </div><!-- End .form-group -->
 
+                                        <div class="form-group">
+                                            <label for="register-password">Password *</label>
+                                            <input type="password" class="form-control" id="register-password" name="register-password" required>
+                                        </div><!-- End .form-group -->
 
-    $(document).ready(function () {
-        $("#addToCartBtn").on("click", function (event) {
-            event.preventDefault();
-            
-            const productId = getParameterByName("id");
+                                        <div class="form-footer">
+                                            <button type="submit" class="btn btn-outline-primary-2">
+                                                <span>SIGN UP</span>
+                                                <i class="icon-long-arrow-right"></i>
+                                            </button>
 
-            $.ajax({
-    url: '/addToCart',
-    method: 'POST',
-    data: { productId: productId, productQuantity: 1 },
-    success: function (response) {
-        console.log('Response:', response);
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" id="register-policy" required>
+                                                <label class="custom-control-label" for="register-policy">I agree to the <a href="#">privacy policy</a> *</label>
+                                            </div><!-- End .custom-checkbox -->
+                                        </div><!-- End .form-footer -->
+                                    </form>
+                                    <div class="form-choice">
+                                        <p class="text-center">or sign in with</p>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <a href="#" class="btn btn-login btn-g">
+                                                    <i class="icon-google"></i>
+                                                    Login With Google
+                                                </a>
+                                            </div><!-- End .col-6 -->
+                                            <div class="col-sm-6">
+                                                <a href="#" class="btn btn-login  btn-f">
+                                                    <i class="icon-facebook-f"></i>
+                                                    Login With Facebook
+                                                </a>
+                                            </div><!-- End .col-6 -->
+                                        </div><!-- End .row -->
+                                    </div><!-- End .form-choice -->
+                                </div><!-- .End .tab-pane -->
+                            </div><!-- End .tab-content -->
+                        </div><!-- End .form-tab -->
+                    </div><!-- End .form-box -->
+                </div><!-- End .modal-body -->
+            </div><!-- End .modal-content -->
+        </div><!-- End .modal-dialog -->
+    </div><!-- End .modal -->
 
-        if (response.login) {
-            // Use SweetAlert for login message
-            console.log('Login Required:', response.message);
-            Swal.fire({
-                title: 'Login Required',
-                text: response.message,
-                icon: 'info',
-            });
-        } else if (response.success) {
-            // Use SweetAlert for success message
-            console.log('Success!');
-            Swal.fire({  
-                title: 'Success',
-                text: 'Item added to the cart successfully!',
-                icon: 'success', 
-            });
-        }
-    },
-    error: function (error) {
-        // Use SweetAlert for error message
-        console.log('Error:', error.responseText || 'An error occurred!');
-        Swal.fire({
-            title: 'Error',
-            text: error.responseText || 'An error occurred!',
-            icon: 'error',
-        });
-    }
-});  
-
-
-        });
-
-        
-        function getParameterByName(name, url) {
-            if (!url) url = window.location.href;
-            name = name.replace(/[\[\]]/g, "\\$&");
-            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-                results = regex.exec(url);
-            if (!results) return null;
-            if (!results[2]) return '';
-            return decodeURIComponent(results[2].replace(/\+/g, ' '));
-        }
-    });
-</script>
-<script>
-function addToWishlist(id){
-   
-    const data = {productId:id}
-    console.log(data);
-  $.ajax({
-    url:'/addToWishlist',
-    method:'POST',
-    data:data,
-    success:function (response){
-      if(response.added == true){
-        Swal.fire({
-            position: 'center',
-            icon: 'success',
-            title: 'Added to Whishlist ',
-            confirmButtonColor: "#3085d6",
-            confirmButtonText: 'ok',
-          })
-      }else if (response.login == true){
-        Swal.fire({
-            icon: 'warning',
-            title: 'Please Login',
-            confirmButtonColor: "#3085d6",
-            confirmButtonText: "Login",
-            showCancelButton: true,
-            cancelButtonColor: "#d33",
-            text: response.message
-          }).then((res) => {
-            if (res.isConfirmed) {
-              window.location.href = '/login'
-            }
-          })
-      }else if(response.already == true){
-        Swal.fire({
-          title:'already in the whishlist',
-          confirmButton:false
-        })
-      }
-    }
-  })
-  }
-</script>
-
-
-
-
+    <!-- Plugins JS File -->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/jquery.hoverIntent.min.js"></script>
+    <script src="assets/js/jquery.waypoints.min.js"></script>
+    <script src="assets/js/superfish.min.js"></script>
+    <script src="assets/js/owl.carousel.min.js"></script>
+    <script src="assets/js/bootstrap-input-spinner.js"></script>
+    <script src="assets/js/jquery.elevateZoom.min.js"></script>
+    <script src="assets/js/bootstrap-input-spinner.js"></script>
+    <script src="assets/js/jquery.magnific-popup.min.js"></script>
+    <!-- Main JS File -->
+    <script src="assets/js/main.js"></script>
 </body>
 
 
-
+<!-- molla/product.html  22 Nov 2019 09:55:05 GMT -->
 </html>

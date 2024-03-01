@@ -11,7 +11,7 @@ const loadCart = async (req, res) => {
         const userId = req.session.user.id;
         
        const cartDetails = await Cart.findOne({ userId: userId }).populate({ path: 'products.productId' }).exec();
-        
+       
       
         res.render('cart', { cartDetails: cartDetails, user: req.session.user });
       } else {

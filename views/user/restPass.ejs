@@ -1,8 +1,8 @@
-<!DOCTYPE html>
+
 <html lang="en">
 
 
-<!-- molla/product.html  22 Nov 2019 09:54:50 GMT -->
+<!-- molla/elements-accordions.html  22 Nov 2019 10:05:17 GMT -->
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,58 +12,424 @@
     <meta name="description" content="Molla - Bootstrap eCommerce Template">
     <meta name="author" content="p-themes">
     <!-- Favicon -->
-    <link rel="apple-touch-icon" sizes="180x180" href="assets/images/icons/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="assets/images/icons/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/icons/favicon-16x16.png">
-    <link rel="manifest" href="assets/images/icons/site.html">
-    <link rel="mask-icon" href="assets/images/icons/safari-pinned-tab.svg" color="#666666">
-    <link rel="shortcut icon" href="assets/images/icons/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/icons/favicon-16x16.png">
+    <link rel="manifest" href="/assets/images/icons/site.html">
+    <link rel="mask-icon" href="/assets/images/icons/safari-pinned-tab.svg" color="#666666">
+    <link rel="shortcut icon" href="/assets/images/icons/favicon.ico">
     <meta name="apple-mobile-web-app-title" content="Molla">
     <meta name="application-name" content="Molla">
     <meta name="msapplication-TileColor" content="#cc9966">
-    <meta name="msapplication-config" content="assets/images/icons/browserconfig.xml">
+    <meta name="msapplication-config" content="/assets/images/icons/browserconfig.xml">
     <meta name="theme-color" content="#ffffff">
     <!-- Plugins CSS File -->
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/css/plugins/owl-carousel/owl.carousel.css">
-    <link rel="stylesheet" href="assets/css/plugins/magnific-popup/magnific-popup.css">
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
     <!-- Main CSS File -->
-    <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" href="assets/css/plugins/nouislider/nouislider.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
 </head>
-
-<body>
-    <div class="container">
-        <h2>Reset Your Password</h2>
-        <form action="/reset-password/<%= token %>" method="POST">
-            <!-- Add any necessary form fields -->
-            <div>
-                <label for="password">New Password:</label>
-                <input type="password" id="password" name="password" required>
+      
+    <body>
+     
+        <div class="page-wrapper">
+            <header class="header header-2 header-intro-clearance">
+        
+                <div class="header-middle">
+                    <div class="container">
+                        <div class="header-left">
+                            <button class="mobile-menu-toggler">
+                                <span class="sr-only">Toggle mobile menu</span>
+                                <i class="icon-bars"></i>
+                            </button>
+                            
+                            <a href="index.html" class="logo">
+                                <img src="/assets/images/demos/demo-2/logo.png" alt="Molla Logo" width="105" height="25">
+                            </a>
+                        </div><!-- End .header-left -->
+        
+                        <div class="header-center">
+                            
+                        </div>
+        
+                        <div class="header-right">
+                            <!-- <div class="account">
+                                <a href="dashboard.html" title="My account">
+                                    <div class="icon">
+                                        <i class="icon-user"></i>
+                                    </div>
+                                    <p>Account</p>
+                                </a>
+                            </div>End .compare-dropdown -->
+        
+                            <div class="dropdown cart-dropdown">
+                                <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+                                    <div class="icon">
+                                        <i class="icon-user"></i>
+                                    </div>
+                                    <p>Account</p>
+                                </a>
+        
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <%if(locals.user){ %>
+                                    <div class="dropdown-cart-products">
+                                        <div class="product">
+                                            <div class="product-cart-details">
+                                                <h4 class="product-title">
+                                                    <a href="/user">Your Account</a>
+                                                </h4>
+                                            </div><!-- End .product-cart-details -->
+                                        </div><!-- End .product -->
+            
+                                        <div class="product">
+                                            <div class="product-cart-details">
+                                                <h4 class="product-title">
+                                                    <a href="/logout">Logout</a>
+                                                </h4>
+                                            </div><!-- End .product-cart-details -->
+            
+                                        </div><!-- End .product -->
+                                    </div><!-- End .cart-product -->
+                                    <%} else{%>
+                                    <div class="product">
+                                        <div class="product-cart-details">
+                                            <h4 class="product-title">
+                                                <a href="/login">Login</a>
+                                            </h4>
+                                        </div><!-- End .product-cart-details -->
+            
+                                    </div><!-- End .product -->
+                                    <%}%>
+                                </div><!-- End .dropdown-menu -->
+                            </div><!-- End .cart-dropdown -->
+        
+                            <div class="wishlist">
+                                <a href="/wishlist" title="Wishlist">
+                                    <div class="icon">
+                                        <i class="icon-heart-o"></i>
+                                        <span class="wishlist-count badge">3</span>
+                                    </div>
+                                    <p>Wishlist</p>
+                                </a>
+                            </div><!-- End .compare-dropdown -->
+        
+                            <div class="dropdown cart-dropdown">
+                                <a href="/cart" class="dropdown-toggle" role="button" >
+                                    <div class="icon">
+                                        <i class="icon-shopping-cart"></i>
+                                        
+                                    </div>
+                                    <p>Cart</p>
+                                </a>
+        
+                              <!-- End .dropdown-menu -->
+                            </div><!-- End .cart-dropdown -->
+                        </div><!-- End .header-right -->
+                    </div><!-- End .container -->
+                </div><!-- End .header-middle -->
+        
+                <div class="header-bottom sticky-header">
+                    <div class="container">
+                        <div class="header-left">
+                            
+                        </div><!-- End .header-left -->
+        
+                        <div class="header-center">
+                            <nav class="main-nav">
+                                <ul class="menu sf-arrows">
+                                    <li class="megamenu-container active">
+                                        <a href="/" class="sf-with-ul">Home</a>
+        
+                                    </li>
+                                    <li>
+                                        <a href="/shop" class="sf-with-ul">Shop</a>
+        
+                                       
+                                    </li>
+                                    <li>
+                                        <a href="/contact" class="sf-with-ul">Contact</a>
+        
+                                       
+                                    </li>
+                                    
+                                    <li>
+                                        <a href="/about" class="sf-with-ul">About</a>
+        
+        
+                                    </li>
+                                   
+                                    
+                                   
+                                </ul><!-- End .menu -->
+                            </nav><!-- End .main-nav -->
+                        </div><!-- End .header-center -->
+        
+                      
+                    </div><!-- End .container -->
+                </div><!-- End .header-bottom -->
+            </header><!-- End .header -->
+          
+            <div class="footer-newsletter bg-image" style="background-image: url(/assets/images/backgrounds/bg-2.jpg)">
+                <div class="container">
+                    <div class="heading text-center">
+                        <h3 class="title">Reset Password</h3>
+                        <p class="title-desc">Enter your new password below</p>
+                    </div>
+            
+                    <div class="row">
+                        <div class="col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
+                            <form action="/reset-password/<%= token %>" method="POST">
+                                <!-- New Password Input with Show/Hide Option -->
+                                <div class="form-group">
+                                    <label for="newPassword">New Password</label>
+                                    <div class="input-group">
+                                        <input type="password" id="password" class="form-control" name="password" placeholder="Enter your New Password" required>
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-secondary" type="button" onclick="togglePasswordVisibility('password')">
+                                                <i class="icon-eye"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+            
+                                <!-- Confirm Password Input with Show/Hide Option -->
+                                <div class="form-group">
+                                    <label for="confirmPassword">Confirm Password</label>
+                                    <div class="input-group">
+                                        <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" placeholder="Confirm your Password" required>
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-secondary" type="button" onclick="togglePasswordVisibility('confirmPassword')">
+                                                <i class="icon-eye"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+            
+                                <!-- Submit Button -->
+                                <button type="submit" class="btn btn-primary" id="submitBtn">Submit</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div>
-                <label for="confirmPassword">Confirm Password:</label>
-                <input type="password" id="confirmPassword" name="confirmPassword" required>
-            </div>
-            <button type="submit">Reset Password</button>
-        </form>
-    </div>
-
+            <!-- End .footer-newsletter bg-image -->
+            <div class="footer-middle">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-12 col-lg-6">
+                            <div class="widget widget-about">
+                                <img src="/assets/images/demos/demo-2/logo.png" class="footer-logo" alt="Footer Logo" width="105" height="25">
+                                <p>Praesent dapibus, neque id cursus ucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus. </p>
+                                
+                                <div class="widget-about-info">
+                                    <div class="row">
+                                        <div class="col-sm-6 col-md-4">
+                                            <span class="widget-about-title">Got Question? Call us 24/7</span>
+                                            <a href="tel:123456789">+0123 456 789</a>
+                                        </div><!-- End .col-sm-6 -->
+                                        <div class="col-sm-6 col-md-8">
+                                            <span class="widget-about-title">Payment Method</span>
+                                            <figure class="footer-payments">
+                                                <img src="/assets/images/payments.png" alt="Payment methods" width="272" height="20">
+                                            </figure><!-- End .footer-payments -->
+                                        </div><!-- End .col-sm-6 -->
+                                    </div><!-- End .row -->
+                                </div><!-- End .widget-about-info -->
+                            </div><!-- End .widget about-widget -->
+                        </div><!-- End .col-sm-12 col-lg-3 -->
+        
+                        <div class="col-sm-4 col-lg-2">
+                            <div class="widget">
+                                <h4 class="widget-title">Information</h4><!-- End .widget-title -->
+        
+                                <ul class="widget-list">
+                                    <li><a href="about.html">About Molla</a></li>
+                                    <li><a href="#">How to shop on Molla</a></li>
+                                    <li><a href="#">FAQ</a></li>
+                                    <li><a href="contact.html">Contact us</a></li>
+                                    <li><a href="login.html">Log in</a></li>
+                                </ul><!-- End .widget-list -->
+                            </div><!-- End .widget -->
+                        </div><!-- End .col-sm-4 col-lg-3 -->
+        
+                        <div class="col-sm-4 col-lg-2">
+                            <div class="widget">
+                                <h4 class="widget-title">Customer Service</h4><!-- End .widget-title -->
+        
+                                <ul class="widget-list">
+                                    <li><a href="#">Payment Methods</a></li>
+                                    <li><a href="#">Money-back guarantee!</a></li>
+                                    <li><a href="#">Returns</a></li>
+                                    <li><a href="#">Shipping</a></li>
+                                    <li><a href="#">Terms and conditions</a></li>
+                                    <li><a href="#">Privacy Policy</a></li>
+                                </ul><!-- End .widget-list -->
+                            </div><!-- End .widget -->
+                        </div><!-- End .col-sm-4 col-lg-3 -->
+        
+                        <div class="col-sm-4 col-lg-2">
+                            <div class="widget">
+                                <h4 class="widget-title">My Account</h4><!-- End .widget-title -->
+        
+                                <ul class="widget-list">
+                                    <li><a href="#">Sign In</a></li>
+                                    <li><a href="cart.html">View Cart</a></li>
+                                    <li><a href="#">My Wishlist</a></li>
+                                    <li><a href="#">Track My Order</a></li>
+                                    <li><a href="#">Help</a></li>
+                                </ul><!-- End .widget-list -->
+                            </div><!-- End .widget -->
+                        </div><!-- End .col-sm-64 col-lg-3 -->
+                    </div><!-- End .row -->
+                </div><!-- End .container -->
+            </div><!-- End .footer-middle -->
+        
+            <div class="footer-bottom">
+                <div class="container">
+                    <p class="footer-copyright">Copyright © 2019 Molla Store. All Rights Reserved.</p><!-- End .footer-copyright -->
+                    <ul class="footer-menu">
+                        <li><a href="#">Terms Of Use</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul><!-- End .footer-menu -->
+        
+                    <div class="social-icons social-icons-color">
+                        <span class="social-label">Social Media</span>
+                        <a href="#" class="social-icon social-facebook" title="Facebook" target="_blank"><i class="icon-facebook-f"></i></a>
+                        <a href="#" class="social-icon social-twitter" title="Twitter" target="_blank"><i class="icon-twitter"></i></a>
+                        <a href="#" class="social-icon social-instagram" title="Instagram" target="_blank"><i class="icon-instagram"></i></a>
+                        <a href="#" class="social-icon social-youtube" title="Youtube" target="_blank"><i class="icon-youtube"></i></a>
+                        <a href="#" class="social-icon social-pinterest" title="Pinterest" target="_blank"><i class="icon-pinterest"></i></a>
+                    </div><!-- End .soial-icons -->
+                </div><!-- End .container -->
+            </div><!-- End .footer-bottom -->
+        </footer><!-- End .footer -->
+        </div>   
+        <!-- Add this script in your EJS file -->
+       
+            
+        
+  
     <!-- Plugins JS File -->
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/js/jquery.hoverIntent.min.js"></script>
-    <script src="assets/js/jquery.waypoints.min.js"></script>
-    <script src="assets/js/superfish.min.js"></script>
-    <script src="assets/js/owl.carousel.min.js"></script>
-    <script src="assets/js/bootstrap-input-spinner.js"></script>
-    <script src="assets/js/jquery.elevateZoom.min.js"></script>
-    <script src="assets/js/bootstrap-input-spinner.js"></script>
-    <script src="assets/js/jquery.magnific-popup.min.js"></script>
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/js/jquery.hoverIntent.min.js"></script>
+    <script src="/assets/js/jquery.waypoints.min.js"></script>
+    <script src="/assets/js/superfish.min.js"></script>
+    <script src="/assets/js/owl.carousel.min.js"></script>
+    <script src="/assets/js/bootstrap-input-spinner.js"></script>
+    <script src="/assets/js/jquery.elevateZoom.min.js"></script>
+    <script src="/assets/js/bootstrap-input-spinner.js"></script>
+    <script src="/assets/js/jquery.magnific-popup.min.js"></script>
     <!-- Main JS File -->
-    <script src="assets/js/main.js"></script>
+    <script src="/assets/js/main.js"></script>
+    <script src="/assets/js/custom.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function togglePasswordVisibility(inputId) {
+            const passwordInput = document.getElementById(inputId);
+            const buttonIcon = document.getElementById(`showHide${inputId.charAt(0).toUpperCase() + inputId.slice(1)}`);
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                buttonIcon.innerHTML = '<i class="icon-eye-slash"></i>';
+            } else {
+                passwordInput.type = "password";
+                buttonIcon.innerHTML = '<i class="icon-eye"></i>';
+            }
+        }
+
+
+        ////
+
+
+
+      
+  
+
+    </script>
+
+<script>
+  $(document).ready(function() {
+    $('#submitBtn').click(function(e) {
+        e.preventDefault(); // Prevent the default form submission
+
+        // Check password validation
+        const validationMessage = checkPasswordValidation();
+        if (validationMessage) {
+            // Show specific error alert
+            Swal.fire({
+                icon: 'error',
+                title: 'Validation Error',
+                text: validationMessage,
+            });
+            return; // Stop further execution
+        }
+
+        const token = '<%= token %>';
+        const password = $('#password').val();
+
+        // Perform AJAX request
+        $.ajax({
+            url: `/reset-password/${token}`,
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ password }),
+            success: function(response) {
+                if (response.message === 'succesfull') {
+                    // Show success alert and redirect
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Password Updated Successfully',
+                        text: response.message,
+                    }).then(function() {
+                        console.log("SweetAlert executed");
+                        window.location.href = '/login';
+                    });
+                } else {
+                    // Show error alert
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Password Update Failed',
+                        text: response.message,
+                    });
+                }
+            },
+            error: function(error) {
+                console.error(error);
+                // Show a generic error alert
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Something went wrong!',
+                });
+            }
+        });
+    });
+});
+
+function checkPasswordValidation() {
+    const password = $('#password').val();
+    const confirmPassword = $('#confirmPassword').val();
+
+    // Password validation regular expression
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?!.*\s).{6,}$/;
+
+    // Check if passwords match
+    if (password !== confirmPassword) {
+        return 'Passwords do not match.';
+    }
+
+    // Check if password meets criteria
+    if (!passwordRegex.test(password)) {
+        return 'Password must include at least one uppercase letter, one digit, and be at least 6 characters long.';
+    }
+
+    // Passwords match and meet criteria
+    $('#password').removeClass('is-invalid').addClass('is-valid');
+    $('#confirmPassword').removeClass('is-invalid').addClass('is-valid');
+    return ''; // No error message
+}
+
+
+</script>
 </body>
-
-
-<!-- molla/product.html  22 Nov 2019 09:55:05 GMT -->
 </html>

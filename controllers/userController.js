@@ -7,12 +7,18 @@ const Token= require('../models/tokenModel')
 const Order= require('../models/orderModel')
 const Cart=require('../models/cartModel')
 const Wallet=require('../models/walletModel')
+const Coupon=require('../models/couponModel');
+const Product = require('../models/products');
+const Category = require('../models/categoryModel');
 
 //------Home page----------------------------//
 const loadHome = async (req, res) => {
   try {
    
-      res.render('home', { user: req.session.user});
+    let products;
+    products = await Product.find()
+    let category= await Category.find()
+      res.render('home', { products:products,user: req.session.user,category:category});
 
   } catch (error) {
     console.error('Error in loadHome:', error);
@@ -36,24 +42,30 @@ const loadLogin = async (req, res) => {
 
 
 // userLogout session---------------------------//
-const logout = async (req, res, next) => {
+const logout = async (req, res) => {
 
+  // try {
+  //   if (req.session) {
+  //     req.session.destroy((err) => {
+  //       if (err) {
+  //         return next(err);
+  //       }
+  //       else {
+  //         return res.redirect('/login')
+  //       }
+  //     })
+  //   }
+
+  // } catch (error) {
+  //   console.log(error.message);
+  //   res.status(500).send('Internal Server Error');
+
+  // }
   try {
-    if (req.session) {
-      req.session.destroy((err) => {
-        if (err) {
-          return next(err);
-        }
-        else {
-          return res.redirect('/login')
-        }
-      })
-    }
-
+    req.session.user = null;
+    res.redirect('/login')
   } catch (error) {
-    console.log(error.message);
-    res.status(500).send('Internal Server Error');
-
+    console.log(error);
   }
 
 
@@ -315,6 +327,7 @@ const UserLogin = async (req, res) => {
           const pass = await bcrypt.compare(password, dbpass);
           
           if (pass) {
+            console.log("logged in");
             req.session.user = {
               email: user.email,
               id: user._id,
@@ -372,7 +385,7 @@ const loadDashboard = async (req, res) => {
 
       const user = await User.findOne({ _id: userId });
       const wallet= await Wallet.findOne({userId:userId})
-console.log("wallwtt",wallet);
+console.log(wallet);
       res.render('userProfile', { userDetails: user, orders: orders,wallet:wallet });
     } else {
       req.flash('error', 'Please log in.');
@@ -549,22 +562,27 @@ const loadCheckout = async (req, res) => {
       const user = await User.findOne({ _id: userid });
 
       const cart = await Cart.findOne({ userId: userid }).populate('products.productId');
-
-      
       cart.products.forEach((product) => {
           product.totalPrice = product.quantity * product.productId.productPrice;
       });
 
      
       const subtotal = cart.products.reduce((acc, product) => acc + product.totalPrice, 0);
+      console.log(subtotal);
 
-      res.render('checkout', { user: user, cart: cart.products, subtotal: subtotal });
+      const eligibleCoupons = await Coupon.find({
+        isListed: true,
+       
+       
+      });
+    //  console.log(eligibleCoupons);
+
+      res.render('checkout', { user: user, cart: cart.products, subtotal: subtotal ,coupon:eligibleCoupons});
   } catch (error) {
       console.log(error.message);
-      res.status(500).send('Internal Server Error');
-  }
+      res.redirect('/error404')
 };
-
+}
 //-----------------------------------------------------//
 //-----------------------------------------------------//
  
@@ -626,9 +644,20 @@ const loadForget = async (req, res) => {
     res.status(500).json({ message: 'Internal Server Error' });
   }
 };
+//-----------------------------------------------------//
+//-----------------------------------------------------//
 
+const error404=async  (req,res)=>{
+  try {
+    res.render('error404')
+    
+  } catch (error) {
+    console.log(error);
+  }
+}
 //-----------------------------------------------------//
 //-----------------Reset password------------------------------------//
+
 
 
  const resetPassword=async (req, res) => {
@@ -639,7 +668,7 @@ const loadForget = async (req, res) => {
       const tokenDoc = await Token.findOne({ token });
 
       if (!tokenDoc) {
-          return res.status(404).json({ message: 'Invalid or expired token' });
+          return res.redirect('/error404')
       }
 
      
@@ -673,8 +702,8 @@ const updatePass= async (req, res) => {
       
     
       await Token.findByIdAndDelete(tokenDoc._id);
-
-      res.redirect('/login');
+     res.json({ message: 'succesfull' });
+      
   } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Internal Server Error' });
@@ -711,5 +740,8 @@ module.exports = {
   loadForgetPage,
   loadForget,
   resetPassword,
-  updatePass
+  updatePass,
+  error404
+
+
 };

@@ -1,21 +1,39 @@
 // middleware.js
 const isLogin = async (req, res, next) => {
+  // try {
+  //   console.log(" coming");
+  //   if (req.session.user) {
+  //     console.log("session coming");
+  //     console.log(req.session.user);
+  //     res.redirect('/');
+  //   } else {
+  //     next();
+  //   }
+  // } catch (error) {
+  //   console.log(error.message);
+  // }
+
   try {
-    if (req.session.user) {
-      res.redirect('/');
-    } else {
+    if(req.session.user){
       next();
     }
+    else {
+      res.redirect('/login');
+    }
   } catch (error) {
-    console.log(error.message);
+    
   }
 };
 
 const isLogout = async (req, res, next) => {
   try {
+    console.log("Inside is logout");
     if (!req.session.user) {
+      console.log("isLogout No session");
       next(); 
     } else {
+      // res.redirect('/login');
+      console.log("isLogout else part");
       res.redirect('/');
     }
   } catch (error) {

@@ -279,75 +279,96 @@
     <script src="assets/js/vendors/jquery.fullscreen.min.js"></script>
     <!-- Main Script -->
     <script src="assets/js/main.js?v=1.1" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   
-   <script>
-    function validateForm() {
-    console.log("hlooo");
-
-    var productName = document.getElementById('product_title').value;
-    var price = parseFloat(document.getElementById('price').value);
-    var quantity = parseInt(document.getElementById('quantity').value);
-    var category = document.getElementById('product-category').value;
-    var description = document.getElementById('description').value;
-
-    // Array to store error messages and focusable elements
-    var errors = [];
-
-    if (productName === "") {
-        errors.push("Please enter a product name.");
-        document.getElementById('product_title').focus();
-    }
-
-    if (isNaN(price) || price <= 0) {
-        errors.push("Please enter a valid positive price.");
-        document.getElementById('price').focus();
-    }
-
-    if (isNaN(quantity) || quantity <= 0) {
-        errors.push("Please enter a valid positive quantity.");
-        document.getElementById('quantity').focus();
-    }
-
-    if (category === "") {
-        errors.push("Please select a category.");
-        document.getElementById('product-category').focus();
-    }
-
-    if (description === "") {
-        errors.push("Please enter a product description.");
-        document.getElementById('description').focus();
-    }
-
-    // Display error messages
-    if (errors.length > 0) {
-        alert(errors.join("\n"));
-        return false;
-    }
-
-    return true;
-}
-
-
-       function previewImage(input, imageId) {
+    <script>
+        function validateForm() {
+            var productName = document.getElementById('product_title').value.trim();
+            var price = parseFloat(document.getElementById('price').value);
+            var quantity = parseInt(document.getElementById('quantity').value);
+            var category = document.getElementById('product-category').value;
+            var description = document.getElementById('description').value.trim();
+    
+            // Validate image count
+            var imageInputs = document.querySelectorAll('.imageInput');
+            var imageCount = Array.from(imageInputs).filter(input => input.files.length > 0).length;
+    
+            // Regular expressions for validation
+            var nameRegex = /^[^\s]+(\s+[^\s]+)*$/; // Allows only one space
+            var priceRegex = /^[1-9]\d*$/; // Allows only positive integers
+            var quantityRegex = /^[1-9]\d*$/; // Allows only positive integers
+    
+            // Array to store error messages and focusable elements
+            var errors = [];
+    
+            if (!nameRegex.test(productName)) {
+                errors.push("Please enter a valid product name with at most one space.");
+                document.getElementById('product_title').focus();
+            }
+    
+            if (isNaN(price) || !priceRegex.test(price)) {
+                errors.push("Please enter a valid positive price.");
+                document.getElementById('price').focus();
+            }
+    
+            if (isNaN(quantity) || !quantityRegex.test(quantity)) {
+                errors.push("Please enter a valid positive quantity.");
+                document.getElementById('quantity').focus();
+            }
+    
+            if (category === "") {
+                errors.push("Please select a category.");
+                document.getElementById('product-category').focus();
+            }
+    
+            if (description === "") {
+                errors.push("Please enter a product description.");
+                document.getElementById('description').focus();
+            }
+    
+            // Validate image count
+            if (imageCount < 4) {
+                errors.push("Please upload at least 4 images.");
+            }
+            if (errors.length === 0) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: 'Product added successfully.',
+            });
+            return true;
+        }
+            // Display error messages using SweetAlert
+            if (errors.length > 0) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Validation Error',
+                    text: errors.join("\n"),
+                });
+                return false;
+            }
+    
+           
+        }
+    
+        function previewImage(input, imageId) {
             const preview = document.getElementById(imageId);
             const file = input.files[0];
-
+    
             if (file) {
                 const reader = new FileReader();
-
+    
                 reader.onload = function (e) {
                     preview.src = e.target.result;
                 };
-
+    
                 reader.readAsDataURL(file);
             } else {
                 preview.src = "/assets/images/add Image.jpg";
             }
         }
-       
-       
-    
     </script>
+    
     
 </body>
 

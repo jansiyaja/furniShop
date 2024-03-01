@@ -316,47 +316,67 @@
     <script src="assets/js/vendors/jquery.fullscreen.min.js"></script>
     <!-- Main Script -->
     <script src="assets/js/main.js?v=1.1" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script>
-        async function block(userId,listedStatus) {
-            console.log("iam clicked");
-          // Show a confirmation alert
-          const confirmationMessage = `Are you sure you want to ${listedStatus ? 'Unlist' : 'List'} this coupon ?`;
-          const userConfirmed = window.confirm(confirmationMessage);
-      
-          if (userConfirmed) {
-            try {
-              const backendURL = '/admin/listCoupon';
-              const response = await fetch(backendURL, {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ id: userId }),
-              });
-      
-              const data = await response.json();
-              console.log('Success:', data);
-      
-              updateButtonStatus(userId, data.newListStatus);
-      
-            } catch (error) {
-              console.error('Error:', error);
+        async function block(userId, listedStatus) {
+            const confirmationMessage = `Are you sure you want to ${listedStatus ? 'Unlist' : 'List'} this coupon ?`;
+            const userConfirmed = await Swal.fire({
+                title: 'Confirmation',
+                text: confirmationMessage,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'No',
+            });
+    
+            if (userConfirmed.isConfirmed) {
+                try {
+                    const backendURL = '/admin/listCoupon';
+                    const response = await fetch(backendURL, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ id: userId }),
+                    });
+    
+                    const data = await response.json();
+                    console.log('Success:', data);
+    
+                    updateButtonStatus(userId, data.newListStatus);
+    
+                    // Show success message using SweetAlert
+                    Swal.fire({
+                        title: 'Success',
+                        text: 'Coupon status updated successfully',
+                        icon: 'success',
+                        timer: 2000,
+                        showConfirmButton: false,
+                    });
+    
+                } catch (error) {
+                    console.error('Error:', error);
+    
+                    // Show error message using SweetAlert
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'An error occurred while updating coupon status',
+                        icon: 'error',
+                    });
+                }
+            } else {
+                Swal.fire('Operation canceled.', '', 'info');
             }
-          } else {
-            alert('Operation canceled.'); 
-          }
-          location.reload();
         }
-      
+    
         function updateButtonStatus(userId, newListedStatus) {
-          const button = document.getElementById('button-' + userId);
-      
-          if (button) {
-            button.dataset.status = newListedStatus;
-            button.textContent = newListedStatus ? 'Unlist' : 'List';
-          }
+            const button = document.getElementById('button-' + userId);
+    
+            if (button) {
+                button.textContent = newListedStatus ? 'Unlist' : 'List';
+            }
         }
-      </script>
+    </script>
       
 </body>
 

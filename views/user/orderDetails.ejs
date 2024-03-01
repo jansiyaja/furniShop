@@ -1,141 +1,153 @@
 <!DOCTYPE html>
 <html lang="en">
 
+
+<!-- molla/index-11.html  22 Nov 2019 09:58:23 GMT -->
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Order Details</title>
-    <!-- Add your Bootstrap CDN link here -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <!-- Add your custom CSS styles here -->
-    <style>
-        .order-details-content {
-            padding: 50px 0;
-        }
-
-        .order-details-box {
-            border: 1px solid #ddd;
-            padding: 20px;
-            margin-bottom: 20px;
-            background-color: #f8f9fa;
-        }
-
-
-        .order-products-box {
-            border: 1px solid #ddd;
-            padding: 10px;
-            margin-bottom: 10px;
-        }
-
-        .order-products-box img {
-            max-width: 100%;
-            height: auto;
-            margin-bottom: 10px;
-        }
-
-        .go-back-button {
-            display: inline-block;
-            background-color: #007bff;
-            color: #fff;
-            padding: 5px 10px;
-            text-decoration: none;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-        }
-
-        .go-back-button:hover {
-            background-color: #0b0d10;
-        }
-    </style>
+    <title>Molla - Bootstrap eCommerce Template</title>
+    <meta name="keywords" content="HTML5 Template">
+    <meta name="description" content="Molla - Bootstrap eCommerce Template">
+    <meta name="author" content="p-themes">
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/icons/favicon-16x16.png">
+    <link rel="manifest" href="/assets/images/icons/site.html">
+    <link rel="mask-icon" href="/assets/images/icons/safari-pinned-tab.svg" color="#666666">
+    <link rel="shortcut icon" href="/assets/images/icons/favicon.ico">
+    <meta name="apple-mobile-web-app-title" content="Molla">
+    <meta name="application-name" content="Molla">
+    <meta name="msapplication-TileColor" content="#cc9966">
+    <meta name="msapplication-config" content="/assets/images/icons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="stylesheet" href="/assets/vendor/line-awesome/line-awesome/line-awesome/css/line-awesome.min.css">
+    <!-- Plugins CSS File -->
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/plugins/owl-carousel/owl.carousel.css">
+    <link rel="stylesheet" href="/assets/css/plugins/magnific-popup/magnific-popup.css">
+    <!-- Main CSS File -->
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/plugins/nouislider/nouislider.css">
+    <link rel="stylesheet" href="/assets/css/demos/demo-11.css">
 </head>
 
 <body>
-
+   
     <div class="container order-details-content">
-        <h1 class="text-center mb-4">Order Details</h1>
+        <h3 class="text-center mb-4">Order Details</h3>
         <div class="row">
+
+            
             <div class="col-md-6">
                 <!-- Order Details -->
                
                     <% if (order) { %>
-                        <p>Order ID: <%= order.orderId %>
-                        </p>
 
-                        <p>Ordered Date: <%= order.date.toLocaleDateString() %>
-                        </p>
 
-                        <h2>Delivery Address</h2>
-                        <p>Name: <%= order.deliveryAddress.fullName %>
-                        </p>
-                        <p>Phone: <%= order.deliveryAddress.phone %>
-                        </p>
-                        <p>Street Address: <%= order.deliveryAddress.streetAddress %>
-                        </p>
-                        <p>City: <%= order.deliveryAddress.city %>
-                        </p>
-                        <p>Pincode: <%= order.deliveryAddress.pincode %>
-                        </p>
-                        <p>State: <%= order.deliveryAddress.state %>
-                        </p>
-                        <p>Expected Date: <%= order.expectedDate.toLocaleDateString()  %></p>
-                       
-                        <% } else { %>
-                            <p>No order found with the given ID.</p>
-                            <% } %>
-                        </div>
-                        <div class="col-md-6">
-                            <h4 class="mb-3">Order Products</h4>
-                        
-                            <!-- Loop through order.products to display their statuses -->
-                          
-                        
-                            <!-- Display common product information for orderedProducts -->
-                            <% if (orderedProducts && orderedProducts.length > 0) { %>
+                        <article class="entry entry-list">
+                            <div class="row align-items-center">
+                               
+    
+                                <div class="col-md-8">
+                                    <div class="entry-body">
+                                        <div class="entry-meta">
+                                            <span class="entry-author">
+                                             <a href="#"><%= order.deliveryAddress.fullName %></a>
+                                            </span>
+                                            <span class="meta-separator">|</span>
+                                            <a href="#"> <%= order.date.toLocaleDateString()%></a>
+                                            <span class="meta-separator">|</span>
+                                            <a href="#"> <%= order.deliveryAddress.phone %></a>
+                                        </div><!-- End .entry-meta -->
+    
+                                        
+                                        <p>Order ID: <%= order.orderId %>
+                                        </p>
+                                        <div class="entry-cats">
+                                            <p>Order  Total <%= order.totalAmount %>
+                                            </p>
+                                        </div><!-- End .entry-cats -->
+    
+                                        <div class="entry-content">
+                                            <p><%= order.deliveryAddress.streetAddress %>, <%= order.deliveryAddress.city %></p>
+                                            <p>Pincode: <%= order.deliveryAddress.pincode %>
+                                            </p>
+                                            <p>State: <%= order.deliveryAddress.state %>
+                                            </p>
+                                            <p>Expected Date: <%= order.expectedDate.toLocaleDateString()  %></p>
+                                           
+                                            <% } else { %>
+                                                <p>No order found with the given ID.</p>
+                                                <% } %>
+                                            <a href="single.html" class="read-more">Continue Reading</a>
+                                        </div><!-- End .entry-content -->
+                                    </div><!-- End .entry-body -->
+                                </div><!-- End .col-md-8 -->
+                                <div class="col-md-4">
+                                    <% if (orderedProducts && orderedProducts.length > 0) { %>
                                 
                                
-                                <% orderedProducts.forEach(product => { %>
-                                  
-                                        <p>Status: <%= product.quantity.status %></p>
-                                        <!-- <p>Product Price: ₹<%= product.quantity.productId %></p> -->
-                                       
-                                    <p>Quantity: <%= product.quantity.quantity%></p>
-                                    <p><img src=" <%= product.images[0] %>" alt="" style="max-width: 50px;"></p>
-                                    <p>Product Name: <%= product.name %></p>
-                                    <p>Product Price: ₹<%= product.price %></p>
-                                    <p>
-                                        <% if (product.quantity.status  === 'cancelled') { %>
-                                            <p>Cancel Reason: <%=product.quantity.cancelReason %> </p>
-                                            <% } 
-                                            else if (product.quantity.status  === 'returned') { %>
-                                                <p>Return Reason: <%=product.quantity.returnReason %> </p>
-                                              
-                                            <% } else { %>
-                                                <p></p>
-                                            <% } %>
-                                  
-                                    <!-- Display product-specific status for orderedProducts -->
-                                   
-                                    <p>
-                                        <% if (product.quantity.status  === 'cancelled') { %>
-                                            <p>Cancelled</p>
-                                        <% } else if (product.quantity.status  === 'delivered') { %>
-                                            <p>Delivered</p>
-                                            <a href="#" class="go-back-button" id="returnOrderButton" data-order-id="<%= order._id %>" data-product-id="<%= product.quantity.productId %>">Return Order</a>
-                                        <% } 
-                                        else if (product.quantity.status  === 'returned') { %>
-                                            <p>Returned</p>
+                                        <% orderedProducts.forEach(product => { %>
+                                            <h2 class="entry-title">
+                                                <a href="single.html"><%= product.name %></a>
+                                            </h2><!-- End .entry-title -->
+                                            <figure class="entry-media">
+                                                <a href="single.html">
+                                                    <img src=" <%= product.images[0] %>" alt="image desc">
+                                                </a>
+                                            </figure><!-- End .entry-media -->
                                           
-                                        <% } else { %>
-                                            <a href="#" class="go-back-button" id="cancelOrderButton" data-order-id="<%= order._id %>" data-product-id="<%= product.quantity.productId %>">Cancel Order</a>
-                                        <% } %>
-                                    </p>
+                                                <p>Status: <%= product.quantity.status %></p>
+                                                <!-- <p>Product Price: ₹<%= product.quantity.productId %></p> -->
+                                               
+                                            <p>Quantity: <%= product.quantity.quantity%></p>
+                                          
+                                            <p>Product Price: ₹<%= product.price %></p>
+                                            <p>
+                                                <% if (product.quantity.status  === 'cancelled') { %>
+                                                    <p>Cancel Reason: <%=product.quantity.cancelReason %> </p>
+                                                    <% } 
+                                                    else if (product.quantity.status  === 'returned') { %>
+                                                        <p>Return Reason: <%=product.quantity.returnReason %> </p>
+                                                      
+                                                    <% } else { %>
+                                                        <p></p>
+                                                    <% } %>
+                                          
+                                            <!-- Display product-specific status for orderedProducts -->
+                                           
+                                            <p>
+                                                <% if (product.quantity.status  === 'cancelled') { %>
+                                                    <p>Cancelled</p>
+                                                <% } else if (product.quantity.status  === 'delivered') { %>
+                                                    <p>Delivered</p>
+                                                    <a href="#" class="go-back-button" id="returnOrderButton" data-order-id="<%= order._id %>" data-product-id="<%= product.quantity.productId %>">Return Order</a>
+                                                <% } 
+                                                else if (product.quantity.status  === 'returned') { %>
+                                                    <p>Returned</p>
+                                                  
+                                                <% } else { %>
+                                                    <a href="#" class="go-back-button" id="cancelOrderButton" data-order-id="<%= order._id %>" data-product-id="<%= product.quantity.productId %>">Cancel Order</a>
+                                                <% } %>
+                                            </p>
+                                            
+                                        <% }); %>
+                                    <% } else { %>
+                                        <p>No products found for this order.</p>
+                                    <% } %>
                                     
-                                <% }); %>
-                            <% } else { %>
-                                <p>No products found for this order.</p>
-                            <% } %>
+                                </div><!-- End .col-md-4 -->
+                            </div><!-- End .row -->
+                        </article><!-- End .entry -->
+    
+                        
+
+                       
                         </div>
+                       
                         
             </div>
      
@@ -202,8 +214,21 @@
             <a href="/shop" class="go-back-button">Go Back to Shop</a>
         </div>
     </div>
-
-    <!-- Add your Bootstrap JS and Popper.js CDN links here -->
+   
+</div>
+    <!-- Plugins JS File -->
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="//assets/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/js/jquery.hoverIntent.min.js"></script>
+    <script src="/assets/js/jquery.waypoints.min.js"></script>
+    <script src="/assets/js/superfish.min.js"></script>
+    <script src="/assets/js/owl.carousel.min.js"></script>
+    <script src="/assets/js/imagesloaded.pkgd.min.js"></script>
+    <script src="/assets/js/isotope.pkgd.min.js"></script>
+    <script src="/assets/js/wNumb.js"></script>
+    <script src="/assets/js/nouislider.min.js"></script>
+    <script src="/assets/js/bootstrap-input-spinner.js"></script>
+    <script src="/assets/js/jquery.magnific-popup.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -211,6 +236,11 @@
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script> 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     
+    
+    <!-- Main JS File -->
+    <script src="/assets/js/main.js"></script>
+    <script src="/assets/js/demos/demo-11.js"></script>
+    </body>
   
     <script>
         $(document).on('click', '#cancelOrderButton', function (e) {
@@ -314,6 +344,9 @@
     </script>
     
     
-</body>
+  <!--- Sweet alert-->
+ 
 
+
+<!-- molla/index-11.html  22 Nov 2019 09:58:42 GMT -->
 </html>

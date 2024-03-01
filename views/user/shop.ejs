@@ -1,462 +1,259 @@
 <%- include ('../Layout/user/header.ejs') -%>
     <div class="page-wrapper">
-        <header class="header header-2 header-intro-clearance">
+        <%- include ('../Layout/user/navbar.ejs') -%>
 
-            <div class="header-middle">
-                <div class="container">
-                    <div class="header-left">
-                        <button class="mobile-menu-toggler">
-                            <span class="sr-only">Toggle mobile menu</span>
-                            <i class="icon-bars"></i>
-                        </button>
-                        
-                        <a href="index.html" class="logo">
-                            <img src="assets/images/demos/demo-2/logo.png" alt="Molla Logo" width="105" height="25">
-                        </a>
-                    </div><!-- End .header-left -->
+            <main class="main">
+                <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
+                    <div class="container">
+                        <h1 class="page-title"><span>Shop</span></h1>
+                    </div><!-- End .container -->
+                </div><!-- End .page-header -->
+                <nav aria-label="breadcrumb" class="breadcrumb-nav mb-2">
+                    <div class="container">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/home">Home</a></li>
+                            <li class="breadcrumb-item"><a href="/shop">Shop</a></li>
 
-                    <div class="header-center">
-                        
-                    </div>
+                        </ol>
+                    </div><!-- End .container -->
 
-                    <div class="header-right">
-                        <!-- <div class="account">
-                            <a href="dashboard.html" title="My account">
-                                <div class="icon">
-                                    <i class="icon-user"></i>
-                                </div>
-                                <p>Account</p>
-                            </a>
-                        </div>End .compare-dropdown -->
-
-                        <div class="dropdown cart-dropdown">
-                            <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
-                                <div class="icon">
-                                    <i class="icon-user"></i>
-                                </div>
-                                <p>Account</p>
-                            </a>
-
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <%if(locals.user){ %>
-                                <div class="dropdown-cart-products">
-                                    <div class="product">
-                                        <div class="product-cart-details">
-                                            <h4 class="product-title">
-                                                <a href="/user">Your Account</a>
-                                            </h4>
-                                        </div><!-- End .product-cart-details -->
-                                    </div><!-- End .product -->
-        
-                                    <div class="product">
-                                        <div class="product-cart-details">
-                                            <h4 class="product-title">
-                                                <a href="/logout">Logout</a>
-                                            </h4>
-                                        </div><!-- End .product-cart-details -->
-        
-                                    </div><!-- End .product -->
-                                </div><!-- End .cart-product -->
-                                <%} else{%>
-                                <div class="product">
-                                    <div class="product-cart-details">
-                                        <h4 class="product-title">
-                                            <a href="/login">Login</a>
-                                        </h4>
-                                    </div><!-- End .product-cart-details -->
-        
-                                </div><!-- End .product -->
-                                <%}%>
-                            </div><!-- End .dropdown-menu -->
-                        </div><!-- End .cart-dropdown -->
-
-                        <div class="wishlist">
-                            <a href="/wishlist" title="Wishlist">
-                                <div class="icon">
-                                    <i class="icon-heart-o"></i>
-                                    <span class="wishlist-count badge">3</span>
-                                </div>
-                                <p>Wishlist</p>
-                            </a>
-                        </div><!-- End .compare-dropdown -->
-
-                        <div class="dropdown cart-dropdown">
-                            <a href="/cart" class="dropdown-toggle" role="button" >
-                                <div class="icon">
-                                    <i class="icon-shopping-cart"></i>
-                                    
-                                </div>
-                                <p>Cart</p>
-                            </a>
-
-                          <!-- End .dropdown-menu -->
-                        </div><!-- End .cart-dropdown -->
-                    </div><!-- End .header-right -->
-                </div><!-- End .container -->
-            </div><!-- End .header-middle -->
-
-            <div class="header-bottom sticky-header">
-                <div class="container">
-                    <div class="header-left">
-                        
-                    </div><!-- End .header-left -->
-
-                    <div class="header-center">
-                        <nav class="main-nav">
-                            <ul class="menu sf-arrows">
-                                <li class="megamenu-container active">
-                                    <a href="/" class="sf-with-ul">Home</a>
-
-                                </li>
-                                <li>
-                                    <a href="/shop" class="sf-with-ul">Shop</a>
-
-                                   
-                                </li>
-                                <li>
-                                    <a href="/contact" class="sf-with-ul">Contact</a>
-
-                                   
-                                </li>
-                                
-                                <li>
-                                    <a href="/about" class="sf-with-ul">About</a>
+                </nav><!-- End .breadcrumb-nav -->
 
 
-                                </li>
-                               
-                                
-                               
-                            </ul><!-- End .menu -->
-                        </nav><!-- End .main-nav -->
-                    </div><!-- End .header-center -->
-
-                  
-                </div><!-- End .container -->
-            </div><!-- End .header-bottom -->
-        </header><!-- End .header -->
-
-        <main class="main">
-            <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
-                <div class="container">
-                    <h1 class="page-title"><span>Shop</span></h1>
-                </div><!-- End .container -->
-            </div><!-- End .page-header -->
-            <nav aria-label="breadcrumb" class="breadcrumb-nav mb-2">
-                <div class="container">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="/home">Home</a></li>
-                        <li class="breadcrumb-item"><a href="/shop">Shop</a></li>
-
-                    </ol>
-                </div><!-- End .container -->
-
-            </nav><!-- End .breadcrumb-nav -->
-
-
-            <div class="page-content">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-9">
-                            <div class="search-bar">
-                                <form action="/shop" method="get">
-                                  <div class="input-group">
-                                    <input type="text" class="form-control" name="search" placeholder="Search products...">
-                                    <div class="input-group-append">
-                                      <button class="btn btn-outline-secondary" type="submit">Search</button>
+                <div class="page-content">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-9">
+                                <div class="search-bar">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="searchInput" name="search"
+                                            placeholder="Search products...">
                                     </div>
-                                  </div>
-                                </form>
-                              </div>
-                            <div class="toolbox">
-                               
-                                <div class="toolbox-left">
-                                    <div>
-                                        <% if (messages && messages.length> 0) { %>
-                                            <div class="alert alert-danger">
-                                                <%- messages[0] %>
-                                            </div>
-                                            <% } %>
+                                </div>
+
+                                <div class="toolbox">
+                                    <div class="toolbox-left">
+                                        <div>
+                                            <% if (messages && messages.length> 0) { %>
+                                                <div class="alert alert-danger">
+                                                    <%- messages[0] %>
+                                                </div>
+                                                <% } %>
+                                        </div>
                                     </div>
+                                </div>
 
-                                </div><!-- End .toolbox-left -->
-                               
-
-                            </div><!-- End .toolbox -->
-                            
-                            <div class="products mb-3">
-                                <style>
-                                    .addToCartBtn {
-                                        display: none;
-                                        position: absolute;
-                                        bottom: 10px;
-                                        left: 50%;
-                                        transform: translateX(-50%);
-                                        z-index: 1;
-                                    }
-                            
-                                    .card:hover .addToCartBtn {
-                                        display: inline-block;
-                                    }
-                            
-                                    .overlay {
-                                        background-color: rgba(255, 255, 255, 0.7);
-                                    }
-                                </style>
-                                <div class="row justify-content-center">
-                            
-                                    <% if (locals.products && products.length > 0) { %>
-                                        <% products.forEach(function (product) { %>
-                                            <% if (!product.category.isListed) { %>
-                                                <div class="col-6 col-md-4 col-lg-3 mb-4">
-                                                    <div class="card">
-                            
-                                                        <div class="position-relative">
-                                                            <img src="<%= product.images[0] %>" class="card-img-top" alt="<%= product.name %>">
-                                                            <div class="overlay d-flex justify-content-center align-items-center">
-                                                                <a href="#" class="btn btn-secondary btn-sm addToCartBtn">Add to Cart</a>
+                                <div class="products mb-3">
+                                    <div class="products-container" data-layout="fitRows">
+                                        <% if (locals.products) { %>
+                                            <% products.forEach(function(product) { %>
+                                                <% if (!product.category.isListed) { %>
+                                                    <div
+                                                        class="product-item accessories lighting sale col-6 col-md-4 col-lg-3">
+                                                        <div class="product product-4">
+                                                            <figure class="product-media">
+                                                                <a href="/productView?id=<%= product._id %>">
+                                                                    <img src="<%= product.images[0] %>"
+                                                                        alt="Product image" class="product-image">
+                                                                    <img src="<%= product.images[1] %>"
+                                                                        alt="Product image" class="product-image-hover">
+                                                                </a>
+                                                                <div class="product-action-vertical">
+                                                                    <button id="wishlistBtn"
+                                                                        class="btn-product-icon btn-wishlist"
+                                                                        title="Wishlist"
+                                                                        onclick="addToWishlist('<%= products[0]._id %>')"
+                                                                        style="padding: 7px; background: black; border: rgb(246, 242, 242); "></button>
+                                                                </div>
+                                                                <div class="product-action">
+                                                                    <a href="/productView?id=<%= product._id %>"
+                                                                        class="btn-product btn-quickview"
+                                                                        title="Quick view"><span>quick view</span></a>
+                                                                </div>
+                                                            </figure>
+                                                            <div class="product-body">
+                                                                <h3 class="product-title" id="userTable">
+                                                                    <a href="/productView?id=<%= product._id %>">
+                                                                        <%= product.name %>
+                                                                    </a>
+                                                                </h3>
+                                                                <div class="product-price">
+                                                                    <span class="new-price">
+                                                                        <%= product.price %>
+                                                                    </span>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                        <div class="card-body">
-                                                            <!-- Customize the card body display as per your design -->
-                                                            <h5 class="card-title">
-                                                                <%= product.name %>
-                                                            </h5>
-                                                            <p class="card-text small">
-                                                                <%= product.category.name %>
-                                                            </p>
-                                                            <p class="card-text">
-                                                                <span class="text">₹<%= product.price %></span>
-                                                            </p>
-                                                            <a href="/productView?id=<%= product._id %>" class="btn btn-primary">View Details</a>
-                                                        </div>
                                                     </div>
-                                                </div>
-                                            <% } %>
-                                        <% }); %>
-                                    <% } else { %>
-                                        <div class="col-12">
-                                            <p>No products available</p>
-                                        </div>
-                                    <% } %>
+                                                    <% } %>
+                                                        <% }); %>
+                                                            <% } else { %>
+                                                                <div class="col-12">
+                                                                    <p>No products available</p>
+                                                                </div>
+                                                                <% } %>
+                                    </div>
                                 </div>
-                            </div>
-                            
-                            
-
-                            <!-- shop.ejs -->
 
 
 
 
+                                <!-- shop.ejs -->
 
-                            <!-- End .products -->
 
 
-                            <nav aria-label="Page navigation">
-                                <!-- Your existing product rendering code -->
 
-                                <!-- Pagination -->
+
+                                <!-- End .products -->
+
+
                                 <nav aria-label="Page navigation">
-                                    <ul class="pagination justify-content-center">
-                                        <% if (currentPage> 1) { %>
-                                            <li class="page-item">
-                                                <a class="page-link page-link-prev"
-                                                    href="/shop?page=<%= currentPage - 1 %>" aria-label="Previous">
-                                                    <span aria-hidden="true"><i
-                                                            class="icon-long-arrow-left"></i></span>Prev
-                                                </a>
-                                            </li>
-                                            <% } else { %>
-                                                <li class="page-item disabled">
-                                                    <span class="page-link page-link-prev" aria-label="Previous"
-                                                        tabindex="-1" aria-disabled="true">
+                                    <!-- Your existing product rendering code -->
+
+                                    <!-- Pagination -->
+                                    <nav aria-label="Page navigation">
+                                        <ul class="pagination justify-content-center">
+                                            <% if (currentPage> 1) { %>
+                                                <li class="page-item">
+                                                    <a class="page-link page-link-prev"
+                                                        href="/shop?page=<%= currentPage - 1 %>" aria-label="Previous">
                                                         <span aria-hidden="true"><i
                                                                 class="icon-long-arrow-left"></i></span>Prev
-                                                    </span>
+                                                    </a>
                                                 </li>
-                                                <% } %>
+                                                <% } else { %>
+                                                    <li class="page-item disabled">
+                                                        <span class="page-link page-link-prev" aria-label="Previous"
+                                                            tabindex="-1" aria-disabled="true">
+                                                            <span aria-hidden="true"><i
+                                                                    class="icon-long-arrow-left"></i></span>Prev
+                                                        </span>
+                                                    </li>
+                                                    <% } %>
 
-                                                    <% for (let i=1; i <=totalPages; i++) { %>
-                                                        <li class="page-item <%= i === currentPage ? 'active' : '' %>">
-                                                            <a class="page-link" href="/shop?page=<%= i %>">
-                                                                <%= i %>
-                                                            </a>
-                                                        </li>
-                                                        <% } %>
-
-                                                            <li class="page-item-total">of <%= totalPages %>
+                                                        <% for (let i=1; i <=totalPages; i++) { %>
+                                                            <li
+                                                                class="page-item <%= i === currentPage ? 'active' : '' %>">
+                                                                <a class="page-link" href="/shop?page=<%= i %>">
+                                                                    <%= i %>
+                                                                </a>
                                                             </li>
+                                                            <% } %>
 
-                                                            <% if (currentPage < totalPages) { %>
-                                                                <li class="page-item">
-                                                                    <a class="page-link page-link-next"
-                                                                        href="/shop?page=<%= currentPage + 1 %>"
-                                                                        aria-label="Next">
-                                                                        Next <span aria-hidden="true"><i
-                                                                                class="icon-long-arrow-right"></i></span>
-                                                                    </a>
+                                                                <li class="page-item-total">of <%= totalPages %>
                                                                 </li>
-                                                                <% } else { %>
-                                                                    <li class="page-item disabled">
-                                                                        <span class="page-link page-link-next"
-                                                                            aria-label="Next" tabindex="-1"
-                                                                            aria-disabled="true">
+
+                                                                <% if (currentPage < totalPages) { %>
+                                                                    <li class="page-item">
+                                                                        <a class="page-link page-link-next"
+                                                                            href="/shop?page=<%= currentPage + 1 %>"
+                                                                            aria-label="Next">
                                                                             Next <span aria-hidden="true"><i
                                                                                     class="icon-long-arrow-right"></i></span>
-                                                                        </span>
+                                                                        </a>
                                                                     </li>
-                                                                    <% } %>
-                                    </ul>
+                                                                    <% } else { %>
+                                                                        <li class="page-item disabled">
+                                                                            <span class="page-link page-link-next"
+                                                                                aria-label="Next" tabindex="-1"
+                                                                                aria-disabled="true">
+                                                                                Next <span aria-hidden="true"><i
+                                                                                        class="icon-long-arrow-right"></i></span>
+                                                                            </span>
+                                                                        </li>
+                                                                        <% } %>
+                                        </ul>
+                                    </nav>
+
                                 </nav>
-
-                            </nav>
-                        </div><!-- End .col-lg-9 -->
-                        <aside class="col-lg-3 order-lg-first">
-                            <div class="sidebar sidebar-shop">
+                            </div><!-- End .col-lg-9 -->
+                            <aside class="col-lg-3 order-lg-first">
+                                <div class="sidebar sidebar-shop">
 
 
-                                <div class="widget widget-collapsible">
-                                    <h3 class="widget-title">
-                                        <a data-toggle="collapse" href="#widget-1" role="button" aria-expanded="true"
-                                            aria-controls="widget-1">
-                                            Category
-                                        </a>
-                                    </h3><!-- End .widget-title -->
+                                    <div class="widget widget-collapsible">
+                                        <h3 class="widget-title">
+                                            <a data-toggle="collapse" href="#widget-1" role="button"
+                                                aria-expanded="true" aria-controls="widget-1">
+                                                Category
+                                            </a>
+                                        </h3><!-- End .widget-title -->
 
-                                    <div class="collapse show" id="widget-1">
-                                        <div class="widget-body">
-                                            <div class="filter-items filter-items-count">
-                                                <li class="list-group-item d-flex border-0 row g-0 px-0">
-                                                    <% if(locals.category)%>
-                                                        <select id="selectCategory" class="form-select fw-bolder"
-                                                            onchange="window.location.href=this.value">
-                                                            <option value="" disabled selected>Select Category</option>
-                                                            <option value="/shop">All</option>
-                                                            <% category.map((x)=>{%>
-                                                                <option value="/shop?id=<%= x._id%>">
-                                                                    <%= x.name%>
+                                        <div class="collapse show" id="widget-1">
+                                            <div class="widget-body">
+                                                <div class="filter-items filter-items-count">
+                                                    <li class="list-group-item d-flex border-0 row g-0 px-0">
+                                                        <% if(locals.category)%>
+                                                            <select id="selectCategory" class="form-select fw-bolder"
+                                                                onchange="window.location.href=this.value">
+                                                                <option value="" disabled selected>Select Category
                                                                 </option>
-                                                                <%}) %>
+                                                                <option value="/shop">All</option>
+                                                                <% category.map((x)=>{%>
+                                                                    <option value="/shop?id=<%= x._id%>">
+                                                                        <%= x.name%>
+                                                                    </option>
+                                                                    <%}) %>
+                                                            </select>
+                                                    </li>
+                                                </div><!-- End .filter-items -->
+
+                                            </div><!-- End .widget-body -->
+                                        </div><!-- End .collapse -->
+                                        <h3 class="widget-title">
+                                            <a data-toggle="collapse" href="#widget-1" role="button"
+                                                aria-expanded="true" aria-controls="widget-1">
+                                                Price
+                                            </a>
+                                        </h3>
+                                        <div class="collapse show" id="widget-1">
+                                            <div class="widget-body">
+                                                <div class="filter-items filter-items-count">
+                                                    <li class="list-group-item d-flex border-0 row g-0 px-0">
+
+                                                        <select id="priceFilter" class="form-select fw-bolder"
+                                                            onchange="updateShopCategory()">
+                                                            <option value="">Select</option>
+                                                            <option value="highToLow">High to Low</option>
+                                                            <option value="lowToHigh">Low to High</option>
                                                         </select>
-                                                </li>
-                                            </div><!-- End .filter-items -->
+                                                    </li>
+                                                </div><!-- End .filter-items -->
 
-                                        </div><!-- End .widget-body -->
-                                    </div><!-- End .collapse -->
-                                    <h3 class="widget-title">
-                                        <a data-toggle="collapse" href="#widget-1" role="button" aria-expanded="true"
-                                            aria-controls="widget-1">
-                                            Price
-                                        </a>
-                                    </h3>
-                                    <div class="collapse show" id="widget-1">
-                                        <div class="widget-body">
-                                            <div class="filter-items filter-items-count">
-                                                <li class="list-group-item d-flex border-0 row g-0 px-0">
+                                            </div><!-- End .widget-body -->
+                                        </div><!-- End .collapse -->
+                                    </div><!-- End .widget -->
+                                    <!-- End .widget-title -->
+                                </div><!-- End .sidebar sidebar-shop -->
+                            </aside><!-- End .col-lg-3 -->
+                        </div><!-- End .row -->
+                    </div><!-- End .container -->
+                </div><!-- End .page-content -->
+            </main><!-- End .main -->
 
-                                                    <select id="priceFilter" class="form-select fw-bolder"
-                                                        onchange="updateShopCategory()">
-                                                        <option value="">Select</option>
-                                                        <option value="highToLow">High to Low</option>
-                                                        <option value="lowToHigh">Low to High</option>
-                                                    </select>
-                                                </li>
-                                            </div><!-- End .filter-items -->
+            <footer class="footer">
+                
 
-                                        </div><!-- End .widget-body -->
-                                    </div><!-- End .collapse -->
-                                </div><!-- End .widget -->
-                                <!-- End .widget-title -->
-                            </div><!-- End .sidebar sidebar-shop -->
-                        </aside><!-- End .col-lg-3 -->
-                    </div><!-- End .row -->
-                </div><!-- End .container -->
-            </div><!-- End .page-content -->
-        </main><!-- End .main -->
-
-        <footer class="footer">
-            <div class="footer-middle">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-sm-6 col-lg-3">
-                            <div class="widget widget-about">
-                                <img src="assets/images/logo.png" class="footer-logo" alt="Footer Logo" width="105"
-                                    height="25">
-                                <p>Praesent dapibus, neque id cursus ucibus, tortor neque egestas augue, eu vulputate
-                                    magna eros eu erat. </p>
-
-                                <div class="social-icons">
-                                    <a href="#" class="social-icon" target="_blank" title="Facebook"><i
-                                            class="icon-facebook-f"></i></a>
-                                    <a href="#" class="social-icon" target="_blank" title="Twitter"><i
-                                            class="icon-twitter"></i></a>
-                                    <a href="#" class="social-icon" target="_blank" title="Instagram"><i
-                                            class="icon-instagram"></i></a>
-                                    <a href="#" class="social-icon" target="_blank" title="Youtube"><i
-                                            class="icon-youtube"></i></a>
-                                    <a href="#" class="social-icon" target="_blank" title="Pinterest"><i
-                                            class="icon-pinterest"></i></a>
-                                </div><!-- End .soial-icons -->
-                            </div><!-- End .widget about-widget -->
-                        </div><!-- End .col-sm-6 col-lg-3 -->
-
-                        <div class="col-sm-6 col-lg-3">
-                            <div class="widget">
-                                <h4 class="widget-title">Useful Links</h4><!-- End .widget-title -->
-
-                                <ul class="widget-list">
-                                    <li><a href="about.html">About Molla</a></li>
-                                    <li><a href="#">How to shop on Molla</a></li>
-                                    <li><a href="#">FAQ</a></li>
-                                    <li><a href="contact.html">Contact us</a></li>
-                                    <li><a href="login.html">Log in</a></li>
-                                </ul><!-- End .widget-list -->
-                            </div><!-- End .widget -->
-                        </div><!-- End .col-sm-6 col-lg-3 -->
-
-                        <div class="col-sm-6 col-lg-3">
-                            <div class="widget">
-                                <h4 class="widget-title">Customer Service</h4><!-- End .widget-title -->
-
-                                <ul class="widget-list">
-                                    <li><a href="#">Payment Methods</a></li>
-                                    <li><a href="#">Money-back guarantee!</a></li>
-                                    <li><a href="#">Returns</a></li>
-                                    <li><a href="#">Shipping</a></li>
-                                    <li><a href="#">Terms and conditions</a></li>
-                                    <li><a href="#">Privacy Policy</a></li>
-                                </ul><!-- End .widget-list -->
-                            </div><!-- End .widget -->
-                        </div><!-- End .col-sm-6 col-lg-3 -->
-
-                        <div class="col-sm-6 col-lg-3">
-                            <div class="widget">
-                                <h4 class="widget-title">My Account</h4><!-- End .widget-title -->
-
-                                <ul class="widget-list">
-                                    <li><a href="#">Sign In</a></li>
-                                    <li><a href="cart.html">View Cart</a></li>
-                                    <li><a href="#">My Wishlist</a></li>
-                                    <li><a href="#">Track My Order</a></li>
-                                    <li><a href="#">Help</a></li>
-                                </ul><!-- End .widget-list -->
-                            </div><!-- End .widget -->
-                        </div><!-- End .col-sm-6 col-lg-3 -->
-                    </div><!-- End .row -->
-                </div><!-- End .container -->
-            </div><!-- End .footer-middle -->
-
+                <footer class="footer footer-2">
             <div class="footer-bottom">
                 <div class="container">
-                    <p class="footer-copyright">Copyright © 2019 Molla Store. All Rights Reserved.</p>
-                    <!-- End .footer-copyright -->
-                    <figure class="footer-payments">
-                        <img src="assets/images/payments.png" alt="Payment methods" width="272" height="20">
-                    </figure><!-- End .footer-payments -->
+                    <p class="footer-copyright">Copyright © 2019 Molla Store. All Rights Reserved.</p><!-- End .footer-copyright -->
+                    <ul class="footer-menu">
+                        <li><a href="#">Terms Of Use</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul><!-- End .footer-menu -->
+
+                    <div class="social-icons social-icons-color">
+                        <a href="#" class="social-icon social-facebook" title="Facebook" target="_blank"><i class="icon-facebook-f"></i></a>
+                        <a href="#" class="social-icon social-twitter" title="Twitter" target="_blank"><i class="icon-twitter"></i></a>
+                        <a href="#" class="social-icon social-instagram" title="Instagram" target="_blank"><i class="icon-instagram"></i></a>
+                        <a href="#" class="social-icon social-youtube" title="Youtube" target="_blank"><i class="icon-youtube"></i></a>
+                        <a href="#" class="social-icon social-pinterest" title="Pinterest" target="_blank"><i class="icon-pinterest"></i></a>
+                    </div><!-- End .soial-icons -->
                 </div><!-- End .container -->
             </div><!-- End .footer-bottom -->
         </footer><!-- End .footer -->
+            </footer><!-- End .footer -->
     </div><!-- End .page-wrapper -->
     <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
 
@@ -588,15 +385,35 @@
 
     <script>
         function updateShopCategory() {
-            const categorySelect = document.getElementById('selectCategory');
-            const priceFilterSelect = document.getElementById('priceFilter');
-
-            const categoryValue = categorySelect.value;
-            const priceFilterValue = priceFilterSelect.value;
-
-            const url = `/shop?id=${categoryValue}&priceFilter=${priceFilterValue}`;
-            window.location.href = url;
+            var selectedOption = document.getElementById("priceFilter").value;
+            var currentUrl = new URL(window.location.href);
+    
+            var existingPriceFilter = currentUrl.searchParams.get('priceFilter');
+    
+            if (existingPriceFilter) {
+                currentUrl.searchParams.set('priceFilter', selectedOption);
+            } else {
+                currentUrl.searchParams.append('priceFilter', selectedOption);
+            }
+    
+            // Update the window location
+            window.location.href = currentUrl.toString();
         }
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            let searchInput = document.getElementById('searchInput');
+
+            searchInput.addEventListener('input', function () {
+                let searchTerm = searchInput.value.toLowerCase();
+
+                document.querySelectorAll('.product-item').forEach(function (productItem) {
+                    let productTitle = productItem.querySelector('.product-title a').innerText.toLowerCase();
+                    productItem.style.display = productTitle.includes(searchTerm) ? '' : 'none';
+                });
+            });
+        });
     </script>
 
     <%- include ('../Layout/user/footer.ejs') -%>

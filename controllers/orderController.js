@@ -6,6 +6,9 @@ const Product = require('../models/products');
 const crypto=require('crypto');
 const Wallet= require('../models/walletModel')
 
+const Return= require('../models/returnModel')
+
+
 var instance = new Razorpay({ key_id: process.env.KEY_ID,
      key_secret: process.env.KEY_SECRET 
     })
@@ -20,7 +23,7 @@ function generateRandomOrderId() {
 
     const randomNum = Math.floor(Math.random() * 90000) + 10000;
 
-    // Combine the components to form the order ID
+ 
     const orderId = `ORD${formattedDate}${randomNum}`;
 
     return orderId;
@@ -35,7 +38,6 @@ const placeOrder = async (req, res) => {
         const userId = req.session.user.id;
         console.log("user", payment);
 
-        // Populate user's cart with product details
         const cart = await Cart.findOne({ userId }).populate('products.productId');
         const products = cart.products;
 
@@ -49,7 +51,7 @@ const placeOrder = async (req, res) => {
         }
 
         const user = await User.findOne({ _id: userId });
-        const status = payment.toLowerCase() === 'cod' ? 'placed' : 'pending'; // Ensure consistent case for payment method
+        const status = payment.toLowerCase() === 'cod' ? 'placed' : 'pending'; 
         console.log("status", status);
         const address = user.address[index];
         const date = Date.now();
@@ -110,31 +112,35 @@ const placeOrder = async (req, res) => {
               res.json({money:true})
             }
                 
-                // If the payment is COD
-                for (const product of orderDetails.products) {
-                    const productStatus = product.status;
-                    if (productStatus === 'placed') {
-                        await Cart.deleteOne({ userId: userId });
-
-                        for (let i = 0; i < products.length; i++) {
-                            const productId = products[i].productId;
-                            const productQuantity = products[i].quantity;
-                            await Product.updateOne({ _id: productId }, { $inc: { stock: -productQuantity } });
-                        }
-
-                        return res.json({ success: true, orderId });
-                    }
-                }
+               
             } catch (error) {
                 console.error("Error processing wallet payment:", error);
                 return res.status(500).json({ error: "Internal server error" });
             }
         }
+        else if (orderDetails.paymentMethod.toLowerCase() === 'cod') {
+            
+            const isPlacedProduct = orderDetails.products.some(product => product.status === 'placed');
 
+            if (isPlacedProduct) {
+                await Cart.deleteOne({ userId: userId });
+
+                for (let i = 0; i < products.length; i++) {
+                    const productId = products[i].productId;
+                    const productQuantity = products[i].quantity;
+                    await Product.updateOne({ _id: productId }, { $inc: { stock: -productQuantity } });
+                }
+
+                return res.json({ success: true, orderId });
+            } else {
+               
+                return res.json({ success: false, message: "No product with status 'placed'" });
+            }
+        }
         // If the payment is Razorpay
         else if (orderDetails.paymentMethod.toLowerCase() === 'razorpay') {
             console.log("Razorpay payment logic");
-            // Create Razorpay order, handle Razorpay response, etc.
+         
 
             const options = {
                 amount: subTotal * 100,
@@ -388,87 +394,164 @@ const cancelOrder = async (req, res) => {
 };
 //--------------------------------------------------------------------------------------------------//
 //---------------Return order-----------------------------------------------------------------------------------//
-const returnOrder= async (req,res)=>{
- try {
-    const { orderId, productId, returnReason } = req.body;
-    console.log(req.body);
-    const userId = req.session.user.id;
-    console.log(userId);
+ // const returnOrder= async (req,res)=>{
+//  try {
+//     const { orderId, productId, returnReason } = req.body;
+//     console.log(req.body);
+//     const userId = req.session.user.id;
+//     console.log(userId);
        
-    const orderData = await Order.findOneAndUpdate(
-        { _id: orderId, 'products.productId': productId },
-        {
-            $set: {
-                'products.$.status': 'returned',
-                'products.$.returnReason': returnReason,
-            },
-        },
-        { new: true }
-    );
-    console.log(orderData);
-    const productDetails = await Order.findOne(
-        { _id: orderId, 'products.productId': productId },
-        { 'products.$': 1 }
-      ).populate('products.productId')
-    const totalAmount= productDetails.products[0].productId.price * productDetails.products[0].quantity;
-    if(orderData.paymentMethod == 'razorpay' || orderData.paymentMethod == 'wallet'||orderData.paymentMethod == 'COD'){
+//     const orderData = await Order.findOneAndUpdate(
+//         { _id: orderId, 'products.productId': productId },
+//         {
+//             $set: {
+//                 'products.$.status': 'returned',
+//                 'products.$.returnReason': returnReason,
+//             },
+//         },
+//         { new: true }
+//     );
+//     console.log(orderData);
+//     const productDetails = await Order.findOne(
+//         { _id: orderId, 'products.productId': productId },
+//         { 'products.$': 1 }
+//       ).populate('products.productId')
+//     const totalAmount= productDetails.products[0].productId.price * productDetails.products[0].quantity;
+//     if(orderData.paymentMethod == 'razorpay' || orderData.paymentMethod == 'wallet'||orderData.paymentMethod == 'COD'){
     
    
          
-           console.log("I am here above wallet");
+//            console.log("I am here above wallet");
 
          
-           const userWallet = await Wallet.findOne({ userId: userId });
-            const date= Date.now();
-           if (userWallet) {
-               const walletUpdateResult = await Wallet.findOneAndUpdate(
-                   { userId: userId },
-                   {
-                       $inc: { amount: totalAmount },
-                       $push: {
-                           walletHistory: {
-                            date: date,
-                               orderData: orderData.products
-                           }
-                       }
-                   },
-                   { new: true }
-               );
+//            const userWallet = await Wallet.findOne({ userId: userId });
+//             const date= Date.now();
+//            if (userWallet) {
+//                const walletUpdateResult = await Wallet.findOneAndUpdate(
+//                    { userId: userId },
+//                    {
+//                        $inc: { amount: totalAmount },
+//                        $push: {
+//                            walletHistory: {
+//                             date: date,
+//                                orderData: orderData.products
+//                            }
+//                        }
+//                    },
+//                    { new: true }
+//                );
            
-               console.log(userId);
-               console.log(totalAmount);
-               console.log(walletUpdateResult);
+//                console.log(userId);
+//                console.log(totalAmount);
+//                console.log(walletUpdateResult);
            
-               if (walletUpdateResult) {
-                   console.log("Wallet updated successfully");
-               } else {
-                   console.log("Wallet not updated");
-               }
-           } else {
-               // Create a new wallet document
+//                if (walletUpdateResult) {
+//                    console.log("Wallet updated successfully");
+//                } else {
+//                    console.log("Wallet not updated");
+//                }
+//            } else {
+//                // Create a new wallet document
                
-               const newWallet = new Wallet({
-                   userId: userId,
-                   amount: totalAmount,
+//                const newWallet = new Wallet({
+//                    userId: userId,
+//                    amount: totalAmount,
                  
-                   walletHistory: [{ date: date, orderData: orderData.products}]
-               });
-               await newWallet.save();
-               console.log("New wallet created and updated successfully");
-           }
+//                    walletHistory: [{ date: date, orderData: orderData.products}]
+//                });
+//                await newWallet.save();
+//                console.log("New wallet created and updated successfully");
+//            }
   
                    
 
 
-}
+// }
 
-        res.json({ return: true });
+//         res.json({ return: true });
+//     } catch (error) {
+//         console.error(error.message);
+//         res.status(500).json({ error: 'Internal Server Error' });
+//     }
+// }
+const returnOrder = async (req, res) => {
+    try {
+      const { orderId, productId, returnReason } = req.body;
+      const userId = req.session.user.id;
+  
+      // Update order products' return status
+      const orderData = await Order.findOneAndUpdate(
+        { _id: orderId, 'products.productId': productId },
+        {
+          $set: {
+            'products.$.status': 'returnRequested',
+            'products.$.returnReason': returnReason,
+          },
+        },
+        { new: true }
+      );
+  
+      
+      const returnData = new Return({
+        orderId,
+        productId,
+        returnStatus: 'requested', // Set to 'requested' initially
+        userId,
+        date: Date.now(),
+      });
+  
+      
+      const totalAmount = orderData.products.find((product) => product.productId.equals(productId)).price * orderData.products.find((product) => product.productId.equals(productId)).quantity;
+  console.log("totalAmount",totalAmount);
+      if (orderData.paymentMethod === 'razorpay' || orderData.paymentMethod === 'wallet' || orderData.paymentMethod === 'cod') {
+        console.log("I am here above wallet");
+        const userWallet = await Wallet.findOne({ userId: userId });
+        const date = Date.now();
+  
+        if (userWallet) {
+          const walletUpdateResult = await Wallet.findOneAndUpdate(
+            { userId: userId },
+            {
+              $inc: { amount: totalAmount },
+              $push: {
+                walletHistory: {
+                  date: date,
+                  orderData: orderData.products,
+                },
+              },
+            },
+            { new: true }
+          );
+  
+          console.log(userId);
+          console.log(totalAmount);
+          console.log(walletUpdateResult);
+  
+          if (walletUpdateResult) {
+           
+            await Return.findByIdAndUpdate(returnData._id, { returnStatus: 'accepted' });
+          } else {
+            console.log("Wallet not updated");
+          }
+        } else {
+          // Create a new wallet document
+          const newWallet = new Wallet({
+            userId: userId,
+            amount: totalAmount,
+            walletHistory: [{ date: date, orderData: orderData.products }],
+          });
+          await newWallet.save();
+          console.log("New wallet created and updated successfully");
+        }
+      }
+  
+      res.json({ return: true, returnData });
     } catch (error) {
-        console.error(error.message);
-        res.status(500).json({ error: 'Internal Server Error' });
+      console.error(error.message);
+      res.status(500).json({ error: 'Internal Server Error' });
     }
-}
-
+  };
+  
 
 //--------------------------------------------------------------------------------------------------//
 //--------------------------------------------------------------------------------------------------//
