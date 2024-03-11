@@ -5,6 +5,9 @@ const Cart=require('../models/cartModel');
 
 //-----------LoadIng Coupon Dashboard----------------------------------------------------------------------//
 const loadCoupon = async (req, res) => {
+  if (req.session.user){
+    res.redirect("/error404")
+  }
     try {
       let page = 1;
       if (req.query.id) {
@@ -43,7 +46,12 @@ const loadCoupon = async (req, res) => {
 
 //---------- load adding the Coupon-----------------------------------------------------------------------//
 const LoadAddCoupon = async (req,res)=>{
+  console.log(req.session.user);
+    if (req.session.user){
+      res.redirect("/error404")
+    }
   try {
+    
     res.render('addCoupon')
   } catch (error) {
     console.log(error.message);
@@ -56,6 +64,7 @@ const LoadAddCoupon = async (req,res)=>{
 
 const addCoupon = async (req,res)=>{
   try {
+   
     console.log(req.body);
              const{couponName,
              
@@ -99,6 +108,9 @@ const addCoupon = async (req,res)=>{
 
 
   const LoadEditCoupon = async (req,res)=>{
+    if (req.session.user){
+      res.redirect("/error404")
+    }
     try {
       const id = req.query.id;
       const coupon = await Coupon.findOne({_id:id})
@@ -115,6 +127,9 @@ const addCoupon = async (req,res)=>{
   const editCoupon = async (req, res) => {
     
     try {
+      if (req.session.user){
+        res.redirect("/error404")
+      }
       console.log(req.body);
         const id= req.body.editid;
         const newname = req.body.couponName; 
@@ -136,7 +151,7 @@ const addCoupon = async (req,res)=>{
   
       if (already) {
         req.flash('error', 'This name is already exist');
-        res.redirect('/admin/category');
+        res.redirect('/admin/coupon');
       } else {
         await Coupon.findByIdAndUpdate(id, { $set:
              { 
@@ -151,8 +166,9 @@ const addCoupon = async (req,res)=>{
 
              } });
         
-       
+             res.redirect('/admin/coupon');
       }
+      res.redirect('/admin/coupon');
     } catch (error) {
       console.log(error.message);
       res.redirect('/error404');

@@ -12,7 +12,7 @@ const loadCart = async (req, res) => {
         
        const cartDetails = await Cart.findOne({ userId: userId }).populate({ path: 'products.productId' }).exec();
        
-      
+      console.log(cartDetails);
         res.render('cart', { cartDetails: cartDetails, user: req.session.user });
       } else {
         req.flash('error', 'You are not verified. Please <a href="/login">login</a>.');

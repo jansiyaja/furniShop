@@ -235,9 +235,9 @@
                         <div class="form-group">
                             <label for="imageInput">Product Images</label>
                             <div class="row">
-                                <% for (let i = 1; i <= 4; i++) { %>
+                                <% for (let i = 0; i < 4; i++) { %>
                                     <div class="col-lg-3 col-md-3 mb-3 rounded-image-preview">
-                                        <label for="imageInput<%= i %>" class="image-label">Image <%= i %>
+                                        <label for="imageInput<%= i %>" class="image-label">Image <%= i+1 %>
                                             <div class="rounded-image-preview">
                                                 <img id="imagePreview<%= i %>" alt="Preview" src="<%= product.images[i] %>" style="height: 150px; width: 150px;">
                                             </div>

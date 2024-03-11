@@ -35,20 +35,20 @@
 </head>
 
 <body>
-   
+    <%- include ('../Layout/user/navbar.ejs') -%>
     <div class="container order-details-content">
         <h3 class="text-center mb-4">Order Details</h3>
         <div class="row">
 
             
-            <div class="col-md-6">
+            <div class="col-md-8">
                 <!-- Order Details -->
                
                     <% if (order) { %>
 
 
                         <article class="entry entry-list">
-                            <div class="row align-items-center">
+                            <div class="row">
                                
     
                                 <div class="col-md-8">
@@ -64,7 +64,7 @@
                                         </div><!-- End .entry-meta -->
     
                                         
-                                        <p>Order ID: <%= order.orderId %>
+                                        <p id="ord-Id">Order ID: <%= order.orderId %>
                                         </p>
                                         <div class="entry-cats">
                                             <p>Order  Total <%= order.totalAmount %>
@@ -78,11 +78,11 @@
                                             <p>State: <%= order.deliveryAddress.state %>
                                             </p>
                                             <p>Expected Date: <%= order.expectedDate.toLocaleDateString()  %></p>
-                                           
+                                            <p>coupon Discount: <%= order.coupon  %></p>
                                             <% } else { %>
                                                 <p>No order found with the given ID.</p>
                                                 <% } %>
-                                            <a href="single.html" class="read-more">Continue Reading</a>
+                                            
                                         </div><!-- End .entry-content -->
                                     </div><!-- End .entry-body -->
                                 </div><!-- End .col-md-8 -->
@@ -100,7 +100,7 @@
                                                 </a>
                                             </figure><!-- End .entry-media -->
                                           
-                                                <p>Status: <%= product.quantity.status %></p>
+                                               
                                                 <!-- <p>Product Price: ₹<%= product.quantity.productId %></p> -->
                                                
                                             <p>Quantity: <%= product.quantity.quantity%></p>
@@ -108,13 +108,18 @@
                                             <p>Product Price: ₹<%= product.price %></p>
                                             <p>
                                                 <% if (product.quantity.status  === 'cancelled') { %>
+                                                    <p>Status: <%= product.quantity.status %></p>
                                                     <p>Cancel Reason: <%=product.quantity.cancelReason %> </p>
+                                                    
+
                                                     <% } 
-                                                    else if (product.quantity.status  === 'returned') { %>
+                                                    else if (product.quantity.status  === 'returnRequested') { %>
+                                                        <p>Status: <%= product.quantity.status %></p>
                                                         <p>Return Reason: <%=product.quantity.returnReason %> </p>
                                                       
                                                     <% } else { %>
-                                                        <p></p>
+                                                        <p>Status: <%= product.quantity.status %></p>
+                                                        
                                                     <% } %>
                                           
                                             <!-- Display product-specific status for orderedProducts -->
@@ -124,15 +129,24 @@
                                                     <p>Cancelled</p>
                                                 <% } else if (product.quantity.status  === 'delivered') { %>
                                                     <p>Delivered</p>
-                                                    <a href="#" class="go-back-button" id="returnOrderButton" data-order-id="<%= order._id %>" data-product-id="<%= product.quantity.productId %>">Return Order</a>
+                                                    <a href="#" class="go-back-button" id="returnOrderButton" data-orderId="<%= order.orderId %>" data-order-id="<%= order._id %>" data-product-id="<%= product.quantity.productId %>" data-coupon-dis=" <%= order.coupon%>">Return Order</a>
                                                 <% } 
-                                                else if (product.quantity.status  === 'returned') { %>
-                                                    <p>Returned</p>
+                                                else if (product.quantity.status  === 'returnRequest') { %>
+                                                    <p class=" warning">Returned Requested </p>
                                                   
-                                                <% } else { %>
-                                                    <a href="#" class="go-back-button" id="cancelOrderButton" data-order-id="<%= order._id %>" data-product-id="<%= product.quantity.productId %>">Cancel Order</a>
+                                                <% }else if (product.quantity.status  === 'returned') { %>
+                                                    <p class=" success">Returned </p>
+                                                  
+                                                <% } 
+                                                else { %>
+                                                    <a href="#" class="go-back-button" id="cancelOrderButton" data-order-Id="<%= order.orderId %>" data-order-id="<%= order._id %>" data-product-id="<%= product.quantity.productId %>" data-coupon-dis=" <%= order.coupon%>">Cancel Order</a>
                                                 <% } %>
                                             </p>
+                                            <%if(product.quantity.status ==='pending' ){%>
+                                               
+                                                    <a href="#" class="btn btn-outline-primary-2" id="retryPayment"  onclick="countinuePayment('<%=order.orderId%>')">Retry online payment</a>
+                                                  
+                                                <%}%>
                                             
                                         <% }); %>
                                     <% } else { %>
@@ -141,16 +155,25 @@
                                     
                                 </div><!-- End .col-md-4 -->
                             </div><!-- End .row -->
+                            <div class="bt-3">
+                                <a href="/shop" class="btn btn-outline-primary-2"><span>GO SHOP</span><i class="icon-long-arrow-right"></i></a>
+                            </div>  
+                           
+                      
                         </article><!-- End .entry -->
     
                         
-
-                       
+                      
                         </div>
-                       
-                        
+                           
+                            
             </div>
-     
+            <div class="text-center mb-2">
+                
+                <a href="/invoice/<%=order. orderId %>" class="btn btn-outline-primary-2"><span>DownLoad</span><i class="icon-long-arrow-right"></i></a>
+                
+            </div> 
+           
 
           </div>
           <div class="modal" id="cancelOrderModal" tabindex="-1" role="dialog" aria-labelledby="cancelOrderModalLabel" aria-hidden="true">
@@ -210,10 +233,93 @@
 
 
         </div>
-        <div class="text-center">
-            <a href="/shop" class="go-back-button">Go Back to Shop</a>
-        </div>
+       
     </div>
+    <footer class="footer">
+        <div class="footer-middle">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-6 col-lg-3">
+                        <div class="widget widget-about">
+                            <img src="/assets/images/logo.png" class="footer-logo" alt="Footer Logo" width="105"
+                                height="25">
+                            <p>Praesent dapibus, neque id cursus ucibus, tortor neque egestas augue, eu vulputate
+                                magna eros eu erat. </p>
+
+                            <div class="social-icons">
+                                <a href="#" class="social-icon" target="_blank" title="Facebook"><i
+                                        class="icon-facebook-f"></i></a>
+                                <a href="#" class="social-icon" target="_blank" title="Twitter"><i
+                                        class="icon-twitter"></i></a>
+                                <a href="#" class="social-icon" target="_blank" title="Instagram"><i
+                                        class="icon-instagram"></i></a>
+                                <a href="#" class="social-icon" target="_blank" title="Youtube"><i
+                                        class="icon-youtube"></i></a>
+                                <a href="#" class="social-icon" target="_blank" title="Pinterest"><i
+                                        class="icon-pinterest"></i></a>
+                            </div><!-- End .soial-icons -->
+                        </div><!-- End .widget about-widget -->
+                    </div><!-- End .col-sm-6 col-lg-3 -->
+
+                    <div class="col-sm-6 col-lg-3">
+                        <div class="widget">
+                            <h4 class="widget-title">Useful Links</h4><!-- End .widget-title -->
+
+                            <ul class="widget-list">
+                                <li><a href="about.html">About Molla</a></li>
+                                <li><a href="#">How to shop on Molla</a></li>
+                                <li><a href="#">FAQ</a></li>
+                                <li><a href="contact.html">Contact us</a></li>
+                                <li><a href="login.html">Log in</a></li>
+                            </ul><!-- End .widget-list -->
+                        </div><!-- End .widget -->
+                    </div><!-- End .col-sm-6 col-lg-3 -->
+
+                    <div class="col-sm-6 col-lg-3">
+                        <div class="widget">
+                            <h4 class="widget-title">Customer Service</h4><!-- End .widget-title -->
+
+                            <ul class="widget-list">
+                                <li><a href="#">Payment Methods</a></li>
+                                <li><a href="#">Money-back guarantee!</a></li>
+                                <li><a href="#">Returns</a></li>
+                                <li><a href="#">Shipping</a></li>
+                                <li><a href="#">Terms and conditions</a></li>
+                                <li><a href="#">Privacy Policy</a></li>
+                            </ul><!-- End .widget-list -->
+                        </div><!-- End .widget -->
+                    </div><!-- End .col-sm-6 col-lg-3 -->
+
+                    <div class="col-sm-6 col-lg-3">
+                        <div class="widget">
+                            <h4 class="widget-title">My Account</h4><!-- End .widget-title -->
+
+                            <ul class="widget-list">
+                                <li><a href="#">Sign In</a></li>
+                                <li><a href="cart.html">View Cart</a></li>
+                                <li><a href="#">My Wishlist</a></li>
+                                <li><a href="#">Track My Order</a></li>
+                                <li><a href="#">Help</a></li>
+                            </ul><!-- End .widget-list -->
+                        </div><!-- End .widget -->
+                    </div><!-- End .col-sm-6 col-lg-3 -->
+                </div><!-- End .row -->
+            </div><!-- End .container -->
+        </div><!-- End .footer-middle -->
+
+        <div class="footer-bottom">
+            <div class="container">
+                <p class="footer-copyright">Copyright © 2019 Molla Store. All Rights Reserved.</p>
+                <!-- End .footer-copyright -->
+                <figure class="footer-payments">
+                    <img src="/assets/images/payments.png" alt="Payment methods" width="272" height="20">
+                </figure><!-- End .footer-payments -->
+            </div><!-- End .container -->
+        </div><!-- End .footer-bottom -->
+    </footer><!-- End .footer -->
+</div><!-- End .page-wrapper -->
+<button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
+
    
 </div>
     <!-- Plugins JS File -->
@@ -247,11 +353,14 @@
             e.preventDefault();
             const orderId = $(this).data('order-id');
             const productId = $(this).data('product-id');
+            const couponDis = $(this).data('coupon-dis');
+            var orderIdElement = document.getElementById('ord-Id').innerText;
           
-            
+            console.log("order",    orderIdElement)
             // Set the data attributes for the modal
             $('#cancelOrderModal').attr('data-order-id', orderId);
             $('#cancelOrderModal').attr('data-product-id', productId);
+            $('#cancelOrderModal').attr('data-coupon-dis', couponDis);
           
     
             // Open the modal
@@ -262,15 +371,17 @@
         $('#submitCancelOrder').on('click', function() {
             const orderId = $('#cancelOrderModal').data('order-id');
             const productId = $('#cancelOrderModal').data('product-id');
+            const couponDis = $('#cancelOrderModal').data('coupon-dis');
+        
           
             const cancelReason = $('#cancelReason').val();
-    const data={ orderId, productId, cancelReason }
+    const data={ orderId, productId, cancelReason,couponDis }
     console.log(data);
             // Send an AJAX request to cancel the order
             $.ajax({
                 url: '/orderCancel',
                 method: 'POST',
-                data: JSON.stringify({ orderId, productId, cancelReason }),
+                data: JSON.stringify({ orderId, productId, cancelReason,couponDis }),
                
                 contentType: 'application/json',
             }).then((response) => {
@@ -280,7 +391,7 @@
                         text: 'The order has been successfully cancelled.',
                         icon: 'success',
                     });
-                   
+                   location.reload();
                 } else {
                     Swal.fire({
                         title: 'Failed to Cancel Order',
@@ -301,7 +412,7 @@
             e.preventDefault();
             const orderId = $(this).data('order-id');
             const productId = $(this).data('product-id');
-    
+    console.log(orderId);
             // Set the data attributes for the modal
             $('#returnOrderModal').attr('data-order-id', orderId);
             $('#returnOrderModal').attr('data-product-id', productId);
@@ -329,6 +440,7 @@
                         text: 'The order has been successfully returned.',
                         icon: 'success',
                     });
+                    location.reload()
                 } else {
                     Swal.fire({
                         title: 'Failed to Return Order',
@@ -343,10 +455,107 @@
         });
     </script>
     
+    <script>
+     function countinuePayment(id) {
+    console.log("id",id);
+    event.preventDefault();
+    fetch('/countinuePayment', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ orderId: id })
+    }).then((response) => {
+        return response.json();
+    }).then((data) => {
+        console.log("data",data);
+        console.log(data.order);
+        if (data.order) {
+            razorpay(data.order); // Corrected function name to razorpay
+        } else {
+            console.log("last else here");
+        }
+    }).catch((error) => {
+        console.error('Error:', error);
+    });
+}
+
+document.getElementById('retryPayment').addEventListener('click', function () {
+    console.log("Order:", order);
+    razorpay(order);
+});
+
+  </script>
+ <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <script>   
+      function razorpay(order) {
+            console.log(order);
+            try {
+                var options = {
+                    "key": "rzp_test_TUGyjupJfVD6wp",
+                    "amount": order.amount,
+                    "currency": "INR",
+                    "name": "MOLLA Furniture",
+                    "description": "Test Transaction",
+                    "image": "",
+                    "order_id": order.id,
+                    handler: (response) => {
+                        countinueVerifyPayment(response, order);
+                    },
+                    "prefill": {
+                        "name": "MOLLA ", //your customer's name
+                        "email": "jansiyajahan8@gmail",
+                        "contact": "9045790000" //Provide the customer's phone number for better conversion rates 
+                    },
+                    "notes": {
+                        "address": "MOlla furniture"
+                    },
+                    "theme": {
+                        "color": "#c96"
+                    }
+                };
+
+                var rzp1 = new Razorpay(options);
+
+                rzp1.on('payment.failed', (err) => {
+                    console.log(err);
+                })
+                rzp1.open();
+
+            } catch (error) {
+                console.log(error.message);
+            }
+        }
+      // countinueVerifyPayment
+      function countinueVerifyPayment(payment, order) {
+        console.log("ajaxil vannu", payment, order);
+        try {
+         
+          $.ajax({
+            url: "/countinueVerify-payment",
+            method: "POST",
+            data: {
+              payment,
+              order,
+            },
+            success: function (response) {
+              if (response.paymentSuccess == true) {
+                console.log("its commingghgg");
+                        window.location.href = `/orderSuccess/${order.receipt}`;
+              } else {
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Your payment is failed',
+                  showConfirmButton: false
+                })
+              }
+            },
+          });
+        } catch (err) {
+          console.log(err);
+        }
+      }
     
-  <!--- Sweet alert-->
  
-
-
-<!-- molla/index-11.html  22 Nov 2019 09:58:42 GMT -->
-</html>
+</script>
+<%- include ('../Layout/user/footer.ejs') -%>

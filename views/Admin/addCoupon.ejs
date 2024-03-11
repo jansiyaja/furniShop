@@ -177,7 +177,8 @@
                         <div class="card-body">
                           
 
-                        <form action="/admin/addCoupon" method="post" onsubmit="return validateCategory()">
+                            <form action="/admin/addCoupon" method="post" onsubmit="return validateForm()">
+
                             <% if (messages.error) { %>
                                 <div class="alert alert-danger d-flex align-items-center  " role="alert"
                                     id="error-alert">
@@ -210,12 +211,7 @@
                                           </div>
                                     </div>
                                 
-                                    <!-- <div class="mb-4">
-                                        <div class="form-group">
-                                            <label for="name">Coupon code</label>
-                                            <input type="text" class="form-control" id="code" name="code" placeholder="Enter your code">
-                                          </div>
-                                    </div> -->
+                                   
                                     <div class="mb-4">
                                         <div class="form-group">
                                             <label for="name">Coupon discount</label>
@@ -289,46 +285,57 @@
 
 
 <script>
-    
-  
     function validateForm() {
         console.log("cat");
-      const nameInput = document.getElementById('name');
-      const descriptionInput = document.getElementById('description');
-      const lettersRegex = /^[A-Za-z ]+$/;
-  
-      // Reset previous error styles
-      nameInput.classList.remove('error');
-      descriptionInput.classList.remove('error');
-  
-      if (nameInput.value.trim() === '') {
-        alertAndFocus(nameInput, 'Please fill in the category name properly and remove any blank spaces.');
-        return false;
-      } else if (!lettersRegex.test(nameInput.value)) {
-        alertAndFocus(nameInput, 'Category name should contain only letters.');
-        return false;
-      } else if (descriptionInput.value.trim().length <= 10) {
-        alertAndFocus(descriptionInput, 'Please enter a description with more than 10 characters.');
-        return false;
-      }
-  
-      // Check if the category name already exists
-      console.log(existingCategories);
-      const categoryName = nameInput.value.trim();
-      if (existingCategories.includes(categoryName)) {
-        alertAndFocus(nameInput, 'Category with this name already exists. Please choose a different name.');
-        return false;
-      }
-  
-      return true;
+        let discount = document.getElementById('discount');
+        let name = document.getElementById('name');
+        let expairyDate = document.getElementById('expairyDate');
+        let startingDate = document.getElementById('startingDate');
+        let minAmount = document.getElementById('minAmount');
+        const lettersRegex = /^[A-Za-z ]+$/;
+
+        if (name.value.trim() == '') {
+            showErrorAlert('Fill in the Coupon Name field');
+            return false;
+        } else if (minAmount.value.trim() == '' || parseInt(minAmount.value) <= 0) {
+            showErrorAlert('Up To must be a positive number greater than 0');
+            return false;
+        } else if (expairyDate.value < startingDate.value) {
+            showErrorAlert('Expiry date must be greater than activation date');
+            return false;
+        } else if (discount.value.trim() == '' || parseInt(discount.value) <= 0) {
+            showErrorAlert('Coupon Discount must be a positive number greater than 0');
+            return false;
+        } else if (parseInt(minAmount.value) == -1 || parseInt(discount.value) == -1) {
+            showErrorAlert('Up To and Coupon Discount cannot be -1');
+            return false;
+        } else {
+            showSuccessAlert('Update successful');
+            return true;
+        }
     }
-  
-    function alertAndFocus(inputElement, message) {
-      alert(message);
-      inputElement.classList.add('error');
-      inputElement.focus();
+
+    function showErrorAlert(message) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Validation Error',
+            text: message,
+            showConfirmButton: false,
+            timer: 3000
+        });
     }
-  </script>
+
+    function showSuccessAlert(message) {
+        Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: message,
+            showConfirmButton: false,
+            timer: 5000
+        });
+    }
+</script>
+
   
 
 

@@ -1,4 +1,11 @@
-<%- include ('../Layout/user/header.ejs') -%>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Verification</title>
+    <link rel="stylesheet" href="/static/css/beautiful-theme.css">
     <style>
         .otpcard {
             display: flex;
@@ -47,12 +54,12 @@
 
         .otp-input input {
             flex: 1;
-            padding: 20px;
+            padding: 10px;
             border: 1px solid #ced4da;
             border-radius: 5px;
             margin-right: 5px;
             font-size: 16px;
-            max-width: 10px; /* Reduced input width */
+            max-width: 20px; /* Reduced input width */
         }
 
         .submit-btn {
@@ -101,7 +108,7 @@
                     </div>
                 </div>
             <% } %>
-            <form method="post" action="">
+            <form method="post" action="/otp">
                 <% if(locals.email) { %>
                     <input type="hidden" name="email" value="<%= email %>">
                 <% } %>

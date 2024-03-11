@@ -199,9 +199,7 @@
 								    <li class="nav-item">
 								        <a class="nav-link" id="tab-address-link" data-toggle="tab" href="#tab-address" role="tab" aria-controls="tab-address" aria-selected="false">Adresses</a>
 								    </li>
-								    <li class="nav-item">
-								        <a class="nav-link" id="tab-account-link" data-toggle="tab" href="#tab-account" role="tab" aria-controls="tab-account" aria-selected="false">Account Details</a>
-								    </li>
+								   
                                     <li class="nav-item">
 								        <a class="nav-link" id="tab-account-link" data-toggle="tab" href="#tab-wallet" role="tab" aria-controls="tab-account" aria-selected="false">Wallet</a>
 								    </li>
@@ -397,72 +395,63 @@
                                           
 								    </div><!-- .End .tab-pane -->
 
-								    <div class="tab-pane fade" id="tab-account" role="tabpanel" aria-labelledby="tab-account-link">
-								    	<form action="#">
-			                				<div class="row">
-			                					<div class="col-sm-6">
-			                						<label>First Name *</label>
-			                						<input type="text" class="form-control" required>
-			                					</div><!-- End .col-sm-6 -->
-
-			                					<div class="col-sm-6">
-			                						<label>Last Name *</label>
-			                						<input type="text" class="form-control" required>
-			                					</div><!-- End .col-sm-6 -->
-			                				</div><!-- End .row -->
-
-		            						<label>Display Name *</label>
-		            						<input type="text" class="form-control" required>
-		            						<small class="form-text">This will be how your name will be displayed in the account section and in reviews</small>
-
-		                					<label>Email address *</label>
-		        							<input type="email" class="form-control" required>
-
-		            						<label>Current password (leave blank to leave unchanged)</label>
-		            						<input type="password" class="form-control">
-
-		            						<label>New password (leave blank to leave unchanged)</label>
-		            						<input type="password" class="form-control">
-
-		            						<label>Confirm new password</label>
-		            						<input type="password" class="form-control mb-2">
-
-		                					<button type="submit" class="btn btn-outline-primary-2">
-			                					<span>SAVE CHANGES</span>
-			            						<i class="icon-long-arrow-right"></i>
-			                				</button>
-			                			</form>
-								    </div><!-- .End .tab-pane -->
+								   
                                     <div class="tab-pane fade" id="tab-wallet" role="tabpanel" aria-labelledby="tab-wallet-link">
-								    	<section class="content-body p-xl-4 hidden" id="orders-section">
-                                            <h3>Wallet</h3>
-                                            <% if (wallet) { %>
-                                                <p>Amount: <%= wallet.amount %></p>
-                                                <% if (wallet.walletHistory.length > 0) { %>
-                                                    <ul>
+                                        <% if (wallet) { %>
+                                            
+                                        <div class="text-center mb-4 mt-3">
+                                            <h4 class="text-center d-inline-block font-weight-bold" style="font-size: 1.5rem;">Wallet Transaction History</h4>
+                                            <hr class="my-1">
+                                            <h3>Amount: <%= wallet.amount %></h3>
+                                        </div>
+    
+                                        <% } %>
+                                        
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered table-striped">
+                                                <thead class="thead-dark" style="font-weight: bold; font-size: 1.2rem;">
+                                                    <tr>
+                                                        <th class="text-center">Date</th>
+                                                        <th class="text-center">Type</th>
+                                                        
+                                                        <th class="text-center">Order</th>
+                                                        <th class="text-center">Reason</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <% if (wallet && wallet.walletHistory.length > 0) { %>
                                                         <% wallet.walletHistory.forEach(entry => { %>
-                                                            <li>
-                                                                <span class="transaction-date"><%= entry.date%></span>
-                                                                <span class="transaction-type credit">Credit</span>
-                                                                <span class="transaction-amount">$<%= entry.amount %></span>
-                                                                <span class="transaction-description"><%= entry.orderData ? `Payment received for order #${entry.orderData[0].orderId}` : 'No order data' %></span>
-                                                            </li>
+                                                            <tr>
+                                                                <td class="text-center" style="font-size: 1.3rem;"><%= entry.date ? entry.date.toLocaleDateString() : '' %></td>
+                                                                <td class="text-center" style="font-size: 1.3rem;">
+                                                                    <% if (entry.credit) { %>
+                                                                        ₹<%= entry.credit %>
+                                                                    <% } else if (entry.debit) { %>
+                                                                        -₹<%= entry.debit %>
+                                                                    <% } %>
+                                                                </td>
+                                                                <td class="text-center" style="font-size: 1.3rem;"><%= entry.orderId2 %></td>
+                                                                <td class="text-center" style="font-size: 1.3rem;"><%= entry.reason %></td>
+                                                            </tr>
                                                         <% }); %>
-                                                    </ul>
-                                                <% } else { %>
-                                                    No wallet history available.
-                                                <% } %>
-                                            <% } else { %>
-                                                No wallet information available.
-                                            <% } %>
-                                        </section>
-                                        
-                                        
-                                        
-                                        
-                              
-                                                            
-                                                            <a href="/shop" class="btn btn-outline-primary-2"><span>GO SHOP</span><i class="icon-long-arrow-right"></i></a>
+                                                    <% } else { %>
+                                                        <tr>
+                                                            <td colspan="4">
+                                                                <% if (wallet) { %>
+                                                                    No wallet history available.
+                                                                <% } else { %>
+                                                                    No transactions found.
+                                                                <% } %>
+                                                            </td>
+                                                        </tr>
+                                                    <% } %>
+                                                </tbody>
+                                                
+                                            </table>
+                                        </div><!-- End .table-responsive -->
+                                        <a href="/shop" class="btn btn-outline-primary-2"><span>GO SHOP</span><i class="icon-long-arrow-right"></i></a>
+                                    </div>
+
 								    </div><!-- .End .tab-pane -->
 								</div>
 	                		</div><!-- End .col-lg-9 -->

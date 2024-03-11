@@ -327,8 +327,8 @@
                     </div><!-- End .product-price -->
                    
                     <div class="product-details-action">
-                        <a href="/addToCart" class="btn-product btn-cart"><span>add to cart</span></a>
-                        <a href="/wishlist" class="btn-product btn-wishlist" title="Wishlist"><span>Add to Wishlist</span></a>
+                        <a href="/cart" class="btn-product btn-cart"><span>your cart</span></a>
+                        <a href="/wishlist" class="btn-product btn-wishlist" title="Wishlist"><span>Wishlist</span></a>
                     </div><!-- End .product-details-action -->
                 </div><!-- End .col-6 -->
             </div><!-- End .row -->
@@ -634,6 +634,114 @@
     <script src="assets/js/jquery.magnific-popup.min.js"></script>
     <!-- Main JS File -->
     <script src="assets/js/main.js"></script>
+   
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+
+   
+
+
+    $(document).ready(function () {
+        $("#addToCartBtn").on("click", function (event) {
+            event.preventDefault();
+            
+            const productId = getParameterByName("id");
+
+            $.ajax({
+    url: '/addToCart',
+    method: 'POST',
+    data: { productId: productId, productQuantity: 1 },
+    success: function (response) {
+        console.log('Response:', response);
+
+        if (response.login) {
+            // Use SweetAlert for login message
+            console.log('Login Required:', response.message);
+            Swal.fire({
+                title: 'Login Required',
+                text: response.message,
+                icon: 'info',
+            });
+        } else if (response.success) {
+            // Use SweetAlert for success message
+            console.log('Success!');
+            Swal.fire({  
+                title: 'Success',
+                text: 'Item added to the cart successfully!',
+                icon: 'success', 
+            });
+        }
+    },
+    error: function (error) {
+        // Use SweetAlert for error message
+        console.log('Error:', error.responseText || 'An error occurred!');
+        Swal.fire({
+            title: 'Error',
+            text: error.responseText || 'An error occurred!',
+            icon: 'error',
+        });
+    }
+});  
+
+
+        });
+
+        
+        function getParameterByName(name, url) {
+            if (!url) url = window.location.href;
+            name = name.replace(/[\[\]]/g, "\\$&");
+            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, ' '));
+        }
+    });
+</script>
+<script>
+function addToWishlist(id){
+   
+    const data = {productId:id}
+    console.log(data);
+  $.ajax({
+    url:'/addToWishlist',
+    method:'POST',
+    data:data,
+    success:function (response){
+      if(response.added == true){
+        Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Added to Whishlist ',
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: 'ok',
+          })
+      }else if (response.login == true){
+        Swal.fire({
+            icon: 'warning',
+            title: 'Please Login',
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "Login",
+            showCancelButton: true,
+            cancelButtonColor: "#d33",
+            text: response.message
+          }).then((res) => {
+            if (res.isConfirmed) {
+              window.location.href = '/login'
+            }
+          })
+      }else if(response.already == true){
+        Swal.fire({
+          title:'already in the whishlist',
+          confirmButton:false
+        })
+      }
+    }
+  })
+  }
+</script>
+    
 </body>
 
 

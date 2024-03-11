@@ -33,7 +33,7 @@ const orderSchema = mongoose.Schema({
       },
       status :{
         type:String,
-        enum: ['placed', 'outForDelivery', 'shipped', 'delivered','cancelled','pending','returned','returnRequested'],
+        enum:  ['success','placed','pending', 'outForDelivery','returnRequested','returned' ,'returnDenied','shipped', 'delivered','cancelled'],
         default:'pending'
       },
       quantity :{
@@ -45,12 +45,18 @@ const orderSchema = mongoose.Schema({
       returnReason:{
         type:String
       },
+     
     }
   ],
   
   totalAmount:{
     type:Number,
     required:true
+  },
+  
+  coupon: {
+    type: Number,
+    default: 0,
   },
   date:{
     type:Date,

@@ -13,14 +13,24 @@ const wallet = mongoose.Schema({
 
       walletHistory :[
         {
-        
+          orderId2: {
+            type: String,
+            // required: true
+        },
             date:{
                 type:Date,
                 
               },
-          orderData:{
-            type:Array()
-          }
+          credit:{
+            type:Number
+          },
+          debit:{
+            type:Number
+          }, 
+          reason: {
+            type: String,
+            required: true
+        },
         }
       ]
 });

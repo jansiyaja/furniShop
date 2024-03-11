@@ -30,7 +30,9 @@
                                             placeholder="Search products...">
                                     </div>
                                 </div>
-
+                                <div id="searchResults">
+                                    <!-- Results will be displayed here -->
+                                  </div>
                                 <div class="toolbox">
                                     <div class="toolbox-left">
                                         <div>
@@ -402,18 +404,31 @@
     </script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            let searchInput = document.getElementById('searchInput');
+  document.addEventListener('DOMContentLoaded', function () {
+    let searchInput = document.getElementById('searchInput');
+    let searchResults = document.getElementById('searchResults');
 
-            searchInput.addEventListener('input', function () {
-                let searchTerm = searchInput.value.toLowerCase();
+    searchInput.addEventListener('input', function () {
+      let searchTerm = searchInput.value.toLowerCase();
+      let foundResults = false;
 
-                document.querySelectorAll('.product-item').forEach(function (productItem) {
-                    let productTitle = productItem.querySelector('.product-title a').innerText.toLowerCase();
-                    productItem.style.display = productTitle.includes(searchTerm) ? '' : 'none';
-                });
-            });
-        });
-    </script>
+      document.querySelectorAll('.product-item').forEach(function (productItem) {
+        let productTitle = productItem.querySelector('.product-title a').innerText.toLowerCase();
+        let displayStyle = productTitle.includes(searchTerm) ? '' : 'none';
+        productItem.style.display = displayStyle;
+
+        if (displayStyle === '') {
+          foundResults = true;
+        }
+      });
+
+      if (!foundResults) {
+        searchResults.innerHTML = '<p>No results found.</p>';
+      } else {
+        searchResults.innerHTML = ''; // Clear previous no results message
+      }
+    });
+  });
+</script>
 
     <%- include ('../Layout/user/footer.ejs') -%>

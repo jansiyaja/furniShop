@@ -4,36 +4,39 @@
     /*Sale statistics Chart*/
     if ($('#myChart').length) {
         var ctx = document.getElementById('myChart').getContext('2d');
+        var revenueData = JSON.parse($('#revenueData').val());
+        var usersData = JSON.parse($('#usersData').val()); 
+        var ordersData = JSON.parse($('#ordersData').val());
         var chart = new Chart(ctx, {
             // The type of chart we want to create
             type: 'line',
             
             // The data for our dataset
             data: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct',  'Dec'],
                 datasets: [{
-                        label: 'Sales',
+                        label: 'Revenue',
                         tension: 0.3,
                         fill: true,
                         backgroundColor: 'rgba(44, 120, 220, 0.2)',
                         borderColor: 'rgba(44, 120, 220)',
-                        data: [18, 17, 4, 3, 2, 20, 25, 31, 25, 22, 20, 9]
+                        data: revenueData
                     },
                     {
-                        label: 'Visitors',
+                        label: 'Users',
                         tension: 0.3,
                         fill: true,
                         backgroundColor: 'rgba(4, 209, 130, 0.2)',
                         borderColor: 'rgb(4, 209, 130)',
-                        data: [40, 20, 17, 9, 23, 35, 39, 30, 34, 25, 27, 17]
+                        data: usersData
                     },
                     {
-                        label: 'Products',
+                        label: 'Orders',
                         tension: 0.3,
                         fill: true,
                         backgroundColor: 'rgba(380, 200, 230, 0.2)',
                         borderColor: 'rgb(380, 200, 230)',
-                        data: [30, 10, 27, 19, 33, 15, 19, 20, 24, 15, 37, 6]
+                        data: ordersData
                     }
 
                 ]
@@ -53,19 +56,20 @@
     /*Sale statistics Chart*/
     if ($('#myChart2').length) {
         var ctx = document.getElementById("myChart2");
+        var categoryData = JSON.parse($('#ordersData').val());
         var myChart = new Chart(ctx, {
             type: 'bar',
             data: {
-            labels: ["900", "1200", "1400", "1600"],
+            labels: ["sun", "Mon", "Tue", "Wed","Thu","Fri","Sat"],
             datasets: [
                 {
-                    label: "US",
+                    label: "Dininig",
                     backgroundColor: "#5897fb",
                     barThickness:10,
-                    data: [233,321,783,900]
+                    data: categoryData
                 }, 
                 {
-                    label: "Europe",
+                    label: "cusions",
                     backgroundColor: "#7bcf86",
                     barThickness:10,
                     data: [408,547,675,734]

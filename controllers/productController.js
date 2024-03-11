@@ -400,12 +400,7 @@ const loadShop = async (req, res) => {
             .skip((page - 1) * itemsPerPage)
             .limit(itemsPerPage);
     }
-    // } else {
-    //   // If there is no 'id', retrieve products without applying the price filter
-    //   products = await Product.find(query)
-    //     .skip((page - 1) * itemsPerPage)
-    //     .limit(itemsPerPage);
-    // }
+   
 
     const totalProducts = await Product.countDocuments(query);
     const totalPages = Math.ceil(totalProducts / itemsPerPage);

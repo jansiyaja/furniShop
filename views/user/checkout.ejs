@@ -281,7 +281,8 @@
                                                                 <% } %>
                                                                     <tr>
                                                                         <td class="text-black font-weight-bold">
-                                                                            <strong>Cart Subtotal</strong></td>
+                                                                            <strong>Cart Subtotal</strong>
+                                                                        </td>
                                                                         <td class="text-black">₹<%= subTotal %>
                                                                         </td>
                                                                     </tr>
@@ -289,7 +290,8 @@
                                                                     <tr>
 
                                                                         <td class="text-black font-weight-bold">
-                                                                            <strong>Order Total</strong></td>
+                                                                            <strong>Order Total</strong>
+                                                                        </td>
                                                                         <td class="text-black font-weight-bold"><strong
                                                                                 id="total">₹<%= subTotal %>
                                                                         </td>
@@ -320,7 +322,7 @@
 
 
                                     <div class="form-group pt-3">
-                                        <button class="py-3 btn-custom" id="placeOrder"
+                                        <button class="py-3 btn-custom" id="placeOrder" data-subTotal="<%= subTotal%>"
                                             onclick="placeOrder('<%= subTotal %>')">Place Order</button>
                                     </div>
                                 </div>
@@ -333,34 +335,36 @@
 
 
                         <div class="checkout-discount mt-5">
-                           
+
                             <% if (coupon && coupon.length> 0) { %>
                                 <h4>Coupons</h4>
                                 <div class="cart-bottom d-block">
                                     <div class="cart-discount">
-                                      
-                                            <div class="input-group">
-                                                <input type="text" class="form-control" required id="checkout-discount-input">
-                                                <label for="checkout-discount-input" class="text-truncate" id="c_code"></label>
-                                               
-                                                <div class="input-group-append">
-                                                    <button class="btn btn-outline-primary" style="height: 43px;"type="button"
-                                                    onclick="applyCoupon('<%= subTotal %>')">
-                                                    <i class="icon-long-arrow-right"></i> 
+
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" required
+                                                id="checkout-discount-input">
+                                            <label for="checkout-discount-input" class="text-truncate"
+                                                id="c_code"></label>
+
+                                            <div class="input-group-append">
+                                                <button class="btn btn-outline-primary" style="height: 43px;"
+                                                    type="button" onclick="applyCoupon('<%= subTotal %>')">
+                                                    <i class="icon-long-arrow-right"></i>
                                                 </button>
-                                                    <button class="btn btn-outline-danger" style="height: 43px;" type="button"
-                                                    onclick="removeCoupon('<%= subTotal %>')">
-                                                    <i class="icon-close"></i> 
+                                                <button class="btn btn-outline-danger" style="height: 43px;"
+                                                    type="button" onclick="removeCoupon('<%= subTotal %>')">
+                                                    <i class="icon-close"></i>
                                                 </button>
-                                                </div><!-- .End .input-group-append -->
-                                            </div><!-- End .input-group -->
-                                       
+                                            </div><!-- .End .input-group-append -->
+                                        </div><!-- End .input-group -->
+
                                     </div><!-- End .cart-discount -->
-    
-                                    
+
+
                                 </div><!-- End .cart-bottom -->
-                                
-                               
+
+
                                 <% } %>
                         </div>
 
@@ -788,7 +792,7 @@
 
 
     <script>
-        function placeOrder(total) {
+        function placeOrder() {
             try {
                 const radioBtnAddress = document.querySelector('input[name="addressRadio"]:checked')
                 const index = radioBtnAddress ? radioBtnAddress.value : null
@@ -803,7 +807,8 @@
                         const value = coupon ? document.getElementById('placeOrder').getAttribute('data-couponCode') : false;
                         const subTotal = total;
 
-                        if (!isNaN(subTotal)) {
+
+                        if (subTotal) {
                             const data = {
                                 index: index,
                                 payment: payment,
@@ -817,23 +822,39 @@
                                 data: JSON.stringify(data),
                                 contentType: 'application/json'
                             }).then((response) => {
+
                                 if (response.success == true) {
                                     console.log("Server response:", response);
-                                    location.href = `/orderSuccess/${response.orderId}`
-                                } else if (response.quan == true) {
+                                    location.href = `/orderSuccess/${response.orderId}`;
+                                } else if (response.error) {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        text: response.message,
+                                        showConfirmButton: true
+                                    });
+                                }
+                                else if (response.quan == true) {
                                     Swal.fire({
                                         icon: 'warning',
                                         text: `Sorry you product ${response.quantityLess} is Out Of Stock'`,
                                         showConfirmButton: false
                                     })
-                                } else if (response.order) {
+                                } 
+                                else if (response.cash==true) {
+                                    Swal.fire({
+                                        icon: 'warning',
+                                        text:  "COD is not allowed for orders over 1000. Please choose Wallet or Razorpay.",
+                                        showConfirmButton: false
+                                    })
+                                }
+                                    else if (response.order) {
                                     razorpay(response.order)
                                 } else if (response.wallet == true) {
                                     location.href = `/orderSuccess/${response.orderId}`
                                 } else {
                                     Swal.fire({
                                         icon: 'warning',
-                                        text: "there is no balance",
+                                        text: "not enough money in wallet",
                                         showConfirmButton: true
                                     })
                                 }
@@ -866,7 +887,7 @@
             console.log(order);
             try {
                 var options = {
-                    "key": "rzp_test_I7YqBUFsSqN4Fh",
+                    "key": "rzp_test_TUGyjupJfVD6wp",
                     "amount": order.amount,
                     "currency": "INR",
                     "name": "MOLLA Furniture",
@@ -878,7 +899,7 @@
                     },
                     "prefill": {
                         "name": "MOLLA ", //your customer's name
-                        "email": "kunjuvava794gmail.com",
+                        "email": "jansiyajahan8@gmail",
                         "contact": "9045790000" //Provide the customer's phone number for better conversion rates 
                     },
                     "notes": {
@@ -946,7 +967,7 @@
             });
         }
 
-// fiunction to remove the coupon
+        // fiunction to remove the coupon
         function removeCoupon(subTotal) {
             console.log("I am called");
             console.log(subTotal);

@@ -386,7 +386,7 @@ const loadDashboard = async (req, res) => {
       const user = await User.findOne({ _id: userId });
       const wallet= await Wallet.findOne({userId:userId})
 console.log(wallet);
-      res.render('userProfile', { userDetails: user, orders: orders,wallet:wallet });
+      res.render('userProfile', { userDetails: user,user:req.session.user, orders: orders,wallet:wallet });
     } else {
       req.flash('error', 'Please log in.');
       res.redirect('/login');

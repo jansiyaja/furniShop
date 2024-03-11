@@ -244,14 +244,17 @@
                             </tbody>
                           </table><!-- End .table table-wishlist -->
                         <% } else { %>
-                          <div class="goto">
-                            <div class="shop-container">
-                              <h3>Your WishList is Empty</h3>
-                              <a href="/shop">
-                                <button>Go to Shop</button>
-                              </a>
-                            </div>
-                          </div>
+                            <div class="error-content text-center" style="background-image: url(assets/images/whishlist-empty.png)">
+                                <div class="container">
+                                    <h1 class="error-title">WishList</h1><!-- End .error-title -->
+                                    <h3>Your WishList is Empty</h3>
+                                    <a href="/shop" class="btn btn-outline-primary-2 btn-minwidth-lg">
+                                        <span>BACK TO SHOP</span>
+                                        <i class="icon-long-arrow-right"></i>
+                                    </a>
+                                </div><!-- End .container -->
+                            </div><!-- End .error-content text-center -->
+                         
                         <% } %>
                       </div>
                       

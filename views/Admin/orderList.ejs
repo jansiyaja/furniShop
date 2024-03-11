@@ -324,6 +324,7 @@
                                 <thead>
                                     <tr>
                                         <th>Index</th>
+                                        <th scope="col">Id</th>
                                         <th scope="col">Name</th>
                                         <th scope="col">Email</th>
                                         <th scope="col">Total</th>
@@ -336,6 +337,7 @@
                                 <% if(order) {%>
                                      <%order.forEach((item, i) => {%>
                                         <tr>
+                                            <td><%= item.orderId%></td>
                                             <td><%= i + 1%></td>
                                             <td><b><%= item.userId.name%></b></td>
                                             <td><%= item.userId.email%></td>
