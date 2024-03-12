@@ -334,7 +334,7 @@ const loadOrderSuccess = async (req, res) => {
             ]);
             
                 //  console.log("orderDetails",orderedProducts);
-            res.render('orderDetails', { order, orderedProducts });
+            res.render('orderDetails', { order, orderedProducts ,user:req.session.user});
         }
     } catch (error) {
         // Handle errors, you might want to send an error response or render an error page

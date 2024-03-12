@@ -123,7 +123,7 @@
       </div>
     </div>
     <div class="download-button text-start">
-      <button type="button" class="btn btn-primary" onclick="downloadPdf()">Download</button>
+      <button type="button" class="btn btn-primary" onclick="printInvoice()">Download</button>
     </div>
   </div>
 
@@ -157,7 +157,11 @@
     }
   </script>
   
-  
+  <script>
+    function printInvoice() {
+        window.print();
+    }
+</script>
 
 </body>
 
