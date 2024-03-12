@@ -251,48 +251,70 @@
 
 
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- Include SweetAlert library -->
 
 <script>
-    const existingCategories = []; // Maintain a list of existing categories
-  
     function validateCategory() {
-        console.log("cat");
-      const nameInput = document.getElementById('name');
-      const descriptionInput = document.getElementById('description');
-      const lettersRegex = /^[A-Za-z ]+$/;
+        const nameInput = document.getElementById('name');
+        const descriptionInput = document.getElementById('description');
+        const lettersRegex = /^[A-Za-z ]+$/;
+
+        // Reset previous error styles
+        nameInput.classList.remove('error');
+        descriptionInput.classList.remove('error');
+
+        if (nameInput.value.trim() === '') {
+            sweetAlert('Validation Error', 'Please fill in the category name properly and remove any blank spaces.', 'error');
+            return false;
+        } else if (!lettersRegex.test(nameInput.value)) {
+            sweetAlert('Validation Error', 'Category name should contain only letters.', 'error');
+            return false;
+        } else if (descriptionInput.value.trim().length <= 10) {
+            sweetAlert('Validation Error', 'Please enter a description with more than 10 characters.', 'error');
+            return false;
+        }
+
+        return true;
+    }
+
+    function sweetAlert(title, message, icon) {
+        Swal.fire({
+            title: title,
+            text: message,
+            icon: icon,
+            confirmButtonText: 'OK'
+        });
+    }
+</script>
+<script>
+    // Function to display SweetAlert with flash message
+    function showSweetAlert() {
+      const errorFlash = '<%= messages.error %>';
+      const successFlash = '<%= messages.success %>';
   
-      // Reset previous error styles
-      nameInput.classList.remove('error');
-      descriptionInput.classList.remove('error');
-  
-      if (nameInput.value.trim() === '') {
-        alertAndFocus(nameInput, 'Please fill in the category name properly and remove any blank spaces.');
-        return false;
-      } else if (!lettersRegex.test(nameInput.value)) {
-        alertAndFocus(nameInput, 'Category name should contain only letters.');
-        return false;
-      } else if (descriptionInput.value.trim().length <= 10) {
-        alertAndFocus(descriptionInput, 'Please enter a description with more than 10 characters.');
-        return false;
+      if (errorFlash) {
+        sweetAlert('Error', errorFlash, 'error');
       }
   
-      // Check if the category name already exists
-      console.log(existingCategories);
-      const categoryName = nameInput.value.trim();
-      if (existingCategories.includes(categoryName)) {
-        alertAndFocus(nameInput, 'Category with this name already exists. Please choose a different name.');
-        return false;
+      if (successFlash) {
+        sweetAlert('Success', successFlash, 'success');
       }
-  
-      return true;
     }
   
-    function alertAndFocus(inputElement, message) {
-      alert(message);
-      inputElement.classList.add('error');
-      inputElement.focus();
+    // Your existing sweetAlert function
+    function sweetAlert(title, message, icon) {
+      Swal.fire({
+        title: title,
+        text: message,
+        icon: icon,
+        confirmButtonText: 'OK'
+      });
     }
+  
+    // Call the function on page load
+    document.addEventListener('DOMContentLoaded', showSweetAlert);
   </script>
+
   
 
 

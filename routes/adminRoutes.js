@@ -30,6 +30,7 @@ const adminController = require('../controllers/adminController')
 const productController = require('../controllers/productController')
 const categoryController = require('../controllers/categoryController')
 const couponController = require('../controllers/couponController')
+const offerController = require('../controllers/offerController')
 
 //-----------------------------------------------------------//
 
@@ -69,6 +70,10 @@ admin_route.get('/editCategory',adminAuth.isLogout,categoryController.LoadEditCa
 admin_route.post('/editCategory',categoryController.editCategory)
 
 //------------------------------------------------------------------//
+//------------ Offer session------------------------------------------------------//
+admin_route.get('/addOffer',adminAuth.isLogout,  offerController.loadaddOffer)
+
+//------------------------------------------------------------------//
 //-------------------Orders Management-----------------------------------------------//
 admin_route.get('/orders',adminAuth.isLogout,adminController.loadOrder)
 admin_route.get('/singleOrder',adminAuth.isLogout,adminController.singleProductView)
@@ -90,7 +95,7 @@ admin_route.post('/listCoupon',couponController.listCoupon)
 
 admin_route.post('/createReport', adminController.loadCreateReport)
 
-
+admin_route.get('/error',adminController.loadError)
 
 
 
