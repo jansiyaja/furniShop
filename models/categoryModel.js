@@ -3,7 +3,7 @@ const ObjectId = mongoose.Schema.Types.ObjectId;
 const categorySchema = mongoose.Schema({
     name:{
       type:String,
-      unique: true,
+      required:true
       
     },
     offer:{

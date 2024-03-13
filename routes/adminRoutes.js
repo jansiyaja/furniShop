@@ -10,6 +10,7 @@ admin_route.set('view engine','ejs')
 admin_route.set('views','./views/Admin')
 const config = require('../config/config');
 
+const flash = require("express-flash")
 
 admin_route.use(
   session({
@@ -17,8 +18,9 @@ admin_route.use(
     resave: false,
     saveUninitialized: false,
   })
-);
-
+  );
+  
+admin_route.use(flash())
 admin_route.use(nocache());
 admin_route.use(express.json())
 admin_route.use(express.urlencoded({ extended: true }))

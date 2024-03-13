@@ -1,5 +1,5 @@
 const Category = require('../models/categoryModel')
-const Product = require('../models/products');
+
 
 //--------loading the caterory listing pages-------------------------------//
 const loadCategory = async (req, res) => {
@@ -61,7 +61,7 @@ const insertCategory = async (req, res) => {
 
     if (existCategory) {
      
-      return res.render('addcategory', { message: "Already exists a category with this name" });
+      return res.render('addategory', { message: "Already exists a category with this name" });
     }
     
 
@@ -77,7 +77,7 @@ const insertCategory = async (req, res) => {
     res.redirect('/admin/category');
   } catch (error) {
     console.error('Error inserting category:', error);
-    res.status(500).render('category', { error: 'Internal Server Error' });
+    return res.redirect('/admin/error');
   }
 };
 //-------------------------------------------------------------------------------//
@@ -107,19 +107,21 @@ const listCategory = async (req, res) => {
 
 const LoadEditCategory = async (req, res) => {
   try {
+    console.log("'catgeorrroyy");
     const categoryId = req.query.id;
     const categoryEdit = await Category.findOne({ _id: categoryId });
+    console.log(categoryEdit,"categoryEdit");
     
     if (!categoryEdit) {
      
-      res.status(404).send('Category not found');
-      return;
+      return res.redirect('/admin/error');
     }
-
+   
+  
     res.render('editCategory', { categoryEdit });
   } catch (error) {
     console.log(error);
-    res.status(500).send('Internal Server Error');
+    return res.redirect('/admin/error');
   }
 }
 //-------------------------------------------------------------------------------------//
@@ -131,32 +133,31 @@ const editCategory = async (req, res) => {
     const id= req.body.editid
     const newname = req.body.editname;
     const newdescription = req.body.editdisc;
-    // console.log('ID:', id);
-console.log('New Name:', newname);
-console.log('New Description:', newdescription);
-console.log('NewId:', id);
 
+ 
     if (!id) {
       req.flash('error', 'Invalid category ID');
       res.redirect('/admin/category');
       return;
     }
 
-    const already = await Category.findOne({ _id: { $eq: id }, name: newname });
+    const already = await Category.findOne({ _id: { $ne: id }, name: newname });
 
     if (already) {
-      req.flash('error', 'This name is already exist');
-      res.redirect('/admin/category');
+      req.flash('error', "Already exists a category with this name");
+      console.log(req.flash('error')); 
+      res.redirect(`/admin/editCategory?id=${id}`);
     } else {
       await Category.findByIdAndUpdate(id, { $set: { name: newname, description: newdescription } });
-      
+      req.flash('success', "updated successFullt");
       res.redirect('/admin/category');
     }
   } catch (error) {
     console.log(error.message);
-    res.status(500).send('Internal Server Error');
+    // res.status(500).send('Internal Server Error');
   }
 }
+
 //---------------------------------------------------------------------------------------//
 
 

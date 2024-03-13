@@ -12,6 +12,8 @@ user_route.use(nocache());
 
 const session = require('express-session');
 
+const flash = require("express-flash")
+user_route.use(flash())
 
 const config = require('../config/config');
 user_route.set('view engine', 'ejs');
