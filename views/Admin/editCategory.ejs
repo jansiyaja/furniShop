@@ -286,23 +286,7 @@
         });
     }
 
-          // Check if the category name already exists
-          console.log(existingCategories);
-      const categoryName = nameInput.value.trim();
-      if (existingCategories.includes(categoryName)) {
-        alertAndFocus(nameInput, 'Category with this name already exists. Please choose a different name.');
-        return false;
-      }
-  
-      return true;
-    }
-  
-    function alertAndFocus(inputElement, message) {
-      alert(message);
-      inputElement.classList.add('error');
-      inputElement.focus();
-    }
-
+       
 </script>
    
 </body>
