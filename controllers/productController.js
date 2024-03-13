@@ -432,11 +432,24 @@ const productView = async (req, res) => {
   try {
     const productId = req.query.id;
     const products = [await Product.findById(productId)];
-    res.render('productDetails', { products, inCart: false ,user: req.session.user});
+    const userId= req.session.user.id
+    
+    const cartUser = await Cart.findOne({ userId: userId });
+    
+    if(cartUser){
+      const existsProduct = cartUser.products.find((pro) => pro.productId.toString() === productId);
+      if (existsProduct) {
+        res.render('productDetails', { products, inCart: true ,user:req.session.user});
+      }
+
+    }
+     
+    
+    res.render('productDetails', { products, inCart: false ,user:req.session.user});
   } catch (error) {
     console.log("cart",error.message);
    
-    res.status(500).send('Internal Server Error');
+    res.redirect("/error404")
   }
 }
 

@@ -93,13 +93,24 @@
                                     </div><!-- End .details-filter-row -->
                         
                                     <div class="product-details-action">
-                                        <a href="/addToCart" id="addToCartBtn" class="btn-product btn-cart">
-                                            <span>Add to Cart</span>
-                                        </a>
-                        
-                                        <a href="/cart" id="viewCartBtn" class="btn-product btn-cart">
-                                            <span>View Cart</span>
-                                        </a>
+                                        <%if(products[0].stock<=0){%>
+                                            <a href="#" class="btn-product btn-cart" onclick="showOutOfStockAlert()">
+                                                <span>Out of Stock</span>
+                                            </a>
+                                        <%} else {%>
+                                            <% if (inCart==false){%>
+                                                <a href="/addToCart" id="addToCartBtn" class="btn-product btn-cart">
+                                                    <span>Add to Cart</span>
+                                                </a>
+                                         <%}else{%>
+                                            <a href="/cart" id="viewCartBtn" class="btn-product btn-cart">
+                                                <span>View Cart</span>
+                                            </a>
+                                            <%} %>
+                                            
+                                         <%} %>
+                                        
+                                       
                         
                                         <div class="details-action-wrapper">
                                             
@@ -647,11 +658,14 @@
             event.preventDefault();
             
             const productId = getParameterByName("id");
+            var qtyInput = document.getElementById("qty");
+            var quantity = qtyInput.value;
+            console.log("Quantity:", quantity);
 
             $.ajax({
     url: '/addToCart',
     method: 'POST',
-    data: { productId: productId, productQuantity: 1 },
+    data: { productId: productId, productQuantity: quantity },
     success: function (response) {
         console.log('Response:', response);
 
@@ -741,7 +755,17 @@ function addToWishlist(id){
   })
   }
 </script>
-    
+<script>
+    function showOutOfStockAlert() {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Out of Stock',
+            text: 'Sorry, this product is currently out of stock.',
+            showConfirmButton: false,
+            timer: 3000 
+        });
+    }
+</script>   
 </body>
 
 
