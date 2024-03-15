@@ -1,7 +1,7 @@
 
 const express = require("express")
-const admin_route = express()
 const nocache = require("nocache");
+const admin_route = express()
 const multer = require('../middleware/multer')
 const adminAuth = require('../middleware/adminAuth')
 
@@ -10,21 +10,8 @@ admin_route.set('view engine','ejs')
 admin_route.set('views','./views/Admin')
 const config = require('../config/config');
 
-const flash = require("express-flash")
 
-admin_route.use(
-  session({
-    secret: config.sessionSecret,
-    resave: false,
-    saveUninitialized: false,
-  })
-  );
-  
-admin_route.use(flash())
 admin_route.use(nocache());
-admin_route.use(express.json())
-admin_route.use(express.urlencoded({ extended: true }))
-
 
 //----controllers-------------//
 
@@ -35,6 +22,27 @@ const couponController = require('../controllers/couponController')
 const offerController = require('../controllers/offerController')
 
 //-----------------------------------------------------------//
+
+
+
+admin_route.set('view engine', 'ejs');
+admin_route.set('views', './views/admin');
+
+admin_route.use(express.json());
+admin_route.use(express.urlencoded({ extended: true }));
+
+admin_route.use(
+  session({
+    secret: config.sessionSecret,
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+
+
+
+
+
 
 
 
@@ -73,7 +81,9 @@ admin_route.post('/editCategory',categoryController.editCategory)
 
 //------------------------------------------------------------------//
 //------------ Offer session------------------------------------------------------//
+admin_route.get('/Offer',adminAuth.isLogout,offerController.loadOffer)
 admin_route.get('/addOffer',adminAuth.isLogout,  offerController.loadaddOffer)
+admin_route.post('/addOffer',adminAuth.isLogout,  offerController.addOffer)
 
 //------------------------------------------------------------------//
 //-------------------Orders Management-----------------------------------------------//

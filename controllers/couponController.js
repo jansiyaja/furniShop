@@ -75,6 +75,7 @@ const addCoupon = async (req,res)=>{
     const firstName = couponName.split('').splice(1,3).join('')
     const randomString = Math.random().toString(36).substring(2, 7);
     const randomNumber = `${Math.floor(1000 + Math.random() * 9000)}`;
+
     const existName = await Coupon.findOne({couponName:couponName})
     if(existName){
       req.flash('exists','this coupon name is already exists')
@@ -141,17 +142,13 @@ const addCoupon = async (req,res)=>{
             
     
   
-      if (!id) {
-        req.flash('error', 'Invalid category ID');
-        res.redirect('/admin/coupon');
-        return;
-      }
   
-      const already = await Coupon.findOne({ _id: { $eq: id }, name: newname });
-  
+        const already = await Coupon .findOne({ _id: { $ne: id }, couponName: newname });
+        console.log("already",already);
       if (already) {
         req.flash('error', 'This name is already exist');
         res.redirect('/admin/coupon');
+
       } else {
         await Coupon.findByIdAndUpdate(id, { $set:
              { 
@@ -166,12 +163,12 @@ const addCoupon = async (req,res)=>{
 
              } });
         
-             res.redirect('/admin/coupon');
+             res.redirect('/admin/coupon');   
       }
-      res.redirect('/admin/coupon');
+     
     } catch (error) {
       console.log(error.message);
-      res.redirect('/error404');
+      res.redirect('/admin/error');
     }
   }
   
@@ -194,7 +191,7 @@ const addCoupon = async (req,res)=>{
         res.json({ newListStatus: updatedCouponData.isListed });
     } catch (error) {
         console.log(error.message);
-        res.status(500).json({ error: 'Internal Server Error' });
+       res.redirect('/admin/error');
     }
 };
 

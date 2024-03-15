@@ -69,7 +69,7 @@ user_route.post('/reset-password/:token',userController.updatePass)
 
 //-----------------------cart management-----------------------------------------------------------//
  
-user_route.post('/addToCart',cartController.addToCart)
+user_route.post('/addToCart',auth.isLogin, cartController.addToCart)
 user_route.post('/removeCart',cartController.removeCart)
 user_route.get('/cart',cartController.loadCart)
 user_route.post('/updateQuantity',cartController.updateQuantity)

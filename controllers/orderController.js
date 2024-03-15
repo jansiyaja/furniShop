@@ -35,15 +35,18 @@ const placeOrder = async (req, res) => {
     try {
         console.log("Request received at /placeOrder");
         const { index, payment, subTotal,couponCode } = req.body;
-        console.log("couponCode",couponCode);
+      
         const userId = req.session.user.id;
-        console.log("user", payment);
+     
 
         const cart = await Cart.findOne({ userId }).populate('products.productId');
         const products = cart.products;
+console.log(products);
+const quantityLessProduct = products.find(pro => pro.productId.stock <= 0);
+console.log(quantityLessProduct);
 
-        const quantityLessProduct = products.find(pro => pro.productId.stock <= 0);
-
+const quantityLessProducts = products.filter(pro => pro.productId.stock <= 0);
+console.log(quantityLessProducts);
         if (quantityLessProduct) {
             console.log("Quantity less:", quantityLessProduct.productId.name);
             return res.json({ quan: true, quantityLess: quantityLessProduct.productId.name });
@@ -98,9 +101,21 @@ const placeOrder = async (req, res) => {
         // Payment with wallet
         if (orderDetails.paymentMethod.toLowerCase() === 'wallet') {
             try {
+              const userId= req.session.user.id;
+              const cart = await Cart.findOne({ userId: userId }).populate("products.productId");
+              console.log("hloooo");
+              console.log(cart);
+              const product = cart.products;
+        
+              for (let i = 0; i < product.length; i++) {
+                const productId = product[i].productId;
+                const productQuantity = product[i].quantity;
+                await Product.updateOne({ _id: productId }, { $inc: { stock: -productQuantity } });
+              }
+        
                 console.log("Wallet payment logic");
                const{subTotal}=req.body;
-               const userId= req.session.user.id;
+           
                const date=Date.now()
               const wallet= await Wallet.findOne({userId:userId})
            
@@ -135,11 +150,7 @@ const placeOrder = async (req, res) => {
               
              
                 await Cart.deleteOne({ userId: userId });
-                for (let i = 0; i < products.length; i++) {
-                    const productId = products[i].productId;
-                    const productQuantity = products[i].quantity;
-                    await Product.updateOne({ _id: productId }, { $inc: { stock: -productQuantity } });
-                }
+               
                
                 res.json({wallet:true,orderId})
             }else{

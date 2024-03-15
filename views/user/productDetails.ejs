@@ -650,7 +650,6 @@
 
 <script>
 
-   
 
 
     $(document).ready(function () {
@@ -685,8 +684,11 @@
                 text: 'Item added to the cart successfully!',
                 icon: 'success', 
             });
+          
         }
+        
     },
+    
     error: function (error) {
         // Use SweetAlert for error message
         console.log('Error:', error.responseText || 'An error occurred!');
@@ -701,6 +703,7 @@
 
         });
 
+       
         
         function getParameterByName(name, url) {
             if (!url) url = window.location.href;
@@ -711,6 +714,7 @@
             if (!results[2]) return '';
             return decodeURIComponent(results[2].replace(/\+/g, ' '));
         }
+        
     });
 </script>
 <script>

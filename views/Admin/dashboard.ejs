@@ -72,7 +72,7 @@
                   
                     
                     <li class="menu-item">
-                        <a class="menu-link"  href="">
+                        <a class="menu-link"  href="/admin/Offer">
                             <i class="icon material-icons md-new_releases"></i>
                             
                               
@@ -143,6 +143,11 @@
                 </div>
             </header>
             <section class="content-main">
+                <% if (messages.success) { %>
+                    <div class="alert alert-success">
+                        <%= messages.success %>
+                    </div>
+                <% } %>
                 <div class="content-header">
                     <div>
                         <h2 class="content-title card-title">Dashboard</h2>

@@ -61,7 +61,7 @@ const insertCategory = async (req, res) => {
 
     if (existCategory) {
      
-      return res.render('addategory', { message: "Already exists a category with this name" });
+      return res.render('addCategory', { message: "Already exists a category with this name" });
     }
     
 
@@ -129,34 +129,31 @@ const LoadEditCategory = async (req, res) => {
 //------- Edit the category----------------------------------------------------------//
 const editCategory = async (req, res) => {
   try {
-    
-    const id= req.body.editid
+    const id = req.body.editid;
     const newname = req.body.editname;
     const newdescription = req.body.editdisc;
 
- 
     if (!id) {
       req.flash('error', 'Invalid category ID');
-      res.redirect('/admin/category');
-      return;
+      return res.redirect('/admin/category');
     }
 
     const already = await Category.findOne({ _id: { $ne: id }, name: newname });
-
+console.log("already",already);
     if (already) {
-      req.flash('error', "Already exists a category with this name");
-      console.log(req.flash('error')); 
-      res.redirect(`/admin/editCategory?id=${id}`);
+      req.flash('error', "A category with this name already exists");
+      return res.redirect(`/admin/editCategory?id=${id}`);
     } else {
       await Category.findByIdAndUpdate(id, { $set: { name: newname, description: newdescription } });
-      req.flash('success', "updated successFullt");
-      res.redirect('/admin/category');
+      req.flash('success', "Update successful");
+      return res.redirect('/admin/category');
     }
   } catch (error) {
     console.log(error.message);
-    // res.status(500).send('Internal Server Error');
+    // Handle error appropriately
   }
 }
+
 
 //---------------------------------------------------------------------------------------//
 
