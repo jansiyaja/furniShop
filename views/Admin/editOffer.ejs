@@ -170,42 +170,64 @@
                 <div class="col-lg-6">
                     <div class="card mb-4">
                         <div class="card-body">
+                            <form action="/admin/editOffer" method="POST"   onsubmit="return validateOffer()">
+                               
+                              
 
 
-                            <form action="/admin/addCategory" method="post" onsubmit="return validateCategory()">
-                                <% if (typeof message !== 'undefined') { %>
-                                    <% if (message === 'success') { %>
-                                      <p style="color: green; text-align: center;">
-                                        <%= message %>
-                                      </p>
-                                    <% } else { %>
-                                      <p style="color: red; text-align: center;">
-                                        <%= message %>
-                                      </p>
-                                    <% } %>
-                                  <% } %>
-                                        <div class="form-group">
-                                            <label for="name">Name:</label>
-                                            <input type="text" class="form-control" id="name" name="name"
-                                                placeholder="Enter your name">
+                                        <input type="text" name="editid" value="<%=  offer.id %>" hidden>
+
+
+
+                                        <div class="mb-4">
+                                            <div class="form-group">
+                                                <label for="name">Name:</label>
+                                                <input type="text" class="form-control" id="name" name="name"
+                                                value="<%= offer.name %>"
+                                                    placeholder="Enter Offer Name">
+                                            </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="description">Description:</label>
-                                            <textarea class="form-control" id="description" name="description" rows="5"
-                                                placeholder="Enter description"></textarea>
+                                        <div class="mb-4">
+                                            <div class="form-group">
+                                                <label for="name">Offer Percentage:</label>
+                                                <input type="number" class="form-control" id="offerPercentage" name="offerPercentage" 
+                                                value="<%= offer.offerPercentage %>"placeholder="Enter the percentage" min="0" max="100">
+    
+                                            </div>
                                         </div>
-
-                                        <div class="m-3">
-
-                                            <button type="submit" id="publishButton"
-                                                class="btn btn-md rounded font-sm hover-up">Publish</button>
-                                            <a href="/admin/category" class="btn btn-md rounded font-sm hover-up">
+                                      
+                                        <div class="mb-4">
+                                            <div class="form-group">
+                                                <label for="name">Starting Date</label>
+                                                <input type="date" class="form-control" id="startingDate"
+                                                    name="startingDate"
+                                                    value="<%= offer.startingDate.toISOString().split('T')[0] %>">
+                                            </div>
+                                        </div>
+                                        <div class="mb-4">
+                                            <div class="form-group">
+                                                <label for="name">Expiry Date</label>
+                                                <input type="date" class="form-control" id="expiryDate"
+                                                    name="expiryDate"
+                                                    value="<%= offer.expiryDate.toISOString().split('T')[0] %>">
+                                            </div>
+                                        </div>
+                                       
+                                        <div class="mt-4">
+                                            <button type="submit" class="btn btn-primary "
+                                              >Update</button>
+                                            <a href="/admin/coupon" class="btn btn-primary">
                                                 <span class="text">Back</span>
                                             </a>
                                         </div>
                         </div>
 
                         </form>
+
+
+
+
+
 
                     </div>
                 </div>
@@ -240,46 +262,74 @@
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
-        function validateCategory() {
-            let name = document.getElementById('name');
-            let description = document.getElementById('description');
-            let lettersRegex = /^[A-Za-z ]+$/;
-    
-            if (name.value.trim() == '') {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'Please fill in the category name properly. Remove any blank names.'
-                }).then(() => {
-                    name.focus(); // Focus on the error field
-                });
-                return false;
-            } else if (!lettersRegex.test(name.value)) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'Category name should contain only letters.'
-                }).then(() => {
-                    name.focus(); // Focus on the error field
-                });
-                return false;
-            } else if (description.value.trim().length <= 10 || description.value.trim() === "") {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'Description should contain more than 10 characters.'
-                }).then(() => {
-                    description.focus(); // Focus on the error field
-                });
-                return false;
-            } else {
-                return true;
-            }
+
+
+<!-- Include SweetAlert library -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+<script>
+    function validateOffer() {
+        console.log("cat");
+        let name = document.getElementById('name');
+        let offerPercentage = document.getElementById('offerPercentage');
+        let startingDate = document.getElementById('startingDate');
+        let expiryDate = document.getElementById('expiryDate');
+        let lettersAndNumbersRegex =  /^[A-Za-z0-9][A-Za-z0-9_]*$/
+        if (name.value.trim() == '') {
+            showErrorAlert( 'Please fill the offer name properly. Remove any blank names.', 'error');
+            return false;
+        } else if (!lettersAndNumbersRegex.test(name.value)) {
+            showErrorAlert( 'Offer name should contain only letters or numbers.', 'error');
+            return false;
+        } else if (offerPercentage.value.trim() === '' || offerPercentage.value <= 0 || offerPercentage.value >= 100) {
+            showErrorAlert( 'Offer percentage should be a number between 0 and 100.', 'error');
+            return false;
+        } else if (startingDate.value.trim() === '') {
+            showErrorAlert( 'Please select the starting date.', 'error');
+            return false;
+        } else if (expiryDate.value < startingDate.value) {
+        showErrorAlert('Expiry date must be greater than activation date');
+        return false;
+        } else {
+            showSuccessAlert('Update successful');
+            return true;
         }
-    </script>
+    }
+
+    function showErrorAlert(message) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Validation Error',
+            text: message,
+            showConfirmButton: false,
+            timer: 3000
+        });
+    }
+
+    function showSuccessAlert(message) {
+        Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: message,
+            showConfirmButton: false,
+            timer: 5000
+        });
+    }
+</script>  
+
+
     
+
+
+
+
+
+
+
+
+
+
+
 </body>
 
 </html>

@@ -1,7 +1,7 @@
 const Category = require('../models/categoryModel');
 const Product = require('../models/products');
 const Cart= require('../models/cartModel')
-
+const Offer= require('../models/offerModel')
 // const cloudinary= require('../config/cloudinary')
 
 const cloudinary = require('cloudinary').v2;
@@ -164,30 +164,44 @@ const addProduct = async (req, res) => {
 //-----------------List and Unlist the product-------------------------------------------------------------//
 
 
+// const listUnlist = async (req, res) => {
+//   try {
+//      const productId = req.body.id;
+//      console.log(req.body);
+//      console.log("Received product id:", productId);
+//      if (productId.is_Listed === true) {
+
+//       await Product.findByIdAndUpdate({ _id: productId }, { $set: { is_Listed: false } })
+//     } else {
+
+//       await Product.findByIdAndUpdate({ _id: productId }, { $set: { is_Listed: true } })
+//     }
+//     res.json({ list: true })
+   
+//   } catch (error) {
+//      console.error("Error in listUnlist:", error.message);
+//      res.status(500).json({ error: "Internal Server Error" });
+//   }
+// };
 const listUnlist = async (req, res) => {
   try {
-     const productId = req.body.userid;
-     console.log("Received product id:", productId);
 
-     const product = await Product.findOneAndUpdate(
-        { _id: productId },
-        { $set: { is_Listed: req.body.isListed } },
-        { new: true }
-     );
+    const pid = req.body.id
+    const productData = await Product.findOne({ _id: pid })
+    console.log(productData.is_Listed);
+    if (productData.is_Listed === true) {
 
-     if (!product) {
-        console.error("Product not found");
-        return res.status(404).json({ error: "Product not found" });
-     }
+    await Product.findByIdAndUpdate({ _id: pid }, { $set: { is_Listed: false } })
+    
+    } else {
 
-     console.log("Updated product status:", product.is_Listed);
-
-     res.json({ list: product.is_Listed });
+      await Product.findByIdAndUpdate({ _id: pid }, { $set: { is_Listed: true } })
+    }
+    res.json({ list: true })
   } catch (error) {
-     console.error("Error in listUnlist:", error.message);
-     res.status(500).json({ error: "Internal Server Error" });
+    console.log(error.message);
   }
-};
+}
 
 
 
@@ -309,71 +323,19 @@ const editProduct = async (req, res) => {
 
 
 //------------------------loading shoap------------------------------------------------------------------//
-
-// const loadShop = async (req, res) => {
-//   try {
-//     const itemsPerPage = 8; 
-//     let products;
-//     let category = await Category.find({ isListed: false });
-//     let id = req.query.id;
-//     let priceFilter = req.query.priceFilter;
-//     let page = req.query.page || 1; 
-
-//     let query = {};
-
-//     if (id) {
-//       query.category = id;
-//     }
-
-   
-//     if (req.query.search) {
-      
-//       query.name = { $regex: new RegExp(req.query.search, 'i') };
-//     }
-
-//     if (priceFilter === 'highToLow') {
-//       products = await Product.find(query)
-//         .sort({ price: -1 })
-//         .skip((page - 1) * itemsPerPage) 
-//         .limit(itemsPerPage); 
-//     } else if (priceFilter === 'lowToHigh') {
-//       products = await Product.find(query)
-//         .sort({ price: 1 })
-//         .skip((page - 1) * itemsPerPage)
-//         .limit(itemsPerPage);
-//     } else {
-//       products = await Product.find(query)
-//         .skip((page - 1) * itemsPerPage)
-//         .limit(itemsPerPage);
-//     }
-
-//     const totalProducts = await Product.countDocuments(query); 
-//     const totalPages = Math.ceil(totalProducts / itemsPerPage);
-
-//     const messages = req.flash('error');
-
-//     res.render('shop', {
-//       products,
-//       category,
-//       messages,
-//       currentPage: parseInt(page),
-//       totalPages,
-//     });
-//   } catch (error) {
-//     console.log(error.message);
-//   }
-// };
 const loadShop = async (req, res) => {
   try {
-   
     const itemsPerPage = 8;
     let products;
+
+    // Load categories where isListed is false
     let category = await Category.find({ isListed: false });
+
     let id = req.query.id;
     let priceFilter = req.query.priceFilter;
     let page = req.query.page || 1;
 
-    let query = {};
+    let query = { is_Listed: false }; // Include is_Listed condition in the query
 
     if (id) {
       query.category = id;
@@ -383,24 +345,20 @@ const loadShop = async (req, res) => {
       query.name = { $regex: new RegExp(req.query.search, 'i') };
     }
 
-   
-      // Apply price filter only if there is an 'id' in the request
-      if (priceFilter === 'highToLow') {
-        products = await Product.find(query)
-            .sort({ price: -1 })
-            .skip((page - 1) * itemsPerPage)
-            .limit(itemsPerPage);
+    // Apply price filter only if there is an 'id' in the request
+    let sort = {};
+    if (priceFilter === 'highToLow') {
+      sort.price = -1;
     } else if (priceFilter === 'lowToHigh') {
-        products = await Product.find(query)
-            .sort({ price: 1 })
-            .skip((page - 1) * itemsPerPage)
-            .limit(itemsPerPage);
-    } else {
-        products = await Product.find(query)
-            .skip((page - 1) * itemsPerPage)
-            .limit(itemsPerPage);
+      sort.price = 1;
     }
-   
+
+    products = await Product.find(query)
+      .sort(sort) // Apply sorting
+      .skip((page - 1) * itemsPerPage)
+      .limit(itemsPerPage)
+      .populate('offer')
+      .lean();
 
     const totalProducts = await Product.countDocuments(query);
     const totalPages = Math.ceil(totalProducts / itemsPerPage);
@@ -419,6 +377,71 @@ const loadShop = async (req, res) => {
     console.log(error.message);
   }
 };
+
+
+
+
+
+  
+
+// const loadShop = async (req, res) => {
+//   try {
+   
+//     const itemsPerPage = 8;
+//     let products;
+//     let category = await Category.find({ isListed: false });
+//     let teuP=await Product.find({ is_Listed: false });
+
+//     let id = req.query.id;
+//     let priceFilter = req.query.priceFilter;
+//     let page = req.query.page || 1;
+
+//     let query = {};
+
+//     if (id) {
+//       query.category = id;
+//     }
+
+//     if (req.query.search) {
+//       query.name = { $regex: new RegExp(req.query.search, 'i') };
+//     }
+
+   
+//       // Apply price filter only if there is an 'id' in the request
+//       if (priceFilter === 'highToLow') {
+//         products = await Product.find(query)
+//             .sort({ price: -1 })
+//             .skip((page - 1) * itemsPerPage)
+//             .limit(itemsPerPage);
+//     } else if (priceFilter === 'lowToHigh') {
+//         products = await Product.find(query)
+//             .sort({ price: 1 })
+//             .skip((page - 1) * itemsPerPage)
+//             .limit(itemsPerPage);
+//     } else {
+//         products = await Product.find(query)
+//             .skip((page - 1) * itemsPerPage)
+//             .limit(itemsPerPage).populate('offer');
+//     }
+   
+
+//     const totalProducts = await Product.countDocuments(query);
+//     const totalPages = Math.ceil(totalProducts / itemsPerPage);
+
+//     const messages = req.flash('error');
+
+//     res.render('shop', {
+//       products,
+//       category,
+//       user: req.session.user,
+//       messages,
+//       currentPage: parseInt(page),
+//       totalPages,
+//     });
+//   } catch (error) {
+//     console.log(error.message);
+//   }
+// };
 
 
 
@@ -455,6 +478,7 @@ const productView = async (req, res) => {
 
 
 //------------------------------------------------------------------------------------------//
+
 
 module.exports = {
   loadaddProduct,

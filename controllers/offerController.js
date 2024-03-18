@@ -1,5 +1,6 @@
 const Offer= require('../models/offerModel');
-
+const Category= require('../models/categoryModel')
+const Product= require('../models/products')
   //-------------------------------------------------------------------------------//
   const loadOffer = async (req, res) => {
     try {
@@ -79,9 +80,226 @@ const loadaddOffer = async (req, res) => {
     }
   };
   //-------------------------------------------------------------------------------//
+  //---Load Edit Offer----------------------------------------------------------------------------//
+  const loadEditOffer= async (req,res)=>{
+    if (req.session.user){
+      res.redirect("/error404")
+    }
+    try {
+      const id = req.query.id;
+      const offer = await Offer.findOne({_id:id})
+      console.log(offer);
+      res.render('editOffer',{offer:offer})
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+  //-------------------------------------------------------------------------------//
+  //------edit Offer-------------------------------------------------------------------------//
+  const editOffer = async (req, res) => {
+    
+    try {
+      if (req.session.user){
+        res.redirect("/error404")
+      }
+      let { name, offerPercentage,startingDate,expiryDate,editid } = req.body;
+      console.log(req.body);
+      const id= req.body.editid;
+  
+  
+        const already = await Offer .findOne({ _id: { $ne: id }, name: name });
+        console.log("already",already);
+      if (already) {
+        req.flash('error', 'This name is already exist');
+        res.redirect('/admin/Offer');
 
+      } else {
+        await Offer.findByIdAndUpdate(id, { $set:
+             { 
+              name: req.body.name,
+              offerPercentage:offerPercentage,
+             startingDate: startingDate,
+             expiryDate: expiryDate,
+
+              
+
+             } });
+        
+             res.redirect('/admin/Offer');  
+      }
+     
+    } catch (error) {
+      console.log(error.message);
+      res.redirect('/admin/error');
+    }
+  }
+  
+  //-------------------------------------------------------------------------------//
+  //---Listing and unlisting  offer----------------------------------------------------------------------------//
+  const listOffer = async (req, res) => {
+    try {
+        const offerId = req.body.id;
+        console.log("id", offerId);
+        const OfferData = await Offer.findOne({ _id: offerId });
+
+        if (OfferData.isListed === true) {
+            await Offer.findByIdAndUpdate({ _id: offerId }, { $set: { isListed: false } });
+        } else {
+            await Offer.findByIdAndUpdate({ _id: offerId }, { $set: { isListed: true } });
+        }
+
+        const updatedOfferData = await Offer.findOne({ _id: offerId });
+        res.json({ newListStatus: updatedOfferData.isListed });
+    } catch (error) {
+        console.log(error.message);
+       res.redirect('/admin/error');
+    }
+};
+  //-------------------------------------------------------------------------------//
+  //-------Load Apply Offer-for product-------------------------------------------------------------------------//
+  const loadProductApplyOffer= async (req, res) => {
+    try {
+        const productid = req.query.id;
+        const productId = await Product.findById(productid);
+        const offers = await Offer.find();
+        const currentDate = new Date();
+
+       
+        const validOffers = offers.filter(offer => currentDate <= new Date(offer.expiryDate));
+
+       
+        res.render('productApplyOffer', { offers: validOffers, productId });
+    } catch (error) {
+        
+        console.error(error);
+        res.redirect('/admin/error')
+    }
+}
+  //-------------------------------------------------------------------------------//
+
+  //----Load Apply Offer---------------------------------------------------------------------------//
+  const loadCategoryApplyOffer = async (req, res) => {
+    try {
+        const categoryid = req.query.id;
+        const categoryId = await Category.findById(categoryid);
+        const offers = await Offer.find();
+        const currentDate = new Date();
+
+       
+        const validOffers = offers.filter(offer => currentDate <= new Date(offer.expiryDate));
+
+       
+        res.render('categoryApplyOffer', { offers: validOffers, categoryId });
+    } catch (error) {
+        
+        console.error(error);
+        res.redirect('/admin/error')
+    }
+}
+
+
+  //-------------------------------------------------------------------------------//
+  //----Apply category Offer---------------------------------------------------------------------------//
+const categoryApplyOffer=async(req,res)=>{
+  try {
+    const {offerId,categoryId} = req.body;
+    console.log(req.body);
+    const offer=await Offer.find({_id:offerId})
+    
+   
+      await Category.findByIdAndUpdate(
+        {_id:categoryId},
+        {
+          $set:{
+            offer:offerId
+          }
+        }
+      )
+    
+      res.json({success:true,})
+    
+    } catch (error) {
+    console.log(error);
+  }
+}
+  //-------------------------------------------------------------------------------//
+  //-------------------------------------------------------------------------------//
+  const categoryRemoveOffer= async(req,res)=>{
+    try {
+      const {offerId,categoryId} = req.body;
+
+      await Category.findByIdAndUpdate(
+        {_id:categoryId},
+        {
+          $unset:{
+            offer:""
+          }
+        }
+      )
+    
+      res.json({success:true})
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  //-------------------------------------------------------------------------------//
+  //----Apply category Offer---------------------------------------------------------------------------//
+  const productApplyOffer=async(req,res)=>{
+    try {
+      const {offerId,productId} = req.body;
+      console.log(req.body);
+      const offer=await Offer.find({_id:offerId})
+      
+     
+        await Product.findByIdAndUpdate(
+          {_id:productId},
+          {
+            $set:{
+              offer:offerId
+            }
+          }
+        )
+      
+        res.json({success:true,})
+      
+      } catch (error) {
+      console.log(error);
+    }
+  }
+    //-------------------------------------------------------------------------------//
+    //-------------------------------------------------------------------------------//
+    const productRemoveOffer= async(req,res)=>{
+      try {
+        const {offerId,productId} = req.body;
+  
+        await Product.findByIdAndUpdate(
+          {_id:productId},
+          {
+            $unset:{
+              offer:""
+            }
+          }
+        )
+      
+        res.json({success:true})
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    //-------------------------------------------------------------------------------//
   module.exports={
     loadOffer,
-
-    loadaddOffer ,addOffer
+   loadaddOffer ,
+   addOffer,
+   loadEditOffer,
+   editOffer,
+   listOffer,
+   loadCategoryApplyOffer,
+categoryApplyOffer,
+categoryRemoveOffer,
+loadProductApplyOffer,
+productApplyOffer,
+productRemoveOffer
   }
+  
+  

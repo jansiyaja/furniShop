@@ -378,14 +378,15 @@ const loadDashboard = async (req, res) => {
   try {
     if (req.session.user) {
       const userId = req.session.user.id;
-      console.log("userId", userId);
+     // console.log("userId", userId);
 
-      const orders = await Order.find({ userId: userId });
-      console.log(orders);
+      const orders = await Order.find({ userId: userId }).sort({ date: -1 });
+
+     // console.log(orders);
 
       const user = await User.findOne({ _id: userId });
       const wallet= await Wallet.findOne({userId:userId})
-console.log(wallet);
+//      console.log(wallet);
       res.render('userProfile', { userDetails: user,user:req.session.user, orders: orders,wallet:wallet });
     } else {
       req.flash('error', 'Please log in.');
@@ -399,6 +400,20 @@ console.log(wallet);
 }
 
 //------------------------------------------------------//
+//------------------------------------------------------//
+const loadeditProfile = async (req, res) => {
+  try {
+    const id = req.query.id
+    const user = await User.findOne({ _id: id })
+    res.render('editProfile', { user: user })
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
+//------------------------------------------------------//
+
+
 
 //-----------------Edit  User Profile-------------------------------------//
 const editProfile = async (req, res) => {
@@ -468,29 +483,56 @@ const addAddress = async (req, res) => {
 
 
 //------------------------------------------------------//
-//------------Edit Address---------------------------------------------//
- const editAddress= async(req,res)=>{
+//-----load edit address-------------------------------------------------//
+const loadeditAddress = async (req, res) => {
   try {
-    const userId = req.params.userId;
-    const addressIndex = req.params.addressIndex;
+    const addressId = req.params.addressId;
+   // console.log(addressId);
+    
+    const index = req.params.index;
+   console.log(index);
+   const userId = req.session.user.id
+   const user = await User.findOne({ _id: userId })
+  // console.log(user);
+   const address = user.address.find((address) => address._id == addressId)
+    res.render('editAddress', {index,address  })
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+//------------------------------------------------------//
+
+//------------Edit Address---------------------------------------------//
+const editAddress = async (req, res) => {
+  try {
+    const userId = req.session.user.id;
+    
+    const addressIndex = req.query.index
+    console.log(addressIndex);
+    const { id, fullName, streetAddress, city, pincode, phone } = req.body;
+    
+    const updateAddress = await User.findByIdAndUpdate(
+      { _id: userId },
+      {
+        $set: {
+          [`address.${addressIndex}.fullName`]: fullName,
+          [`address.${addressIndex}.streetAddress`]: streetAddress,
+          [`address.${addressIndex}.city`]: city,
+          [`address.${addressIndex}.pincode`]: pincode,
+          [`address.${addressIndex}.phone`]: phone
+        }
+      }
+    );
 
     
-    const user = await User.findById(userId);
-
-    if (!user || !user.address || user.address.length <= addressIndex) {
-      req.flash('error', 'Address not found');
-      return res.redirect('/user');
-    }
-
-    const addressDetails = user.address[addressIndex];
-
-    // Render a form with address details for editing
-    res.render('user', { addressDetails });
+    req.flash('success', 'Address edited successfully');
+    res.redirect('/user');
   } catch (error) {
     console.error(error.message);
-    res.status(500).send('Internal Server Error');
+    res.redirect('/error404');
   }
- }
+};
+
 
 
 
@@ -522,39 +564,7 @@ const deleteAddress= async (req,res)=>{
 
 }
 //-----------------------------------------------------//
-//-----------Upadte Adress ------------------------------------------//
-const updateAddress = async (req, res) => {
-  try {
-    const userId = req.params.userId;
-    const addressIndex = req.params.addressIndex;
 
-    const user = await User.findById(userId);
-
-    if (!user || !user.address || user.address.length <= addressIndex) {
-      req.flash('error', 'Address not found');
-      return res.redirect('/user');
-    }
-
-    // Update the address details in the user object based on the form data
-    user.address[addressIndex].fullName = req.body.fullName;
-    user.address[addressIndex].streetAddress = req.body.streetAddress;
-    user.address[addressIndex].city = req.body.city;
-    user.address[addressIndex].phone = req.body.phone;
-    user.address[addressIndex].state = req.body.state;
-    user.address[addressIndex].zipCode = req.body.zipCode;
-
-    // Save the updated user object to the database
-    await user.save();
-
-    // Redirect to the user profile or another appropriate page
-    res.redirect('/user');
-  } catch (error) {
-    console.error(error.message);
-    res.status(500).send('Internal Server Error');
-  }
-};
-
-//-----------------------------------------------------//
 //-------- Load checkOut---------------------------------------------//
 const loadCheckout = async (req, res) => {
   try {
@@ -710,6 +720,62 @@ const updatePass= async (req, res) => {
   }
 };
 //-----------------------------------------------------//
+//-----------------------------------------------------//
+const changePassword = async (req, res) => {
+  const currentPassword = req.body.currentPassword;
+  const newPassword = req.body.newPassword;
+  const confirmPassword = req.body.confirmPassword;
+  const userId = req.session.user.id;
+  try {
+    console.log("worked");
+    //find by user id
+    const user = await User.findById(userId)
+
+    //no user
+    if (!user) {
+      console.log("no user");
+      return res.status(404).json({ 'error': 'User not found' })
+    }
+
+    if (currentPassword == confirmPassword) {
+      return res.json({ message: 'current password and new password are same ' })
+    }
+
+    //pass and confpass not eq
+    if (newPassword != confirmPassword) {
+      console.log("pass not match");
+      return res.json({ message: 'New password and confirm password do not match' })
+    }
+
+    //passmatch
+    const matchPassword = await bcrypt.compare(currentPassword, user.password)
+
+    //hash pass
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(confirmPassword, saltRounds)
+
+    //save pass
+    if (matchPassword) {
+      console.log("updated");
+      await User.findOneAndUpdate({ email: user.email },
+        {
+          $set:
+            { password: hashedPassword }
+        },
+        { new: true }
+      )
+      return res.status(200).json({ success: true, message: 'Password updated successfully.' });
+    }
+    //curent pass is wrong
+    else {
+      return res.json({ message: 'Current password is wrong' })
+    }
+  }
+  catch (error) {
+    console.log(error.message)
+  }
+}
+//-----------------------------------------------------//
 
 
 // Export module
@@ -734,14 +800,16 @@ module.exports = {
   addAddress,
   deleteAddress,
   editAddress,
-  updateAddress,
+ 
   loadCheckout,
   //----FOrgetPassword-------//
   loadForgetPage,
   loadForget,
   resetPassword,
   updatePass,
-  error404
-
+  error404,
+  loadeditAddress,
+  loadeditProfile,
+  changePassword
 
 };

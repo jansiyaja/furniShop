@@ -110,7 +110,7 @@
                 <div class="container">
                     <div class="head-title">
                         <div class="left">
-                            <h1>Coupon</h1>
+                            <h1>Apply Offer</h1>
                         </div>
                     </div>
             
@@ -175,10 +175,7 @@
             <section class="content-main">
                 <div class="container-fluid">
                    
-                    <div class="right">
-                       
-                        <a href="addCoupon" class="btn btn-primary btn-sm rounded">Create new</a>
-                    </div>
+                   
                  
                     <% if (messages.error) { %>
                         <div class="alert alert-danger d-flex align-items-center  " role="alert" id="error-alert">
@@ -204,37 +201,38 @@
                                                 <tr>
                                                     <th scope="col"><center>Sl.No.</center></th>
                                                     <th scope="col"><center>Name</center></th>
-                                                    <th scope="col"><center>Code</center></th>
-                                                    <th scope="col"><center>Discount Amount</center></th>
-                                                    <th scope="col"><center>Amount</center></th>
-                                                    <th scope="col"><center>Starting Date</center></th>
-                                                    <th scope="col"><center>Ending Date</center></th>
-                                                    <th scope="col"><center>Edit</center></th>
-                                                    <th scope="col"><center>List/Unlist</center></th>
+                                                    
+                                                    <th scope="col"><center>DIscount</center></th>
+                                                    <th scope="col"><center>Action</center></th>
+                                                   
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                              <% if(coupons.length>0){ %>
-                                                  <% if(coupons.map((value,index)=>{ %>
+                                               
+                                              <% if(offers.length>0){ %>
+                                                  <% if(offers.map((value,index)=>{ %>
                                                     <tr>
-                                                        <td  width="10%" class="text-center" ><%= index+1 %></td>
-                                                        <td width="25%"  class="text-center"><%= value.couponName%></td>
-                                                        <td width="15%"  class="text-center" ><%= value.code%></td>
-                                                        <td width="10%"  class="text-center" ><%= value.discount%></td>
-                                                        <td width="10%"  class="text-center" ><%= value.minAmount%></td>
-                                                        <td width="10%" class="text-center"><%= value.startingDate ? value.startingDate.toLocaleString() : '' %></td>
-                                                        <td width="10%" class="text-center"><%= value.expairyDate ? value.expairyDate.toLocaleString() : '' %></td>
-                                                        
-                                                        <td><a href="/admin/editCoupon?id=<%= value._id %>" class="btn btn-sm font-sm rounded btn-brand"><i class="material-icons md-edit"></i> Edit</a></td>
+                                                        <td  class="text-center" ><%= index+1 %></td>
+                                                        <td   class="text-center"><%= value.name%></td>
+                                                        <td   class="text-center" ><%= value.offerPercentage %></td>
+                                                        <td class="text-center"> 
+                                                            <% if(String(productId.offer) === String(value._id)){ %>
+                                                                <button class=" btn btn-danger" onclick="removeProductOffer('<%= value._id %>','<%= productId._id %>')">Remove</button>
+                                                                 <%} else{%>
+                                                                   
+                                                               <button class="btn btn-warning"
+                                                                   data-bs-toggle="modal"
+                                                                   data-bs-target="#offerModal"
+                                                                   onclick="applyProductOffer('<%= value._id %>','<%= productId._id %>')">
+                                                                   Apply Offer
+                                                               </button>
+                                                               <%}%>
+                                                        </td>
+                                                       
+                                                     
 
                                                       
-                                                        <td class="text-end m-3">
-                                                            <button type="button" id="button-<%= value._id %>" class="btn btn-sm btn-danger rounded font-sm mt-15"
-                                                                    data-user-id="<%= value._id  %>" data-initial-status="<%= value.is_listed %>"
-                                                                    onclick="block('<%= value._id %>', <%= value.isListed %>)">
-                                                                    <%= value.isListed?"Unlist":"List"  %>
-                                                            </button>
-                                                        </td>
+                                                        
                                                     </tr>
                                                     <% })) %>
                                         <% } else{ %>
@@ -248,35 +246,7 @@
                             </div>
                         </div>
                         <div class="pagination-area mt-15 mb-50">
-                            <nav aria-label="Page navigation example">
-                                <ul class="pagination justify-content-start">
-                        
-                                    <% if (page > 1) { %>
-                                        <li class="page-item">
-                                            <a class="page-link" href="?id=<%= previous %>">
-                                                <i class="material-icons md-chevron_left"></i>
-                                            </a>
-                                        </li>
-                                    <% } %>
-                        
-                                    <% for (let i = 1; i <= totalPages; i++) { %>
-                                        <% if (i === page) { %>
-                                            <li class="page-item active"><span class="page-link"><%= i %></span></li>
-                                        <% } else { %>
-                                            <li class="page-item"><a class="page-link" href="?id=<%= i %>"><%= i %></a></li>
-                                        <% } %>
-                                    <% } %>
-                        
-                                    <% if (page < totalPages) { %>
-                                        <li class="page-item">
-                                            <a class="page-link" href="?id=<%= next %>">
-                                                <i class="material-icons md-chevron_right"></i>
-                                            </a>
-                                        </li>
-                                    <% } %>
-                        
-                                </ul>
-                            </nav>
+                           
                         </div>  
                     </div>
                     
@@ -309,66 +279,45 @@
     <script src="assets/js/main.js?v=1.1" type="text/javascript"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script>
-        async function block(userId, listedStatus) {
-            const confirmationMessage = `Are you sure you want to ${listedStatus ? 'Unlist' : 'List'} this coupon ?`;
-            const userConfirmed = await Swal.fire({
-                title: 'Confirmation',
-                text: confirmationMessage,
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonText: 'Yes',
-                cancelButtonText: 'No',
-            });
-    
-            if (userConfirmed.isConfirmed) {
-                try {
-                    const backendURL = '/admin/listCoupon';
-                    const response = await fetch(backendURL, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({ id: userId }),
-                    });
-    
-                    const data = await response.json();
-                    console.log('Success:', data);
-    
-                    updateButtonStatus(userId, data.newListStatus);
-    
-                    // Show success message using SweetAlert
-                    Swal.fire({
-                        title: 'Success',
-                        text: 'Coupon status updated successfully',
-                        icon: 'success',
-                        timer: 2000,
-                        showConfirmButton: false,
-                    });
-    
-                } catch (error) {
-                    console.error('Error:', error);
-    
-                    // Show error message using SweetAlert
-                    Swal.fire({
-                        title: 'Error',
-                        text: 'An error occurred while updating coupon status',
-                        icon: 'error',
-                    });
+        function applyProductOffer(offerId,productId) {
+            console.log("offer Aply");
+            const data = {
+              offerId:offerId,
+              productId:productId
+            }
+            console.log(data);
+            $.ajax({
+                method:'post',
+                url:'/admin/addProductOffer',
+                data:data,
+                success:function(response){
+                 if(response.success){
+                  location.reload()
+                 }
                 }
-            } else {
-                Swal.fire('Operation canceled.', '', 'info');
-            }
-        }
-    
-        function updateButtonStatus(userId, newListedStatus) {
-            const button = document.getElementById('button-' + userId);
-    
-            if (button) {
-                button.textContent = newListedStatus ? 'Unlist' : 'List';
-            }
+            })
         }
     </script>
-      
+     <script>
+        function removeProductOffer(offerId,productId) {
+            console.log("offer Aply");
+            const data = {
+              offerId:offerId,
+              productId:productId
+            }
+            console.log(data);
+            $.ajax({
+                method:'post',
+                url:'/admin/removeProductOffer',
+                data:data,
+                success:function(response){
+                 if(response.success){
+                  location.reload()
+                 }
+                }
+            })
+        }
+    </script>  
 </body>
 
 </html>

@@ -264,13 +264,13 @@
             } else if (!lettersAndNumbersRegex.test(name.value)) {
                 showErrorAlert( 'Offer name should contain only letters or numbers.', 'error');
                 return false;
-            } else if (offerPercentage.value.trim() === '' || offerPercentage.value <= 0 || offerPercentage.value > 100) {
+            } else if (offerPercentage.value.trim() === '' || offerPercentage.value <= 0 || offerPercentage.value >= 100) {
                 showErrorAlert( 'Offer percentage should be a number between 0 and 100.', 'error');
                 return false;
             } else if (startingDate.value.trim() === '') {
                 showErrorAlert( 'Please select the starting date.', 'error');
                 return false;
-            } else if (expairyDate.value < startingDate.value) {
+            } else if (expiryDate.value < startingDate.value) {
             showErrorAlert('Expiry date must be greater than activation date');
             return false;
             } else {

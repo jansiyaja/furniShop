@@ -53,13 +53,14 @@ user_route.get('/error404',userController.error404)
 
 
 
-user_route.get('/user',userController.loadDashboard);
-user_route.post('/user',userController.editProfile);
-user_route.get('/edit-address/:userId/:addressIndex', userController.editAddress);
-user_route.post('/edit-address/:userId/:addressIndex', userController. updateAddress);
-
-user_route.post('/addAddress',userController.addAddress);
-user_route.get('/delete-address/:userId/:addressIndex',userController.deleteAddress);
+user_route.get('/user',auth.isLogin,userController.loadDashboard);
+user_route.get('/user-edit',userController.loadeditProfile);
+user_route.post('/user-edit',userController.editProfile);
+user_route.get('/edit-address/:addressId/:index',auth.isLogin, userController.loadeditAddress);
+user_route.post('/edit-address',auth.isLogin, userController.editAddress);
+user_route.post('/changePassword', auth.isLogin, userController.changePassword)
+user_route.post('/addAddress', auth.isLogin,userController.addAddress);
+user_route.get('/delete-address/:userId/:addressIndex', auth.isLogin,userController.deleteAddress);
 user_route.get('/forgot-password',userController.loadForgetPage)
 user_route.post('/forgot-password',userController.loadForget)
 user_route.get('/reset-password/:token',userController.resetPassword)
@@ -70,31 +71,31 @@ user_route.post('/reset-password/:token',userController.updatePass)
 //-----------------------cart management-----------------------------------------------------------//
  
 user_route.post('/addToCart',auth.isLogin, cartController.addToCart)
-user_route.post('/removeCart',cartController.removeCart)
-user_route.get('/cart',cartController.loadCart)
-user_route.post('/updateQuantity',cartController.updateQuantity)
+user_route.post('/removeCart',auth.isLogin,cartController.removeCart)
+user_route.get('/cart',auth.isLogin,cartController.loadCart)
+user_route.post('/updateQuantity',auth.isLogin,cartController.updateQuantity)
 //----------------------------------------------------------------------------------//
 //--------------------WishList Management--------------------------------------------------------------//
-user_route.get('/wishlist',cartController.loadWhislist)
-user_route.post('/addToWishlist',cartController.addToWishlist)
-user_route.post('/removeWishlist',cartController.removeWishlist)
-user_route.post('/wishToCart',cartController.wishToCart)
+user_route.get('/wishlist', auth.isLogin,cartController.loadWhislist)
+user_route.post('/addToWishlist', auth.isLogin,cartController.addToWishlist)
+user_route.post('/removeWishlist', auth.isLogin,cartController.removeWishlist)
+user_route.post('/wishToCart', auth.isLogin,cartController.wishToCart)
 
 //----------------------------------------------------------------------------------//
-user_route.get('/checkout', userController.loadCheckout);
-user_route.post('/placeOrder',orderController.placeOrder)
-user_route.get('/orderSuccess/:id', orderController.loadOrderSuccess)
-user_route.get('/orderDetailes/:id',orderController.loadOrderDetilas)
-user_route.post('/orderCancel',orderController.cancelOrder)
-user_route.post('/returnOrder',orderController.returnOrder)
-user_route.post('/verify-payment',orderController.verifyPayment)
-user_route.post('/countinuePayment',orderController.PaymentCountinue)
-user_route.post('/countinueVerify-payment',orderController.CountinuePayment)
+user_route.get('/checkout',  auth.isLogin,userController.loadCheckout);
+user_route.post('/placeOrder', auth.isLogin,orderController.placeOrder)
+user_route.get('/orderSuccess/:id',auth.isLogin, orderController.loadOrderSuccess)
+user_route.get('/orderDetailes/:id',auth.isLogin,orderController.loadOrderDetilas)
+user_route.post('/orderCancel', auth.isLogin,orderController.cancelOrder)
+user_route.post('/returnOrder', auth.isLogin,orderController.returnOrder)
+user_route.post('/verify-payment', auth.isLogin,orderController.verifyPayment)
+user_route.post('/countinuePayment', auth.isLogin,orderController.PaymentCountinue)
+user_route.post('/countinueVerify-payment', auth.isLogin,orderController.CountinuePayment)
 
 
-user_route.get('/refundPolicy',orderController.refundPolicy)
+user_route.get('/refundPolicy', auth.isLogin,orderController.refundPolicy)
 
 user_route.post('/applyCoupon',couponController.couponApply)
-user_route.get('/invoice/:id',orderController.loadInvoice)
+user_route.get('/invoice/:id',auth.isLogin,orderController.loadInvoice)
 
 module.exports = user_route;

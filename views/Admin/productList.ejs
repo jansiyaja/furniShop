@@ -52,7 +52,7 @@
                            
                         </div>
                     </li>
-                    <li class="menu-item">
+                    <li class="menu-item ">
                         <a class="menu-link" href="/admin/Category">
                             <i class="icon material-icons md-category"></i>
                             <span class="text">Category</span>
@@ -73,53 +73,33 @@
                             
                         </div>
                     </li>
-                    
                    
-                   
-                    <li class="menu-item has-submenu">
-                        <a class="menu-link" href="#">
-                            <i class="icon material-icons md-person"></i>
-                            <span class="text">Account</span>
+                    <li class="menu-item ">
+                        <a class="menu-link" href="/admin/coupon">
+                            <i class="icon material-icons md-redeem"></i>
+                            <span class="text">Coupon</span>
                         </a>
                         <div class="submenu">
-                            <a href="page-account-login.html">User login</a>
-                            <a href="page-account-register.html">User registration</a>
-                            <a href="page-error-404.html">Error 404</a>
+                            <a href="/admin/addCoupon">Add Coupon</a>
+                            <a href="/admin/editCoupon">Edit Coupon</a>
+                            
                         </div>
                     </li>
-                    <!-- <li class="menu-item">
-                        <a class="menu-link" href="page-reviews.html">
-                            <i class="icon material-icons md-comment"></i>
-                            <span class="text">Reviews</span>
-                        </a>
-                    </li> -->
+                   
+                  
                     
                     <li class="menu-item">
-                        <a class="menu-link" disabled href="#">
-                            <i class="icon material-icons md-pie_chart"></i>
-                            <span class="text">Statistics</span>
+                        <a class="menu-link"  href="/admin/Offer">
+                            <i class="icon material-icons md-new_releases"></i>
+                            
+                              
+                             
+                            <span class="text">Offer</span>
                         </a>
                     </li>
                 </ul>
                 <hr />
-                <ul class="menu-aside">
-                    <li class="menu-item has-submenu">
-                        <a class="menu-link" href="#">
-                            <i class="icon material-icons md-settings"></i>
-                            <span class="text">Settings</span>
-                        </a>
-                        <div class="submenu">
-                            <a href="page-settings-1.html">Setting sample 1</a>
-                            <a href="page-settings-2.html">Setting sample 2</a>
-                        </div>
-                    </li>
-                    <!-- <li class="menu-item">
-                        <a class="menu-link" href="page-blank.html">
-                            <i class="icon material-icons md-local_offer"></i>
-                            <span class="text"> Starter page </span>
-                        </a>
-                    </li> -->
-                </ul>
+               
                 <br />
                 <br />
             </nav>
@@ -233,7 +213,7 @@
                                         <th class="text-center">Category</th>
                                         <th class="text-center">Quantity</th>
                                         <th class="text-center">Description</th>
-                                        <th class="text-center">Status</th>
+                                        <th class="text-center">Offer</th>
                                         <th class="text-end">Actions</th>
                                     </tr>
                                 </thead>
@@ -255,18 +235,15 @@
                                                     <% } %>
                                                 </td>
                                                 <td class="text-center"><%= product.stock %></td>
-                                                <td class="text-center"><%= product.description %></td>
-                                                <td class="text-center" id="productRow<%= product._id %>">
-                                                    <a class="text-center" data-user-id="<%= product._id %>" data-initial-status="<%= product.is_Listed %>" onclick="deleteProduct('<%= product._id %>')">
-                                                        <i class="fas fa-trash fa-lg mx-1"></i>
-                                                    </a>  
-                                                </td>
+                                                <td width="50%" class="text-center"><%= product.description %></td>
+                                                <td class="text-center" ><a href="/admin/productOffer?id=<%= product._id %>" class="btn btn-sm font-sm rounded btn-warning"><i class="material-icons md-edit"></i> Apply</a></td>
                                                 <td class="text-center">
-                                                    <a class="btn btn-sm btn-danger rounded font-sm mt-15 text-white" 
-                                                    data-product-id="<%= product._id %>" data-initial-status="<%= product.is_Listed %>"
-                                                    onclick="confirmAndHandleListButtonClick('<%= product._id %>','<%= product.is_Listed %>')">
-                                                    <%= product.is_Listed ? "list" : "unlist" %>
-                                                 </a>
+                                                   
+                                                    <button type="button" id="button-<%= product._id %>" class="btn btn-sm btn-danger rounded font-sm mt-15"
+                                                        data-user-id="<%= product._id  %>" data-initial-status="<%= product.is_listed %>"
+                                                        onclick="confirmAndHandleListButtonClick('<%= product._id %>', <%= product.is_listed %>)">
+                                                        <%= product.isListed ? "Unlist" : "List" %>
+                                                    </button>
                                                     <a class="btn btn-sm btn-brand rounded font-sm mt-15" href="/admin/editProduct?id=<%= product._id %>">Edit</a>
                                                 </td>
                                             </tr>
@@ -341,54 +318,45 @@
         <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
         <script>
-// Send AJAX request to the server
-async function confirmAndHandleListButtonClick(productId, listedStatus) {
-    const confirmationMessage = `Are you sure you want to ${listedStatus ? 'unlist' : 'list'} this product?`;
+         async function confirmAndHandleListButtonClick(productId, listedStatus) {
+    console.log("iam ppror",productId, listedStatus);
+    const action = listedStatus ? 'unlist' : 'list';
+    const confirmationMessage = `Are you sure you want to ${action} this product?`;
     const userConfirmed = window.confirm(confirmationMessage);
 
     if (userConfirmed) {
         try {
             const backendURL = '/admin/listproduct';
-            console.log('Sending payload:', JSON.stringify({ userid: productId }));
+            console.log('Sending payload:', JSON.stringify({ id: productId }));
 
             const response = await fetch(backendURL, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ userid: productId }),
+                body: JSON.stringify({ id: productId }),
             });
 
             const data = await response.json();
             console.log('Success:', data);
 
-            // Ensure data.list is treated as a boolean
-            updateProductButtonStatus(productId, Boolean(data.list));
+            updateProductButtonStatus(productId, data);
+            console.log("iam ",productId, data);
         } catch (error) {
             console.error('Error:', error);
             alert('Error occurred while processing the request. Please try again.');
         }
     } else {
-        alert('Operation canceled.'); 
+        alert('Operation canceled.');
     }
 }
 
 function updateProductButtonStatus(productId, newListedStatus) {
-    const button = document.querySelector(`[data-product-id="${productId}"]`);
+    const button = document.getElementById('button-' + productId);
 
     if (button) {
-        console.log('Updating button status:', newListedStatus);
-        button.dataset.initialStatus = newListedStatus;
+        button.dataset.status = newListedStatus;
         button.textContent = newListedStatus ? 'Unlist' : 'List';
-    }
-}
-
-            function deleteProduct(productId) {
-   
-
-    var rowToDelete = document.getElementById("productRow" + productId);
-    if (rowToDelete) {
-        rowToDelete.style.display = "none";
     }
 }
 

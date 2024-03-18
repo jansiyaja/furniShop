@@ -53,7 +53,7 @@
                        
                     </div>
                 </li>
-                <li class="menu-item">
+                <li class="menu-item ">
                     <a class="menu-link" href="/admin/Category">
                         <i class="icon material-icons md-category"></i>
                         <span class="text">Category</span>
@@ -74,53 +74,33 @@
                         
                     </div>
                 </li>
-                
                
-               
-                <li class="menu-item has-submenu">
-                    <a class="menu-link" href="#">
-                        <i class="icon material-icons md-person"></i>
-                        <span class="text">Account</span>
+                <li class="menu-item ">
+                    <a class="menu-link" href="/admin/coupon">
+                        <i class="icon material-icons md-redeem"></i>
+                        <span class="text">Coupon</span>
                     </a>
                     <div class="submenu">
-                        <a href="page-account-login.html">User login</a>
-                        <a href="page-account-register.html">User registration</a>
-                        <a href="page-error-404.html">Error 404</a>
+                        <a href="/admin/addCoupon">Add Coupon</a>
+                        <a href="/admin/editCoupon">Edit Coupon</a>
+                        
                     </div>
                 </li>
-                <!-- <li class="menu-item">
-                    <a class="menu-link" href="page-reviews.html">
-                        <i class="icon material-icons md-comment"></i>
-                        <span class="text">Reviews</span>
-                    </a>
-                </li> -->
+               
+              
                 
                 <li class="menu-item">
-                    <a class="menu-link" disabled href="#">
-                        <i class="icon material-icons md-pie_chart"></i>
-                        <span class="text">Statistics</span>
+                    <a class="menu-link"  href="/admin/Offer">
+                        <i class="icon material-icons md-new_releases"></i>
+                        
+                          
+                         
+                        <span class="text">Offer</span>
                     </a>
                 </li>
             </ul>
             <hr />
-            <ul class="menu-aside">
-                <li class="menu-item has-submenu">
-                    <a class="menu-link" href="#">
-                        <i class="icon material-icons md-settings"></i>
-                        <span class="text">Settings</span>
-                    </a>
-                    <div class="submenu">
-                        <a href="page-settings-1.html">Setting sample 1</a>
-                        <a href="page-settings-2.html">Setting sample 2</a>
-                    </div>
-                </li>
-                <!-- <li class="menu-item">
-                    <a class="menu-link" href="page-blank.html">
-                        <i class="icon material-icons md-local_offer"></i>
-                        <span class="text"> Starter page </span>
-                    </a>
-                </li> -->
-            </ul>
+           
             <br />
             <br />
         </nav>
@@ -337,70 +317,80 @@
         }
     
         function validateForm() {
-            var productName = document.getElementById('product_title').value.trim();
-            var price = parseFloat(document.getElementById('price').value);
-            var quantity = parseInt(document.getElementById('quantity').value);
-            var category = document.getElementById('product-category').value;
-            var description = document.getElementById('description').value.trim();
-    
-            // Validate image count
-            var imageInputs = document.querySelectorAll('.imageInput');
-            var imageCount = Array.from(imageInputs).filter(input => input.files.length > 0).length;
-    
-            // Regular expressions for validation
-            var nameRegex = /^[^\s]+(\s+[^\s]+)*$/; // Allows only one space
-            var priceRegex = /^[1-9]\d*$/; // Allows only positive integers
-            var quantityRegex = /^[1-9]\d*$/; // Allows only positive integers
-    
-            // Array to store error messages and focusable elements
-            var errors = [];
-    
-            if (!nameRegex.test(productName)) {
-                errors.push("Please enter a valid product name with at most one space.");
-                document.getElementById('product_title').focus();
-            }
-    
-            if (isNaN(price) || !priceRegex.test(price)) {
-                errors.push("Please enter a valid positive price.");
-                document.getElementById('price').focus();
-            }
-    
-            if (isNaN(quantity) || !quantityRegex.test(quantity)) {
-                errors.push("Please enter a valid positive quantity.");
-                document.getElementById('quantity').focus();
-            }
-    
-            if (category === "") {
-                errors.push("Please select a category.");
-                document.getElementById('product-category').focus();
-            }
-    
-            if (description === "") {
-                errors.push("Please enter a product description.");
-                document.getElementById('description').focus();
-            }
-    
-           
-    
-            if (errors.length === 0) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Success!',
-                    text: 'Product added successfully.',
-                });
-                return true;
-            }
-    
-            // Display error messages using SweetAlert
-            if (errors.length > 0) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Validation Error',
-                    text: errors.join("\n"),
-                });
-                return false;
-            }
+    var productName = document.getElementById('product_title').value.trim();
+    var price = parseFloat(document.getElementById('price').value);
+    var quantity = parseInt(document.getElementById('quantity').value);
+    var category = document.getElementById('product-category').value;
+    var description = document.getElementById('description').value.trim();
+
+    // Validate image count
+    var imageInputs = document.querySelectorAll('.imageInput');
+    var imageFiles = Array.from(imageInputs).flatMap(input => input.files);
+    var imageCount = imageFiles.length;
+
+    // Regular expressions for validation
+    var nameRegex = /^[^\s]+(\s+[^\s]+)*$/; // Allows only one space
+    var priceRegex = /^[1-9]\d*$/; // Allows only positive integers
+    var quantityRegex = /^[1-9]\d*$/; // Allows only positive integers
+
+    // Array to store error messages and focusable elements
+    var errors = [];
+
+    if (!nameRegex.test(productName)) {
+        errors.push("Please enter a valid product name with at most one space.");
+        document.getElementById('product_title').focus();
+    }
+
+    if (isNaN(price) || !priceRegex.test(price)) {
+        errors.push("Please enter a valid positive price.");
+        document.getElementById('price').focus();
+    }
+
+    if (isNaN(quantity) || !quantityRegex.test(quantity)) {
+        errors.push("Please enter a valid positive quantity.");
+        document.getElementById('quantity').focus();
+    }
+
+    if (category === "") {
+        errors.push("Please select a category.");
+        document.getElementById('product-category').focus();
+    }
+
+    if (description === "") {
+        errors.push("Please enter a product description.");
+        document.getElementById('description').focus();
+    }
+
+    const allowedExtensions = /\.(jpg|jpeg|png)$/i; // Regular expression for JPG and PNG extensions
+    for (let i = 0; i < imageFiles.length; i++) {
+        const fileName = imageFiles[i].name;
+        if (!allowedExtensions.test(fileName)) {
+            errors.push("Unsupported file type detected. Please upload only JPG or PNG images.");
+            break; // Stop further processing if any unsupported file is found
         }
+    }
+    if (imageCount < 4) {
+        errors.push("Please upload at least 4 images.");
+    }
+
+    if (errors.length === 0) {
+        Swal.fire({
+            icon: 'success',
+            title: 'Success!',
+            text: 'Product added successfully.',
+        });
+        return true;
+    }
+
+    // Display error messages using SweetAlert
+    Swal.fire({
+        icon: 'error',
+        title: 'Validation Error',
+        text: errors.join("\n"),
+    });
+    return false;
+}
+
     </script>
     
     

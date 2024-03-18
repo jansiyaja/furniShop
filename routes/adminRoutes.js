@@ -84,7 +84,16 @@ admin_route.post('/editCategory',categoryController.editCategory)
 admin_route.get('/Offer',adminAuth.isLogout,offerController.loadOffer)
 admin_route.get('/addOffer',adminAuth.isLogout,  offerController.loadaddOffer)
 admin_route.post('/addOffer',adminAuth.isLogout,  offerController.addOffer)
+admin_route.get('/editOffer',adminAuth.isLogout,offerController.loadEditOffer)
+admin_route.post('/editOffer',adminAuth.isLogout,offerController.editOffer)
+admin_route.put('/listOffer',adminAuth.isLogout,offerController.listOffer)
+admin_route.get('/applyOffer',adminAuth.isLogout,offerController.loadCategoryApplyOffer)
+admin_route.post('/addCategoryOffer',adminAuth.isLogout,offerController.categoryApplyOffer)
+admin_route.post('/removeCategoryOffer',adminAuth.isLogout,offerController.categoryRemoveOffer)
 
+admin_route.get('/productOffer',adminAuth.isLogout,offerController.loadProductApplyOffer)
+admin_route.post('/addProductOffer',adminAuth.isLogout,offerController.productApplyOffer)
+admin_route.post('/removeProductOffer',adminAuth.isLogout,offerController.productRemoveOffer)
 //------------------------------------------------------------------//
 //-------------------Orders Management-----------------------------------------------//
 admin_route.get('/orders',adminAuth.isLogout,adminController.loadOrder)

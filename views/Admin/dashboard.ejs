@@ -439,7 +439,7 @@
                                                     </td>
                                                     <td><a href="#" class="fw-bold"><%= order.orderId %></a></td>
                                                     <td><%= order.deliveryAddress.fullName %></td>
-                                                    <td><%= order.date.toLocaleDateString() %></td>
+                                                    <td><%= order.date.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })  %></td>
                                                     <td><%= order.totalAmount %></td>
                                                     <td>
                                                         <span class="badge badge-pill badge-soft-success"><%= order.products[0].status %></span>

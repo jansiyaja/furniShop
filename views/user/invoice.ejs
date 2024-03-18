@@ -41,6 +41,11 @@
       margin-top: 20px;
      
     }
+    @media print {
+    .download-button {
+      display: none;
+    }
+  }
   </style>
 </head>
 
@@ -58,6 +63,11 @@
     <div class="row">
       <div class="col-md-12">
         <div class="invoice-body" style="background-color: rgb(231, 224, 224);">
+          <h4>Bill From:</h4>
+          <img src="/assets/images/icons/apple-touch-icon.png" alt="" style="max-width: 50px; color: transparent;">
+
+          <p>Molla furniture</p>
+          <p>9400540561</p>
             <% if (order) { %>
                
           <h4>Bill To:</h4>

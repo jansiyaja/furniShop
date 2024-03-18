@@ -88,6 +88,7 @@ const listCategory = async (req, res) => {
 
     const categoryid = req.body.id
     const CategoryData = await Category.findOne({ _id: categoryid })
+    console.log(CategoryData.isListed);
     if (CategoryData.isListed === true) {
 
       await Category.findByIdAndUpdate({ _id: categoryid }, { $set: { isListed: false } })

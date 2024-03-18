@@ -52,7 +52,7 @@
                            
                         </div>
                     </li>
-                    <li class="menu-item">
+                    <li class="menu-item ">
                         <a class="menu-link" href="/admin/Category">
                             <i class="icon material-icons md-category"></i>
                             <span class="text">Category</span>
@@ -69,58 +69,37 @@
                             <span class="text">Orders</span>
                         </a>
                         <div class="submenu">
-                            <a href="page-orders-1.html">Order list 1</a>
-                            <a href="page-orders-2.html">Order list 2</a>
-                            <a href="page-orders-detail.html">Order detail</a>
+                            <a href="/admin/orders">Order list 1</a>
+                            
                         </div>
                     </li>
-                    
                    
-                   
-                    <li class="menu-item has-submenu">
-                        <a class="menu-link" href="#">
-                            <i class="icon material-icons md-person"></i>
-                            <span class="text">Account</span>
+                    <li class="menu-item ">
+                        <a class="menu-link" href="/admin/coupon">
+                            <i class="icon material-icons md-redeem"></i>
+                            <span class="text">Coupon</span>
                         </a>
                         <div class="submenu">
-                            <a href="page-account-login.html">User login</a>
-                            <a href="page-account-register.html">User registration</a>
-                            <a href="page-error-404.html">Error 404</a>
+                            <a href="/admin/addCoupon">Add Coupon</a>
+                            <a href="/admin/editCoupon">Edit Coupon</a>
+                            
                         </div>
                     </li>
-                    <!-- <li class="menu-item">
-                        <a class="menu-link" href="page-reviews.html">
-                            <i class="icon material-icons md-comment"></i>
-                            <span class="text">Reviews</span>
-                        </a>
-                    </li> -->
+                   
+                  
                     
                     <li class="menu-item">
-                        <a class="menu-link" disabled href="#">
-                            <i class="icon material-icons md-pie_chart"></i>
-                            <span class="text">Statistics</span>
+                        <a class="menu-link"  href="/admin/Offer">
+                            <i class="icon material-icons md-new_releases"></i>
+                            
+                              
+                             
+                            <span class="text">Offer</span>
                         </a>
                     </li>
                 </ul>
                 <hr />
-                <ul class="menu-aside">
-                    <li class="menu-item has-submenu">
-                        <a class="menu-link" href="#">
-                            <i class="icon material-icons md-settings"></i>
-                            <span class="text">Settings</span>
-                        </a>
-                        <div class="submenu">
-                            <a href="page-settings-1.html">Setting sample 1</a>
-                            <a href="page-settings-2.html">Setting sample 2</a>
-                        </div>
-                    </li>
-                    <!-- <li class="menu-item">
-                        <a class="menu-link" href="page-blank.html">
-                            <i class="icon material-icons md-local_offer"></i>
-                            <span class="text"> Starter page </span>
-                        </a>
-                    </li> -->
-                </ul>
+               
                 <br />
                 <br />
             </nav>
@@ -260,7 +239,7 @@
                                                         </td>
                                                         <%}%>
                                                         <td>
-                                                            <%= user.createdAt.toLocaleDateString() %>
+                                                            <%= user.createdAt.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })  %>
                                                         </td>
                                                         <td class="text-end">
                                                             <button type="button" id="button-<%= user._id %>" class="btn btn-sm btn-danger rounded font-sm mt-15"

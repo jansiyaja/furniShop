@@ -58,7 +58,9 @@
                                              <a href="#"><%= order.deliveryAddress.fullName %></a>
                                             </span>
                                             <span class="meta-separator">|</span>
-                                            <a href="#"> <%= order.date.toLocaleDateString()%></a>
+                                            <a href="#"> <%= order.date.toLocaleDateString('en-IN', {
+                                                day: '2-digit' , month: 'short' ,
+                                                year: 'numeric' }) %></a>
                                             <span class="meta-separator">|</span>
                                             <a href="#"> <%= order.deliveryAddress.phone %></a>
                                         </div><!-- End .entry-meta -->
@@ -77,7 +79,9 @@
                                             </p>
                                             <p>State: <%= order.deliveryAddress.state %>
                                             </p>
-                                            <p>Expected Date: <%= order.expectedDate.toLocaleDateString()  %></p>
+                                            <p>Expected Date: <%= order.expectedDate.toLocaleDateString('en-IN', {
+                                                day: '2-digit' , month: 'short' ,
+                                                year: 'numeric' })  %></p>
                                             <p>coupon Discount: <%= order.coupon  %></p>
                                             <% } else { %>
                                                 <p>No order found with the given ID.</p>
@@ -126,27 +130,32 @@
                                            
                                             <p>
                                                 <% if (product.quantity.status  === 'cancelled') { %>
-                                                    <p>Cancelled</p>
+                                                    
+                                                    <a href="" class="btn btn-outline-primary-2"><span>Cancelled</span></a>
                                                 <% } else if (product.quantity.status  === 'delivered') { %>
-                                                    <p>Delivered</p>
-                                                    <a href="#" class="go-back-button" id="returnOrderButton" data-orderId="<%= order.orderId %>" data-order-id="<%= order._id %>" data-product-id="<%= product.quantity.productId %>" data-coupon-dis=" <%= order.coupon%>">Return Order</a>
+                                                    
+                                                    <a href="" class="btn btn-outline-primary-2"><span>Delivered</span></a>
+
+                                                    <a href="#" class="btn btn-outline-primary-2 mt-3" id="returnOrderButton" data-orderId="<%= order.orderId %>" data-order-id="<%= order._id %>" data-product-id="<%= product.quantity.productId %>" data-coupon-dis=" <%= order.coupon%>">Return Order</a>
                                                 <% } 
-                                                else if (product.quantity.status  === 'returnRequest') { %>
-                                                    <p class=" warning">Returned Requested </p>
+                                                else if (product.quantity.status  === 'returnRequested') { %>
                                                   
+                                                    <a href="" class="btn btn-outline-primary-2"><span>Returned Requested</span></a>
                                                 <% }else if (product.quantity.status  === 'returned') { %>
-                                                    <p class=" success">Returned </p>
+                                                    
+                                                    <a href="" class="btn btn-outline-primary-2"><span>Returned</span></a>
+                                                  
+                                                <% } 
+                                                else if (product.quantity.status ==='pending') { %>
+                                                    <a href="#" class="btn btn-outline-primary-2" id="retryPayment"  onclick="countinuePayment('<%=order.orderId%>')">Retry online payment</a>
+                                                  
                                                   
                                                 <% } 
                                                 else { %>
                                                     <a href="#" class="go-back-button" id="cancelOrderButton" data-order-Id="<%= order.orderId %>" data-order-id="<%= order._id %>" data-product-id="<%= product.quantity.productId %>" data-coupon-dis=" <%= order.coupon%>">Cancel Order</a>
                                                 <% } %>
                                             </p>
-                                            <%if(product.quantity.status ==='pending' ){%>
-                                               
-                                                    <a href="#" class="btn btn-outline-primary-2" id="retryPayment"  onclick="countinuePayment('<%=order.orderId%>')">Retry online payment</a>
-                                                  
-                                                <%}%>
+                                          
                                             
                                         <% }); %>
                                     <% } else { %>
@@ -212,7 +221,9 @@
                     <div class="modal-body">
                         
                         <label for="returnReason">Return Reason:</label>
-                        <textarea id="returnReason" class="form-control"></textarea>
+                    <input type="text" id="returnReason" name="cancelReason" class="form-control" required>
+
+                       
                     
                       
                         <div class="form-check">
