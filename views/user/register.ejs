@@ -43,7 +43,7 @@
                                         </div>
                                         <div class="form-group">
                                             <label for="register-password">Confirm Password *</label>
-                                            <input type="string" class="form-control" id="register-con-password" name="Confirm-password" required>
+                                            <input type="password" class="form-control" id="register-con-password" name="Confirm-password" required>
                                         </div><!-- End .form-group -->
 
 							    		<div class="form-footer">
@@ -190,4 +190,86 @@
         </div><!-- End .modal-dialog -->
     </div><!-- End .modal -->
     <%- include ('../Layout/user/footer.ejs') -%>
-   
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
+
+    <script>
+        // Function to validate the registration form
+        function validateForm() {
+            var nameInput = document.getElementById('register-username');
+            var emailInput = document.getElementById('register-email');
+            var mobileInput = document.getElementById('register-mobile');
+            var passwordInput = document.getElementById('register-password');
+            var confirmPasswordInput = document.getElementById('register-con-password');
+            var isValid = true; // Flag to track overall form validity
+        
+            var nameRegex = /^[A-Za-z]+(\s[A-Za-z]+)*$/;
+            var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            var phoneRegex = /^\d{10}$/;
+            var passwordRegex = /^(?=.*\d)(?=.*[A-Z]).{6,}$/;
+        
+            // Function to display error message for each input field
+            function showError(input, message) {
+                var errorElement = document.createElement('div');
+                errorElement.className = 'error-message';
+                errorElement.textContent = message;
+                errorElement.style.color = 'red'; 
+                errorElement.style.fontSize = "12px" ; 
+                input.parentNode.appendChild(errorElement);
+                isValid = false; 
+        
+                // Remove error message after 5 seconds (5000 milliseconds)
+                setTimeout(function() {
+                    errorElement.remove();
+                }, 5000);
+            }
+        
+            // Function to clear error message for each input field
+            function clearError(input) {
+                var errorElement = input.parentNode.querySelector('.error-message');
+                if (errorElement) {
+                    errorElement.remove();
+                }
+            }
+        
+            // Validate Name
+            if (!nameRegex.test(nameInput.value)) {
+                showError(nameInput, 'Please enter a valid name with only letters and at least one non-space character.');
+            } else {
+                clearError(nameInput);
+            }
+        
+            // Validate Email
+            if (!emailRegex.test(emailInput.value)) {
+                showError(emailInput, 'Please enter a valid email address.');
+            } else {
+                clearError(emailInput);
+            }
+        
+            // Validate Mobile
+            if (!phoneRegex.test(mobileInput.value)) {
+                showError(mobileInput, 'Please enter a valid 10-digit phone number.');
+            } else {
+                clearError(mobileInput);
+            }
+        
+            // Validate Password
+            if (!passwordRegex.test(passwordInput.value)) {
+                showError(passwordInput, 'Password must be at least six characters and include at least one number and one uppercase letter.');
+            } else {
+                clearError(passwordInput);
+            }
+        
+            // Validate Confirm Password
+            if (passwordInput.value !== confirmPasswordInput.value) {
+                showError(confirmPasswordInput, 'Passwords do not match.');
+            } else {
+                clearError(confirmPasswordInput);
+            }
+        
+            // Return overall form validity
+            return isValid;
+        }
+        </script>
+        
+        
+    

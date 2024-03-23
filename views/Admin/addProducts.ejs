@@ -30,7 +30,7 @@
         </div>
         <nav>
             <ul class="menu-aside">
-                <li class="menu-item active ">
+                <li class="menu-item  ">
                     <a class="menu-link" href="/admin/dashboard">
                         <i class="icon material-icons md-home"></i>
                         <span class="text">Dashboard</span>
@@ -42,14 +42,14 @@
                         <span class="text">customers</span>
                     </a>
                 </li>
-                <li class="menu-item ">
+                <li class="menu-item active">
                     <a class="menu-link" href="/admin/Products">
                         <i class="icon material-icons md-shopping_bag"></i>
                         <span class="text">Products</span>
                     </a>
                     <div class="submenu">
-                        <a href="/admin/addProduct">Add Product </a>
-                        <a href="/admin/editProduct">Edit Product </a>
+                        <a href="/admin/addProduct" class="active">Add Product </a>
+                       
                        
                     </div>
                 </li>
@@ -65,14 +65,11 @@
                     </div>
                 </li>
                 <li class="menu-item has-submenu">
-                    <a class="menu-link" href="page-orders-1.html">
+                    <a class="menu-link" href="/admin/orders">
                         <i class="icon material-icons md-shopping_cart"></i>
                         <span class="text">Orders</span>
                     </a>
-                    <div class="submenu">
-                        <a href="/admin/orders">Order list 1</a>
-                        
-                    </div>
+                  
                 </li>
                
                 <li class="menu-item ">
@@ -154,7 +151,7 @@
                             <a class="dropdown-item" href="#"><i class="material-icons md-receipt"></i>Billing</a>
                             <a class="dropdown-item" href="#"><i class="material-icons md-help_outline"></i>Help center</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item text-danger" href="#"><i class="material-icons md-exit_to_app"></i>Logout</a>
+                            <a class="dropdown-item text-danger" href="/admin/logout"><i class="material-icons md-exit_to_app"></i>Logout</a>
                         </div>
                     </li>
                 </ul>
@@ -262,85 +259,73 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   
     <script>
-        function validateForm() {
-            var productName = document.getElementById('product_title').value.trim();
-            var price = parseFloat(document.getElementById('price').value);
-            var quantity = parseInt(document.getElementById('quantity').value);
-            var category = document.getElementById('product-category').value;
-            var description = document.getElementById('description').value.trim();
-    
-            // Validate image count
-            var imageInputs = document.querySelectorAll('.imageInput');
-            var imageCount = Array.from(imageInputs).filter(input => input.files.length > 0).length;
-    
-            // Regular expressions for validation
-            var nameRegex = /^[^\s]+(\s+[^\s]+)*$/; // Allows only one space
-            var priceRegex = /^[1-9]\d*$/; // Allows only positive integers
-            var quantityRegex = /^[1-9]\d*$/; // Allows only positive integers
-    
-            // Array to store error messages and focusable elements
-            var errors = [];
-    
-            if (!nameRegex.test(productName)) {
-                errors.push("Please enter a valid product name with at most one space.");
-                document.getElementById('product_title').focus();
-            }
-    
-            if (isNaN(price) || !priceRegex.test(price)) {
-                errors.push("Please enter a valid positive price.");
-                document.getElementById('price').focus();
-            }
-    
-            if (isNaN(quantity) || !quantityRegex.test(quantity)) {
-                errors.push("Please enter a valid positive quantity.");
-                document.getElementById('quantity').focus();
-            }
-    
-            if (category === "") {
-                errors.push("Please select a category.");
-                document.getElementById('product-category').focus();
-            }
-    
-            if (description === "") {
-                errors.push("Please enter a product description.");
-                document.getElementById('description').focus();
-            }
-    
-            // Validate image count
-            if (imageCount < 4) {
-    errors.push("Please upload at least 4 images.");
-} 
-    /
-    const allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i; // Regular expression for JPG and PNG extensions
-    for (let i = 0; i < imageFiles.length; i++) {
-        const fileName = imageFiles[i].name;
-        if (!allowedExtensions.test(fileName)) {
-            errors.push("Unsupported file type. Please upload only JPG or PNG images.");
-            break; // Stop further processing if any unsupported file is found
-        }
+       function validateForm() {
+    var productName = document.getElementById('product_title').value.trim();
+    var price = parseFloat(document.getElementById('price').value);
+    var quantity = parseInt(document.getElementById('quantity').value);
+    var category = document.getElementById('product-category').value;
+    var description = document.getElementById('description').value.trim();
+
+    // Validate image count
+    var imageInputs = document.querySelectorAll('.imageInput');
+    var imageCount = Array.from(imageInputs).filter(input => input.files.length > 0).length;
+
+    // Regular expressions for validation
+    var nameRegex = /^[^\s]+(\s+[^\s]+)*$/; // Allows only one space
+    var priceRegex = /^[1-9]\d*$/; // Allows only positive integers
+    var quantityRegex = /^[1-9]\d*$/; // Allows only positive integers
+
+    // Array to store error messages
+    var errors = [];
+
+    if (!nameRegex.test(productName)) {
+        errors.push("Please enter a valid product name with at most one space.");
+        document.getElementById('product_title').focus();
     }
+
+    if (isNaN(price) || !priceRegex.test(price)) {
+        errors.push("Please enter a valid positive price.");
+        document.getElementById('price').focus();
+    }
+
+    if (isNaN(quantity) || !quantityRegex.test(quantity)) {
+        errors.push("Please enter a valid positive quantity.");
+        document.getElementById('quantity').focus();
+    }
+
+    if (category === "") {
+        errors.push("Please select a category.");
+        document.getElementById('product-category').focus();
+    }
+
+    if (description === "") {
+        errors.push("Please enter a product description.");
+        document.getElementById('description').focus();
+    }
+
+    // Validate image count
+    if (imageCount < 4) {
+        errors.push("Please upload at least 4 images.");
+    }
+
+    // Display error messages using SweetAlert
+    if (errors.length > 0) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Validation Error',
+            text: errors.join("\n"),
+        });
+        return false; // Return false if there are errors
+    }
+
+    // Return true if there are no errors
+    return true;
 }
 
-            if (errors.length === 0) {
-            Swal.fire({
-                icon: 'success',
-                title: 'Success!',
-                text: 'Product added successfully.',
-            });
-            return true;
-        }
-            // Display error messages using SweetAlert
-            if (errors.length > 0) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Validation Error',
-                    text: errors.join("\n"),
-                });
-                return false;
-            }
+            
     
            
-        }
+        
     
         function previewImage(input, imageId) {
             const preview = document.getElementById(imageId);
@@ -359,7 +344,21 @@
             }
         }
     </script>
-    
+    <script>
+        $(document).ready(function() {
+            // Image validation
+            $("input[type='file']").change(function() {
+                var fileInput = $(this);
+                var filePath = fileInput.val();
+                var allowedExtensions = /\.(jpg|jpeg|png|gif)$/i;
+     
+                if (!allowedExtensions.test(filePath)) {
+                    alert('Please upload image files only (jpg, jpeg, png, gif)');
+                    fileInput.val(''); // Clear the file input
+                }
+            });
+        });
+     </script>  
     
 </body>
 

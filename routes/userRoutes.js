@@ -54,8 +54,8 @@ user_route.get('/error404',userController.error404)
 
 
 user_route.get('/user',auth.isLogin,userController.loadDashboard);
-user_route.get('/user-edit',userController.loadeditProfile);
-user_route.post('/user-edit',userController.editProfile);
+user_route.get('/user-edit',auth.isLogin,userController.loadeditProfile);
+user_route.post('/user-edit',auth.isLogin,userController.editProfile);
 user_route.get('/edit-address/:addressId/:index',auth.isLogin, userController.loadeditAddress);
 user_route.post('/edit-address',auth.isLogin, userController.editAddress);
 user_route.post('/changePassword', auth.isLogin, userController.changePassword)
@@ -72,7 +72,7 @@ user_route.post('/reset-password/:token',userController.updatePass)
  
 user_route.post('/addToCart',auth.isLogin, cartController.addToCart)
 user_route.post('/removeCart',auth.isLogin,cartController.removeCart)
-user_route.get('/cart',auth.isLogin,cartController.loadCart)
+user_route.get('/cart',cartController.loadCart)
 user_route.post('/updateQuantity',auth.isLogin,cartController.updateQuantity)
 //----------------------------------------------------------------------------------//
 //--------------------WishList Management--------------------------------------------------------------//
@@ -97,5 +97,6 @@ user_route.get('/refundPolicy', auth.isLogin,orderController.refundPolicy)
 
 user_route.post('/applyCoupon',couponController.couponApply)
 user_route.get('/invoice/:id',auth.isLogin,orderController.loadInvoice)
+
 
 module.exports = user_route;

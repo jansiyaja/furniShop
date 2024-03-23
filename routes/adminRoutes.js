@@ -77,7 +77,7 @@ admin_route.get('/addCategory',adminAuth.isLogout,  categoryController.loadaddCa
 admin_route.post('/addCategory', categoryController.insertCategory)
 admin_route.post('/listCategory',categoryController.listCategory)
 admin_route.get('/editCategory',adminAuth.isLogout,categoryController.LoadEditCategory)
-admin_route.post('/editCategory',categoryController.editCategory)
+admin_route.post('/editCategory',adminAuth.isLogout,categoryController.editCategory)
 
 //------------------------------------------------------------------//
 //------------ Offer session------------------------------------------------------//
@@ -107,14 +107,14 @@ admin_route.post('/changeReturnStatus',adminController.changeReturnStatus)
 //------------Coupon MANAGEMENT------------------------------------------------------//
 admin_route.get('/coupon', adminAuth.isLogout, couponController.loadCoupon)
 admin_route.get('/addCoupon', adminAuth.isLogout, couponController.LoadAddCoupon)
-admin_route.post('/addCoupon', couponController.addCoupon)
+admin_route.post('/addCoupon',adminAuth.isLogout, couponController.addCoupon)
 admin_route.get('/editCoupon',adminAuth.isLogout,couponController.LoadEditCoupon)
-admin_route.post('/editCoupon',couponController.editCoupon)
-admin_route.post('/listCoupon',couponController.listCoupon)
+admin_route.post('/editCoupon',adminAuth.isLogout,couponController.editCoupon)
+admin_route.post('/listCoupon',adminAuth.isLogout,couponController.listCoupon)
 
 //------------------------------------------------------------------//
 
-admin_route.post('/createReport', adminController.loadCreateReport)
+admin_route.post('/createReport',adminAuth.isLogout, adminController.loadCreateReport)
 
 admin_route.get('/error',adminController.loadError)
 

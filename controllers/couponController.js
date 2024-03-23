@@ -5,9 +5,7 @@ const Cart=require('../models/cartModel');
 
 //-----------LoadIng Coupon Dashboard----------------------------------------------------------------------//
 const loadCoupon = async (req, res) => {
-  if (req.session.user){
-    res.redirect("/error404")
-  }
+
     try {
       let page = 1;
       if (req.query.id) {
@@ -46,10 +44,8 @@ const loadCoupon = async (req, res) => {
 
 //---------- load adding the Coupon-----------------------------------------------------------------------//
 const LoadAddCoupon = async (req,res)=>{
-  console.log(req.session.user);
-    if (req.session.user){
-      res.redirect("/error404")
-    }
+  
+   
   try {
     
     res.render('addCoupon')
@@ -109,9 +105,7 @@ const addCoupon = async (req,res)=>{
 
 
   const LoadEditCoupon = async (req,res)=>{
-    if (req.session.user){
-      res.redirect("/error404")
-    }
+   
     try {
       const id = req.query.id;
       const coupon = await Coupon.findOne({_id:id})
@@ -128,9 +122,7 @@ const addCoupon = async (req,res)=>{
   const editCoupon = async (req, res) => {
     
     try {
-      if (req.session.user){
-        res.redirect("/error404")
-      }
+      
       console.log(req.body);
         const id= req.body.editid;
         const newname = req.body.couponName; 
@@ -198,71 +190,123 @@ const addCoupon = async (req,res)=>{
   //-------------------------------------------------------------------------------------//
   //---------Add Coupon----------------------------------------------------------------------------//
  
-    const couponApply = async (req, res) => {
-      try {
-          const cCode = req.body.couponCode;
-         // console.log(cCode);
-          const userId = req.session.user.id;
-          const couponCode = await Coupon.findOne({ code: cCode });
-          console.log(couponCode);
-          console.log(userId);
+  //   const couponApply = async (req, res) => {
+  //     try {
+  //         const cCode = req.body.couponCode;
+  //         const price = req.body.totalPrice;
+  //        console.log(price);
+  //         const userId = req.session.user.id;
+  //         const couponCode = await Coupon.findOne({ code: cCode });
+  //         console.log(couponCode);
+  //         console.log(userId);
   
-          if (couponCode) {
-              const alreadyUsed = couponCode.userUsed.find((user) => user.userId === userId);
-            //  const alreadyUsed = couponCode.userUsed.find((user) => user.userId === userId);
-              //console.log("alreadyUsed",alreadyUsed);
-              if (!alreadyUsed) {
-                  const currentDate = new Date();
-  console.log(currentDate);
-                  if (couponCode.expairyDate > currentDate) {
-                      const cartData = await Cart.findOne({ userId: userId });
-                      console.log("cartData",cartData);
+  //         if (couponCode) {
+  //             const alreadyUsed = couponCode.userUsed.find((user) => user.userId === userId);
+  //           //  const alreadyUsed = couponCode.userUsed.find((user) => user.userId === userId);
+  //             //console.log("alreadyUsed",alreadyUsed);
+  //             if (!alreadyUsed) {
+  //                 const currentDate = new Date();
+  // console.log(currentDate);
+  //                 if (couponCode.expairyDate > currentDate) {
+  //                     const cartData = await Cart.findOne({ userId: userId });
+  //                     console.log("cartData",cartData);
   
-                      if (cartData) {
-                          const total = cartData.products.reduce((acc, value) => acc += value.totalPrice, 0);
-                          console.log("total",total);
+  //                     if (cartData) {
+  //                         const total = cartData.products.reduce((acc, value) => acc += value.totalPrice, 0);
+  //                         console.log("total",total);
   
-                          if (total >= couponCode.minAmount) {
-                              let discount = 0;
-                              let cartAmount = 0;
+  //                         if (price >= couponCode.minAmount) {
+  //                             let discount = 0;
+  //                             let cartAmount = 0;
   
-                              if (couponCode.discount) {
-                                  const dics = couponCode.discount / cartData.products.length;
-                                  console.log(dics);
-                                  discount = Math.round(dics);
+  //                             if (couponCode.discount) {
+  //                                 const dics = couponCode.discount / cartData.products.length;
+  //                                 console.log(dics);
+  //                                 discount = Math.round(dics);
   
-                                  cartAmount = cartData.products.reduce((acc, value) => {
-                                      if (value.totalPrice >= discount) {
-                                          return acc += (value.totalPrice - discount);
-                                      } else {
-                                          return acc += value.totalPrice;
-                                      }
-                                  }, 0);
-                              }
-                              console.log("cartAmount",cartAmount);
-                              res.json({ success: true, subTotal: cartAmount });
-                          } else {
-                              res.json({ min: true, message: 'Minimum amount needed' });
-                          }
-                      } else {
-                          res.json({ notAvailable: true, message: 'Shopping cart not found' });
-                      }
-                  } else {
-                      res.json({ expired: true, message: 'This coupon is expired' });
-                  }
-              } else {
-                  res.json({ alreadyUsed: true, message: 'This coupon is already used' });
-              }
-          } else {
-              res.json({ notAvailable: true, message: 'Coupon is not available' });
-          }
-      } catch (error) {
-          console.log(error.message);
+  //                                 cartAmount = cartData.products.reduce((acc, value) => {
+  //                                     if (value.totalPrice >= discount) {
+  //                                         return acc += (value.totalPrice - discount);
+  //                                     } else {
+  //                                         return acc += value.totalPrice;
+  //                                     }
+  //                                 }, 0);
+  //                             }
+  //                             console.log("cartAmount",cartAmount);
+  //                             res.json({ success: true, subTotal: cartAmount });
+  //                         } else {
+  //                             res.json({ min: true, message: 'Minimum amount needed' });
+  //                         }
+  //                     } else {
+  //                         res.json({ notAvailable: true, message: 'Shopping cart not found' });
+  //                     }
+  //                 } else {
+  //                     res.json({ expired: true, message: 'This coupon is expired' });
+  //                 }
+  //             } else {
+  //                 res.json({ alreadyUsed: true, message: 'This coupon is already used' });
+  //             }
+  //         } else {
+  //             res.json({ notAvailable: true, message: 'Coupon is not available' });
+  //         }
+  //     } catch (error) {
+  //         console.log(error.message);
           
-      res.redirect('/error404');
-      }
-  };
-  
+  //     res.redirect('/error404');
+  //     }
+  // };
+  const couponApply = async (req, res) => {
+    try {
+        const cCode = req.body.couponCode;
+        const price = req.body.totalPrice;
+        const userId = req.session.user.id;
+        const couponCode = await Coupon.findOne({ code: cCode });
+        const currentDate = new Date();
+
+        if (couponCode) {
+            const alreadyUsed = couponCode.userUsed.find((user) => user.userId === userId);
+            if (!alreadyUsed) {
+                if (couponCode.expairyDate > currentDate) {
+                    const cartData = await Cart.findOne({ userId: userId });
+                    
+                    if (cartData) {
+                        
+                        const total = price
+                        console.log("total",total);
+                        if (total >= couponCode.minAmount) {
+                          let cartAmount = total;
+                         
+                          if (couponCode.discount) {
+                             
+                              const discountAmount = Math.min(couponCode.discount, cartAmount);
+                              
+                         
+                              cartAmount -= discountAmount;
+                          }
+                  
+                          console.log("cartAmount", cartAmount);
+                          res.json({ success: true, subTotal: cartAmount });
+                      } else {
+                          res.json({ min: true, message: 'Minimum amount needed' });
+                      }
+                    } else {
+                        res.json({ notAvailable: true, message: 'Shopping cart not found' });
+                    }
+                } else {
+                    res.json({ expired: true, message: 'This coupon is expired' });
+                }
+            } else {
+                res.json({ alreadyUsed: true, message: 'This coupon is already used' });
+            }
+        } else {
+            res.json({ notAvailable: true, message: 'Coupon is not available' });
+        }
+    } catch (error) {
+        console.log(error.message);
+        res.redirect('/error404');
+    }
+};
+
   //-------------------------------------------------------------------------------------//
   //-------------------------------------------------------------------------------------//
 

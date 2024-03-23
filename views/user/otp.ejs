@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Email Verification</title>
+    <title>Furniture Tagline Here </title>
     <link rel="stylesheet" href="/static/css/beautiful-theme.css">
     <style>
         .otpcard {
@@ -115,12 +115,12 @@
                 <h2 class="text-center mb-4">Email Verification</h2>
                 <span class="mobile-text">Enter the code sent to your Email <b class="text-danger"> <%= locals.email %> </b></span>
                 <div class="otp-input">
-                    <input type="text" class="form-control" id="digit1" name="digit1" autofocus required>
-                    <input type="text" class="form-control" id="digit2" name="digit2" required>
-                    <input type="text" class="form-control" id="digit3" name="digit3" required>
-                    <input type="text" class="form-control" id="digit4" name="digit4" required>
-                    <input type="text" class="form-control" id="digit5" name="digit5" required>
-                    <input type="text" class="form-control" id="digit6" name="digit6" required>
+                    <input type="text" class="form-control" id="digit1" name="digit1" autofocus required maxlength="1">
+                    <input type="text" class="form-control" id="digit2" name="digit2" required maxlength="1">
+                    <input type="text" class="form-control" id="digit3" name="digit3" required maxlength="1">
+                    <input type="text" class="form-control" id="digit4" name="digit4" required maxlength="1">
+                    <input type="text" class="form-control" id="digit5" name="digit5" required maxlength="1">
+                    <input type="text" class="form-control" id="digit6" name="digit6" required maxlength="1">
                 </div>
                 <button type="submit" class="submit-btn" id="submitButton">Submit</button>
             </form>
@@ -128,7 +128,7 @@
             <div class="text-center">
                 <span class="mobile-text">Didn't receive the code?</span>
                 <div id="otpSend" style="display: none;">otp resend success</div>
-                <span class="font-weight-bold text-danger cursor resend-link"  onclick="resend()"  >Resend  </span>
+                <span class="font-weight-bold text-danger cursor resend-link" onclick="resend()" >Resend</span>
               
               </div>
               
@@ -136,53 +136,58 @@
         </div>
     </div>
     <script>
-        // Function to update the timer every second
-        function updateTimer(duration, display) {
-            let timer = duration;
-            const timerInterval = setInterval(function () {
-                const minutes = Math.floor(timer / 60);
-                const seconds = timer % 60;
+      // Function to update the timer every second
+// Function to update the timer every second
+function updateTimer(duration, display) {
+    let timer = duration;
+    const timerInterval = setInterval(function () {
+        const minutes = Math.floor(timer / 60);
+        const seconds = timer % 60;
 
-                display.textContent = `${minutes}:${seconds}`;
+        display.textContent = `${minutes}:${seconds}`;
 
-                if (--timer < 0) {
-                    clearInterval(timerInterval);
-                    // Handle timer expiration here if needed
-                }
-            }, 1000);
+        if (--timer < 0) {
+            clearInterval(timerInterval);
+            // Enable the "Resend" button after one minute
+            document.querySelector('.resend-link').disabled = false;
+            // Handle timer expiration here if needed
         }
+    }, 1000);
+}
 
-        // Function to auto-focus on the next input field
-        function focusNextInput(currentInput, nextInput) {
-            if (currentInput.value.length === 1) {
-                nextInput.focus();
-            }
-        }
+// Function to auto-focus on the next input field
+function focusNextInput(currentInput, nextInput) {
+    if (currentInput.value.length === 1) {
+        nextInput.focus();
+    }
+}
 
-        document.addEventListener("DOMContentLoaded", function () {
-            const timerMinutes = 1; // Set your desired timer duration in minutes
-            const display = document.querySelector('.time');
-            const timerContainer = document.querySelector('.timer-container');
-            updateTimer(timerMinutes * 60, display);
+document.addEventListener("DOMContentLoaded", function () {
+    const timerMinutes = 1; // Set your desired timer duration in minutes
+    const display = document.querySelector('.time');
+    const timerContainer = document.querySelector('.timer-container');
+    updateTimer(timerMinutes * 60, display);
 
-            const otpInputs = document.querySelectorAll('.otp-input input');
+    const otpInputs = document.querySelectorAll('.otp-input input');
 
-            otpInputs.forEach(function (input, index, inputs) {
-                input.addEventListener('input', function () {
-                    focusNextInput(input, inputs[index + 1]);
-                });
-            });
-
-            const verificationForm = document.getElementById('verificationForm');
-            verificationForm.addEventListener('submit', function () {
-                // Hide the timer container after form submission
-                timerContainer.style.display = 'none';
-            });
+    otpInputs.forEach(function (input, index, inputs) {
+        input.addEventListener('input', function () {
+            focusNextInput(input, inputs[index + 1]);
         });
-       
+    });
 
+    const verificationForm = document.getElementById('verificationForm');
+    verificationForm.addEventListener('submit', function () {
+        // Hide the timer container after form submission
+        timerContainer.style.display = 'none';
+    });
 
-  function resend() {
+    // Initially disable the "Resend" button
+    document.querySelector('.resend-link').disabled = true;
+});
+
+function resend() {
+    // Show the "Resend" message only when the "Resend" button is clicked
     document.getElementById('otpSend').style.display = 'block';
     setTimeout(()=>{
         document.getElementById('otpSend').style.display = 'none';
@@ -200,15 +205,16 @@
     })
       .then(response => response.json())
       .then(data => {
-
-       
+        // Handle success as needed
       })
       .catch(error => {
         console.error('Error fetching resend URL:', error.message);
         // Handle error as needed
       });
-  }
+}
+
+
 
     </script>
    
-    <%- include('../Layout/user/footer.ejs') -%>
+  

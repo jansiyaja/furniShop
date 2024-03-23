@@ -80,9 +80,21 @@
                                                         </div><!-- End .cart-product-quantity -->
 
                                                     </td>
-                                                    <td class="total-col">$<%= (value.quantity *
-                                                            value.productId.price).toFixed(2) %>
+                                                    <td class="price-col">
+                                                        <% if (value.productId.offer || (value.productId.category && value.productId.category.offer)) { %>
+                                                            <% const offer = value.productId.offer ? value.productId.offer : (value.productId.category ? value.productId.category.offer : null); %>
+                                                            <% if (offer) { %>
+                                                               
+                                                                <% const discountedPrice = value.productId.price - (value.productId.price * (offer.offerPercentage / 100)); %>
+                                                                <span class="discounted-price">₹<%= discountedPrice.toFixed(2)*value.quantity %></span>
+                                                               
+                                                            <% } %>
+                                                        <% } else { %>
+                                                            $<%= value.productId.price.toFixed(2)*value.quantity %>
+                                                        <% } %>
                                                     </td>
+                                                    
+                                                   
                                                     <td class="remove-col">
 
                                                         <a onclick="deleteCart('<%= value.productId._id %>')"
@@ -556,7 +568,8 @@
     success: function (response) {
         if (response.success) {
             updateUI(index, response.newQuantity, response.newTotalPrice);
-            location.reload();
+           
+          location.reload();
         } else if (response.min) {
             Swal.fire({
                 icon: "warning",

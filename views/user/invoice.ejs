@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Molla - Bootstrap eCommerce Template</title>
+    <title>Furniture Tagline Here </title>
     <meta name="keywords" content="HTML5 Template">
     <meta name="description" content="Molla - Bootstrap eCommerce Template">
     <meta name="author" content="p-themes">
@@ -95,23 +95,33 @@
                     <th>Name</th>
                     <th>Quantity</th>
                     <th>Unit Price</th>
-                    <th>coupon</th>
-                    <th>Total</th>
+                    
+                    <th>Total Amount</th>
                 </tr>
             </thead>
             <% if (orderProduct.length > 0) { %>
                 <tbody>
                     <% orderProduct.forEach((product) => { %>
                         <tr>
-                            <td><img src="<%= product.productId.images[0] %>" alt="" style="max-width: 50px;" ></td>
+                            <td><img src="<%= product.productId.images[0] %>" alt="" style="max-width: 50px;"></td>
                             <td><%= product.productId.name %></td>
                             <td><%= product.quantity %></td>
                             <td><%= product.productId.price %></td>
-                            <td><%= order.coupon %></td>
-                            <% const total =  product.productId.price * product.quantity  %>
-                            <td><%= total %></td>
+                           
                             
-                            <!-- Add other product properties as needed -->
+                            <td>
+                              <% if (product.productId.offer) { %>
+                                 
+                                  <div class="new-price">₹<%= (product.productId.price - (product.productId.price * (product.productId.offer.offerPercentage / 100))) * product.quantity %></div><!-- End .offer-price -->
+                              <% } else if (product.productId.category && product.productId.category.offer) { %>
+                                  
+                                  <div class="new-price">₹<%= (product.productId.price - (product.productId.price * (product.productId.category.offer.offerPercentage / 100))) * product.quantity %></div><!-- End .offer-price -->
+                              <% } else { %>
+                                  <div class="new-price">₹<%= product.productId.price * product.quantity %></div><!-- End .out-price -->
+                              <% } %>
+                          </td>
+                          
+                          
                         </tr>
                     <% }) %>
                 </tbody>
@@ -119,11 +129,14 @@
         </table>
         
         
+        
            
         
           <hr>
+          <div class="old-price" style="color: red;"> copoun discount = <%= order.coupon*order.products.length%></div>
+          <div class="new-price">Total Amount: ₹<%= order.totalAmount%> </div>
         
-          <h4>Total Amount: ₹<%= order.totalAmount%></h4>
+        
         </div>
       
         </div>

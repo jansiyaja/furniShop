@@ -8,7 +8,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Molla - Bootstrap eCommerce Template</title>
+    <title>Furniture Tagline Here </title>
     <meta name="keywords" content="HTML5 Template">
     <meta name="description" content="Molla - Bootstrap eCommerce Template">
     <meta name="author" content="p-themes">
@@ -43,7 +43,7 @@
                         </button>
 
                         <a href="/" class="logo">
-                            <img src="assets/images/demos/demo-2/logo.png" alt="Molla Logo" width="105" height="25">
+                            <img src="assets/images/logo.png" alt="Molla Logo" width="105" height="25">
                         </a>
                     </div><!-- End .header-left -->
 
@@ -146,17 +146,7 @@
 
 
                                 </li>
-                                <li>
-                                    <a href="/contact" class="sf-with-ul">Contact</a>
-
-
-                                </li>
-
-                                <li>
-                                    <a href="/about" class="sf-with-ul">About</a>
-
-
-                                </li>
+                               
 
 
 
@@ -470,7 +460,9 @@
                                                                         <td class="text-center"
                                                                             style="font-size: 1.3rem;">
                                                                             <%= entry.date ?
-                                                                                entry.date.toLocaleDateString() : '' %>
+                                                                                entry.date.toLocaleDateString('en-IN', {
+                                                                                    day: '2-digit' , month: 'short' ,
+                                                                                    year: 'numeric' }) : '' %>
                                                                         </td>
                                                                         <td class="text-center"
                                                                             style="font-size: 1.3rem;">

@@ -81,13 +81,21 @@
                                                                 </h3>
                                                                
                                                                 <div class="product-price">
-                                                                    
-                                                                      
+                                                                    <% if (product.offer) { %>
                                                                        
-                                                                    <span class="new-price">offer $19.99</span>
-                                                                    <span class="old-price">Was <%= product.price %></span>
-                                                                   
-                                                                </div><!-- End .product-price -->
+                                                                        <div class="old-price" style="text-decoration: line-through;">₹<%= product.price %></div><!-- End .out-price -->
+                                                                        <div class="new-price">₹<%= product.price - (product.price * (product.offer.offerPercentage / 100)) %></div><!-- End .offer-price -->
+                                                                    <% } else if(product.category.offer){ %>
+                                                                        
+                                                                        <div class="old-price" style="text-decoration: line-through;">₹<%= product.price %></div><!-- End .out-price -->
+                                                                        <div class="new-price">₹<%= product.price - (product.price * (product.category.offer.offerPercentage / 100)) %></div><!-- End .offer-price -->
+                                                                    
+                                                                    <% }  else { %>
+                                                                       
+                                                                        <div class="new-price">₹<%= product.price %></div><!-- End .out-price -->
+                                                                        
+                                                                    <% } %>
+                                                                  </div><!-- End .product-price -->
                                                             </div>
                                                         </div>
                                                     </div>
@@ -159,14 +167,7 @@
                                                                         </a>
                                                                     </li>
                                                                     <% } else { %>
-                                                                        <li class="page-item disabled">
-                                                                            <span class="page-link page-link-next"
-                                                                                aria-label="Next" tabindex="-1"
-                                                                                aria-disabled="true">
-                                                                                Next <span aria-hidden="true"><i
-                                                                                        class="icon-long-arrow-right"></i></span>
-                                                                            </span>
-                                                                        </li>
+                                                                        
                                                                         <% } %>
                                         </ul>
                                     </nav>
@@ -192,7 +193,7 @@
                                                         <% if(locals.category)%>
                                                             <select id="selectCategory" class="form-select fw-bolder"
                                                                 onchange="window.location.href=this.value">
-                                                                <option value="" disabled selected>Select Category
+                                                                <option value=""  selected>Select Category
                                                                 </option>
                                                                 <option value="/shop">All</option>
                                                                 <% category.map((x)=>{%>
@@ -434,5 +435,31 @@
     });
   });
 </script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        
+        function getCategoryIdFromUrl() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('id');
+        }
 
+        // Function to set the selected option based on the category ID
+        function setSelectedCategory(categoryId) {
+            const selectElement = document.getElementById('selectCategory');
+            const options = selectElement.options;
+            for (let i = 0; i < options.length; i++) {
+                if (options[i].value.includes(categoryId)) {
+                    selectElement.value = options[i].value;
+                    break;
+                }
+            }
+        }
+
+        // Get the category ID from the URL and set the selected option
+        const categoryId = getCategoryIdFromUrl();
+        if (categoryId) {
+            setSelectedCategory(categoryId);
+        }
+    });
+</script>
     <%- include ('../Layout/user/footer.ejs') -%>

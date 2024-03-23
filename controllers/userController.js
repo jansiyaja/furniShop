@@ -170,7 +170,6 @@ const sendOtpVerificationMail = async ({ email }, res) => {
     });
 
     await newOtpVerification.save();
-
     await transporter.sendMail(emailOptions);
     res.redirect(`/otp?email=${email}`);
 
@@ -271,9 +270,10 @@ const verifyOtp = async (req, res) => {
         );
 
       }
+      res.redirect('/login')
     } else {
 
-      res;
+     
     }
 
 
@@ -385,7 +385,7 @@ const loadDashboard = async (req, res) => {
      // console.log(orders);
 
       const user = await User.findOne({ _id: userId });
-      const wallet= await Wallet.findOne({userId:userId})
+      const wallet= await Wallet.findOne({userId:userId}).sort({ date: -1 })
 //      console.log(wallet);
       res.render('userProfile', { userDetails: user,user:req.session.user, orders: orders,wallet:wallet });
     } else {
@@ -566,33 +566,92 @@ const deleteAddress= async (req,res)=>{
 //-----------------------------------------------------//
 
 //-------- Load checkOut---------------------------------------------//
+// const loadCheckout = async (req, res) => {
+//   try {
+//       const userid = req.session.user.id;
+//       const user = await User.findOne({ _id: userid });
+
+//       const cart = await Cart.findOne({ userId: userid }).populate({
+//         path: 'products.productId',
+//         populate: [
+//             { path: 'offer' }, 
+//             { path: 'category', populate: { path: 'offer' } } 
+//         ]
+//     }).exec();
+//       cart.products.forEach((product) => {
+//           product.totalPrice = product.quantity * product.productId.productPrice;
+//       });
+
+     
+//       const subtotal = cart.products.reduce((acc, product) => acc + product.totalPrice, 0);
+//       console.log(subtotal);
+
+//       const eligibleCoupons = await Coupon.find({
+//         isListed: true,
+       
+       
+//       });
+//     //  console.log(eligibleCoupons);
+
+//       res.render('checkout', { user: user, cart: cart.products, subtotal: subtotal ,coupon:eligibleCoupons});
+//   } catch (error) {
+//       console.log(error.message);
+//       res.redirect('/error404')
+// };
+// }
 const loadCheckout = async (req, res) => {
   try {
       const userid = req.session.user.id;
       const user = await User.findOne({ _id: userid });
 
-      const cart = await Cart.findOne({ userId: userid }).populate('products.productId');
+      const cart = await Cart.findOne({ userId: userid }).populate({
+          path: 'products.productId',
+          populate: [
+              { path: 'offer' },
+              { path: 'category', populate: { path: 'offer' } }
+          ]
+      }).exec();
+
+      let subtotal = 0;
+
       cart.products.forEach((product) => {
-          product.totalPrice = product.quantity * product.productId.productPrice;
+        const offer=  product.productId;
+        console.log(offer);
+          const productPrice = product.productId.price;
+          const quantity = product.quantity;
+
+          // Calculate total price for the product
+          let totalPriceForProduct = productPrice * quantity;
+          
+          if (product.productId.offer) {
+             
+              const discountedPrice = productPrice - (productPrice * (product.productId.offer.offerPercentage / 100));
+            console.log("discountedPrice",discountedPrice);
+              totalPriceForProduct = discountedPrice * quantity;
+          }
+          else if(product.productId.category.offer){
+            const discountedPrice = productPrice - (productPrice * (product.productId.category.offer.offerPercentage / 100));
+            console.log("discountedPrice",discountedPrice);
+              totalPriceForProduct = discountedPrice * quantity;
+          }  
+          // Increment subtotal with total price for this product
+          subtotal += totalPriceForProduct;
       });
 
-     
-      const subtotal = cart.products.reduce((acc, product) => acc + product.totalPrice, 0);
       console.log(subtotal);
 
       const eligibleCoupons = await Coupon.find({
-        isListed: true,
-       
-       
+          isListed: true,
       });
-    //  console.log(eligibleCoupons);
 
-      res.render('checkout', { user: user, cart: cart.products, subtotal: subtotal ,coupon:eligibleCoupons});
+      res.render('checkout', { user: user, cart: cart.products, subtotal: subtotal, coupon: eligibleCoupons });
   } catch (error) {
       console.log(error.message);
-      res.redirect('/error404')
+      res.redirect('/error404');
+  }
 };
-}
+
+
 //-----------------------------------------------------//
 //-----------------------------------------------------//
  

@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Molla - Bootstrap eCommerce Template</title>
+    <title>Furniture Tagline Here </title>
     <meta name="keywords" content="HTML5 Template">
     <meta name="description" content="Molla - Bootstrap eCommerce Template">
     <meta name="author" content="p-themes">
@@ -41,7 +41,7 @@
                         </button>
                         
                         <a href="/" class="logo">
-                            <img src="/assets/images/demos/demo-2/logo.png" alt="Molla Logo" width="105" height="25">
+                            <img src="/assets/images/logo.png" alt="Molla Logo" width="105" height="25">
                         </a>
                     </div><!-- End .header-left -->
 
@@ -640,36 +640,49 @@
     <script src="/assets/js/owl.carousel.min.js"></script>
     <!-- Main JS File -->
     <script src="/assets/js/main.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  
     
-    <script>
-        function validateUser() {
-            const nameInput = document.getElementById('firstName');
-            const phoneInput = document.getElementById('phone');
-        
-            const nameRegex = /^[A-Za-z]+(?:\s[A-Za-z]+)*$/;
-            if (!nameRegex.test(nameInput.value.trim())) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Validation Error',
-                    text: 'Name must contain letters only with one space.'
-                });
-                return false;
-            }
-        
-            const phoneRegex = /^\d{10}$/;
-            if (!phoneRegex.test(phoneInput.value.trim())) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Validation Error',
-                    text: 'Phone must contain 10 digits.'
-                });
-                return false;
-            }
-        
-            return true; // Form submission allowed if all validations pass
+    
+
+<script>
+    function validateUser() {
+        const nameInput = document.getElementById('firstName');
+        const phoneInput = document.getElementById('phone');
+    
+        const nameRegex = /^[A-Za-z]+(?:\s[A-Za-z]+)*$/;
+        if (!nameRegex.test(nameInput.value.trim())) {
+            showError(nameInput, 'Name must contain letters only with one space.');
+            return false;
         }
-        </script>
+    
+        const phoneRegex = /^\d{10}$/;
+        if (!phoneRegex.test(phoneInput.value.trim())) {
+            showError(phoneInput, 'number must contain 10 digits.');
+            return false;
+        }
+    
+        return true; // Form submission allowed if all validations pass
+    }
+
+    function showError(inputElement, errorMessage) {
+        // Remove existing error message if any
+        const existingError = inputElement.nextElementSibling;
+        if (existingError && existingError.classList.contains('error-message')) {
+            existingError.remove();
+        }
+
+        // Create new error message element
+        const errorElement = document.createElement('div');
+        errorElement.className = 'error-message';
+        errorElement.textContent = errorMessage;
+        errorElement.style.color = 'red'; 
+        errorElement.style.fontSize = "12px" ; 
+
+        // Insert error message after the input field
+        inputElement.parentNode.insertBefore(errorElement, inputElement.nextElementSibling);
+    }
+</script>
+
         
     
    

@@ -5,7 +5,9 @@ const Razorpay= require('razorpay')
 const Product = require('../models/products');
 const crypto=require('crypto');
 const Wallet= require('../models/walletModel')
-const Coupon=require('../models/couponModel')
+const Coupon=require('../models/couponModel');
+const Offer= require('../models/offerModel');
+const Category = require('../models/categoryModel');
 
 
 
@@ -38,21 +40,30 @@ const placeOrder = async (req, res) => {
       
         const userId = req.session.user.id;
      
-
         const cart = await Cart.findOne({ userId }).populate('products.productId');
         const products = cart.products;
-console.log(products);
-const quantityLessProduct = products.find(pro => pro.productId.stock <= 0);
-console.log(quantityLessProduct);
+        console.log(products);
+        
+        const quantityLessProducts = [];
+products.forEach((pro) => {
+    const productStock = pro.productId.stock; // Stock quantity of the product from the database
+    console.log(productStock);
+    const cartQuantity = pro.quantity; // Quantity of the product in the cart
+    console.log(cartQuantity);
+    if (cartQuantity > productStock) {
+        quantityLessProducts.push(pro.productId.name);
+    }
+});
 
-const quantityLessProducts = products.filter(pro => pro.productId.stock <= 0);
-console.log(quantityLessProducts);
-        if (quantityLessProduct) {
-            console.log("Quantity less:", quantityLessProduct.productId.name);
-            return res.json({ quan: true, quantityLess: quantityLessProduct.productId.name });
-        } else {
-            console.log("No quantity less products");
-        }
+console.log("Products with quantity greater than stock:", quantityLessProducts);
+
+if (quantityLessProducts.length > 0) { // Check if the array is not empty
+    console.log("Quantity less:", quantityLessProducts);
+    return res.json({ quan: true });
+} else {
+    console.log("No quantity less products");
+}
+
   if (payment.toLowerCase() === 'cod' && subTotal > 1000) {
     return res.json({ cash: true,  });
         }
@@ -133,21 +144,17 @@ console.log(quantityLessProducts);
             })
             
             const orderData = await Order.findOneAndUpdate(
-                
-                {
-                  orderId:orderId ,
-                  "products.productId": { $in:order.products.map(p => p.productId) },
-                },
-                {
-                  $set: {
-                    "products.$.status": "success",
-                  
-                  },
-                },
-                { new: true }
-             
-              );
-              
+              {
+                 orderId: orderId,
+                 "products.productId": { $in: order.products.map(p => p.productId) },
+              },
+              {
+                 $set: {
+                   "products.$[].status": "success",
+                 },
+              },
+              { new: true }
+             );
              
                 await Cart.deleteOne({ userId: userId });
                
@@ -255,7 +262,7 @@ const verifyPayment = async (req, res) => {
           },
           {
             $set: {
-              "products.$.status": "success",
+              "products.$[].status": "success",
               paymentId: payment.razorpay_payment_id,
             },
           },
@@ -315,6 +322,7 @@ const loadOrderSuccess = async (req, res) => {
 
         const order = await Order.findOne({ orderId });
        console.log("order", order);
+       const offer= await Offer.find()
         if (order) {
             const productIds = order.products.map(product => product.productId);
 
@@ -345,7 +353,7 @@ const loadOrderSuccess = async (req, res) => {
             ]);
             
                 //  console.log("orderDetails",orderedProducts);
-            res.render('orderDetails', { order, orderedProducts ,user:req.session.user});
+            res.render('orderDetails', { order, orderedProducts ,user:req.session.user,offer});
         }
     } catch (error) {
         // Handle errors, you might want to send an error response or render an error page
@@ -363,7 +371,7 @@ const loadOrderSuccess = async (req, res) => {
 const cancelOrder = async (req, res) => {
     try {
         const { orderId, productId, cancelReason, couponDis } = req.body;
-        console.log(req.body);
+        console.log(req.body ," cancel session");
         const userId = req.session.user.id;
         console.log(userId);
 
@@ -382,12 +390,44 @@ const cancelOrder = async (req, res) => {
             { orderId: orderId, 'products.productId': productId },
             { 'products.$': 1 }
         ).populate('products.productId');
+         
+        let totalAmount = 0;
+        const product = productDetails.products[0].productId;
+        const productcategoryId = product.category;
+        const category = await Category.findOne({ _id: productcategoryId }).populate('offer');
+        console.log("category", category);
+        
 
-        const totalAmount = productDetails.products[0].productId.price * productDetails.products[0].quantity;
-
-        // Calculate discount amount as a percentage of the product price
+        if (productDetails.products[0].productId.offer) {
+            const offer = await Offer.find();
+            let matchingOffer = null;
+        
+            for (const offerItem of offer) {
+                if (offerItem._id.toString() === productDetails.products[0].productId.offer.toString()) {
+                    matchingOffer = offerItem.offerPercentage;
+                    break; 
+                }
+            }
+        
+            if (matchingOffer) {
+               
+                const discountedPrice = productDetails.products[0].productId.price - (productDetails.products[0].productId.price * (matchingOffer / 100));
+                totalAmount = discountedPrice * productDetails.products[0].quantity;
+              
+            }
+        } else if (category && category.offer) {
+          
+          const discountedPrice = product.price - (product.price * (category.offer.offerPercentage / 100));
+          totalAmount = discountedPrice * productDetails.products[0].quantity;
+            console.log("Matching offer found. Discounted price:", discountedPrice);
+      } else {
+            totalAmount = productDetails.products[0].productId.price * productDetails.products[0].quantity;
+        }
+        
+      
         const discountPercentage = (couponDis / totalAmount) * 100;
         const discountAmount = (discountPercentage / 100) * totalAmount;
+        
 
         if (orderData.paymentMethod === 'razorpay' || orderData.paymentMethod === 'wallet') {
             console.log("I am here above wallet");
@@ -568,23 +608,40 @@ const refundPolicy=async(req,res)=>{
 //--------------------------------------------------------------------------------------------------//
 //--------------------------------------------------------------------------------------------------//
 const loadInvoice = async (req, res) => {
-    try {
-    let id= req.params.id
-console.log("invoice",id);
-  
-const order = await Order.findOne({ orderId: id }).populate('products.productId').populate('userId').populate('products.quantity');
-console.log(order);
-     
-      const populatedProducts = order.products.map(product => product.productId);
+  try {
+      let id = req.params.id;
+      console.log("invoice", id);
 
+      const order = await Order.findOne({ orderId: id })
+          .populate('userId')
+          .populate({
+              path: 'products',
+              populate: {
+                  path: 'productId',
+                  populate: [
+                      { path: 'offer' },
+                      {
+                          path: 'category',
+                          populate: { path: 'offer' }
+                      }
+                  ]
+              }
+          })
+          .exec();
 
-      console.log("inve",order.products);
-      
-      res.render('invoice',{ order: order,orderProduct:order.products,products:populatedProducts });
-    } catch (error) {
+      console.log(order);
+
+      const populatedProducts = order.products;
+      const offer = await Offer.find();
+
+      console.log("inve", populatedProducts);
+
+      res.render('invoice', { order: order, orderProduct: order.products, products: populatedProducts, offer });
+  } catch (error) {
       console.log(error.message);
-    }
-  };
+  }
+};
+
 
 //--------------------------------------------------------------------------------------------------//
 //------ PaymentCountinue --------------------------------------------------------------------------------------------//

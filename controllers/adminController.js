@@ -3,6 +3,8 @@ const bcrypt=require("bcrypt");
 const Order=require('../models/orderModel')
 const Product=require('../models/products')
 const Wallet=require('../models/walletModel')
+const Offer= require('../models/offerModel');
+const Category = require("../models/categoryModel");
 //----------------AdminLogin--------------------------//
 
 const adminLogin = (req, res) => {
@@ -388,105 +390,203 @@ const adminLogout = async (req, res) => {
   
 //------------------------------------------------------------------------------------------------//
 //----------changeReturnStatus--------------------------------------------------------------------------------------//
+// const changeReturnStatus = async (req, res) => {
+//   try {
+//       console.log("hehe");
+//       const { orderId, productId, status, userId, retunRerason } = req.body;
+//     //  console.log(req.body);
+
+//       if (status == 'returned') {
+//           const user = await User.findOne({ _id: userId });
+//           if (user) {
+//               const order = await Order.findOne({ _id: orderId });
+              
+//               const orderid = order.orderId;
+             
+
+//               const productDetails = await Order.findOne(
+//                   { _id: orderId, 'products.productId': productId },
+//                   { 'products.$': 1 }
+//               ).populate('products.productId');
+             
+
+//               let amount;
+
+//               if (order.couponApplied) {
+//                   // If coupon is applied
+//                   amount = productDetails.products[0].productId.price * productDetails.products[0].quantity - order.coupon;
+                 
+
+//                   const walletUpdateResult = await Wallet.findOneAndUpdate(
+//                       { userId: userId },
+//                       {
+//                           $inc: { amount: amount },
+//                           $push: {
+//                               walletHistory: {
+//                                   date: Date.now(),
+//                                   credit: amount,
+//                                   reason: retunRerason,
+//                                   orderId2: orderid
+//                               }
+//                           }
+//                       },
+//                       { new: true }
+//                   );
+
+//                   if (walletUpdateResult) {
+//                       console.log("Wallet updated successfully");
+//                   }
+//               } else {
+                  
+//                   amount = productDetails.products[0].productId.price * productDetails.products[0].quantity;
+                 
+
+                  
+//                   const existingWallet = await Wallet.findOne({ userId: userId });
+
+//                   if (existingWallet) {
+                     
+//                       const walletUpdateResult = await Wallet.findOneAndUpdate(
+//                           { userId: userId },
+//                           {
+//                               $inc: { amount: amount },
+//                               $push: {
+//                                   walletHistory: {
+//                                       date: Date.now(),
+//                                       credit: amount,
+//                                       reason: retunRerason,
+//                                       orderId2: orderid
+//                                   }
+//                               }
+//                           },
+//                           { new: true }
+//                       );
+
+//                       if (walletUpdateResult) {
+//                           console.log("Wallet updated successfully");
+//                       }
+//                   } else {
+//                       // Create new wallet if the user doesn't have one
+//                       const newWallet = new Wallet({
+//                           userId: userId,
+//                           amount: amount,
+//                           walletHistory: [{
+//                               date: Date.now(),
+//                               credit: amount,
+//                               reason: retunRerason,
+//                               orderId2: orderid
+//                           }]
+//                       });
+
+//                       await newWallet.save();
+//                       console.log("New wallet created and updated successfully");
+//                   }
+//               }
+
+//               await Order.findOneAndUpdate(
+//                   { _id: orderId, 'products.productId': productId },
+//                   { 'products.$.status': status }
+//               );
+
+//               await Product.findOneAndUpdate({ _id: productId }, { $inc: { stock: 1 } });
+//               res.json({ changed: true });
+//           }
+//       } else {
+//           await Order.findOneAndUpdate(
+//               { orderId: orderId, 'products.productId': productId },
+//               { 'products.$.status': status }
+//           );
+//           res.json({ changed: true });
+//       }
+//   } catch (error) {
+//       console.log(error.message);
+//   }
+// };
 const changeReturnStatus = async (req, res) => {
   try {
       console.log("hehe");
       const { orderId, productId, status, userId, retunRerason } = req.body;
-    //  console.log(req.body);
-
-      if (status == 'returned') {
+console.log(req.body);
+      if (status === 'returned') {
           const user = await User.findOne({ _id: userId });
           if (user) {
               const order = await Order.findOne({ _id: orderId });
-              
               const orderid = order.orderId;
-             
 
               const productDetails = await Order.findOne(
                   { _id: orderId, 'products.productId': productId },
                   { 'products.$': 1 }
               ).populate('products.productId');
-             
 
-              let amount;
-
-              if (order.couponApplied) {
-                  // If coupon is applied
-                  amount = productDetails.products[0].productId.price * productDetails.products[0].quantity - order.coupon;
-                 
-
-                  const walletUpdateResult = await Wallet.findOneAndUpdate(
-                      { userId: userId },
-                      {
-                          $inc: { amount: amount },
-                          $push: {
-                              walletHistory: {
-                                  date: Date.now(),
-                                  credit: amount,
-                                  reason: retunRerason,
-                                  orderId2: orderid
-                              }
-                          }
-                      },
-                      { new: true }
-                  );
-
-                  if (walletUpdateResult) {
-                      console.log("Wallet updated successfully");
+              const categoryId = productDetails.products[0].productId.category;
+              console.log("ooooo",categoryId);
+              const category= await Category.findOne({_id:categoryId}).populate('offer')
+              console.log(category);
+               let amount;
+              let appliedOfferPercentage = 0;
+              
+              // Check if the product has an offer applied
+              if (productDetails.products[0].productId.offer) {
+                console.log("iam here");
+                  const offer = await Offer.findOne({ _id: productDetails.products[0].productId.offer });
+                  if (offer) {
+                      appliedOfferPercentage = offer.offerPercentage;
                   }
+              }
+              else if(category && category.offer){
+                console.log("iam here cate");
+                const offer= await Offer.findOne({_id:category.offer._id});
+                if (offer) {
+                  appliedOfferPercentage = offer.offerPercentage;
+              }
+              }
+             
+              amount = productDetails.products[0].productId.price * productDetails.products[0].quantity;
+             
+              const discountedAmountBeforeCoupon = amount - (amount * (appliedOfferPercentage / 100));
+              
+             
+              if (order.coupon) {
+                
+                  amount = discountedAmountBeforeCoupon - order.coupon;
               } else {
-                  
-                  amount = productDetails.products[0].productId.price * productDetails.products[0].quantity;
                  
-
-                  
-                  const existingWallet = await Wallet.findOne({ userId: userId });
-
-                  if (existingWallet) {
-                     
-                      const walletUpdateResult = await Wallet.findOneAndUpdate(
-                          { userId: userId },
-                          {
-                              $inc: { amount: amount },
-                              $push: {
-                                  walletHistory: {
-                                      date: Date.now(),
-                                      credit: amount,
-                                      reason: retunRerason,
-                                      orderId2: orderid
-                                  }
-                              }
-                          },
-                          { new: true }
-                      );
-
-                      if (walletUpdateResult) {
-                          console.log("Wallet updated successfully");
-                      }
-                  } else {
-                      // Create new wallet if the user doesn't have one
-                      const newWallet = new Wallet({
-                          userId: userId,
-                          amount: amount,
-                          walletHistory: [{
+                  amount = discountedAmountBeforeCoupon;
+              }
+              
+              
+              const walletUpdateResult = await Wallet.findOneAndUpdate(
+                  { userId: userId },
+                  {
+                      $inc: { amount: amount }, 
+                      $push: {
+                          walletHistory: {
                               date: Date.now(),
                               credit: amount,
                               reason: retunRerason,
                               orderId2: orderid
-                          }]
-                      });
-
-                      await newWallet.save();
-                      console.log("New wallet created and updated successfully");
-                  }
+                          }
+                      }
+                  },
+                  { new: true }
+              );
+              
+              
+              if (walletUpdateResult) {
+                  console.log("Wallet updated successfully");
               }
+              
+            
 
+            
+
+              // Update order status and product stock
               await Order.findOneAndUpdate(
                   { _id: orderId, 'products.productId': productId },
                   { 'products.$.status': status }
               );
-
               await Product.findOneAndUpdate({ _id: productId }, { $inc: { stock: 1 } });
+
               res.json({ changed: true });
           }
       } else {

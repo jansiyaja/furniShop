@@ -8,9 +8,9 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Molla - Bootstrap eCommerce Template</title>
+    <title>Furniture Tagline Here </title>
     <meta name="keywords" content="HTML5 Template">
-    <meta name="description" content="Molla - Bootstrap eCommerce Template">
+    <meta name="description" >
     <meta name="author" content="p-themes">
     <!-- Favicon -->
     <link rel="apple-touch-icon" sizes="180x180" href="assets/images/icons/apple-touch-icon.png">
@@ -43,7 +43,7 @@
                         </button>
 
                         <a href="index.html" class="logo">
-                            <img src="assets/images/demos/demo-2/logo.png" alt="Molla Logo" width="105" height="25">
+                            <img src="assets/images/logo.png" alt="Molla Logo" width="105" height="25">
                         </a>
                     </div><!-- End .header-left -->
 
@@ -146,17 +146,7 @@
 
 
                                 </li>
-                                <li>
-                                    <a href="/contact" class="sf-with-ul">Contact</a>
-
-
-                                </li>
-
-                                <li>
-                                    <a href="/about" class="sf-with-ul">About</a>
-
-
-                                </li>
+                               
 
 
 
@@ -261,45 +251,51 @@
                                                 <th>Total</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
-                                            <% let subTotal=0; %>
-                                                <% if(cart && cart.length> 0) { %>
-                                                    <% cart.forEach((product)=> { %>
-                                                        <tr>
-                                                            <td> <img src="<%= product.productId.images[0] %>" alt=""
-                                                                    style="max-width: 50px;"></td>
-                                                            <td>
-                                                                <%= product.productId.name %>
-                                                                    <strong class="mx-2">x</strong>
-                                                                    <%= product.quantity %>
-                                                            </td>
-                                                            <td>₹<%= product.productId.price * product.quantity %>
-                                                            </td>
-                                                        </tr>
-                                                        <% subTotal +=product.productId.price * product.quantity; %>
-                                                            <% }); %>
-                                                                <% } %>
-                                                                    <tr>
-                                                                        <td class="text-black font-weight-bold">
-                                                                            <strong>Cart Subtotal</strong>
-                                                                        </td>
-                                                                        <td class="text-black">₹<%= subTotal %>
-                                                                        </td>
-                                                                    </tr>
+                                     <tbody>
+    <% let subTotal = 0; %>
+    <% if (cart && cart.length > 0) { %>
+        <% cart.forEach((product) => { %>
+            <tr>
+                <td>
+                    <img src="<%= product.productId.images[0] %>" alt="" style="max-width: 50px;">
+                </td>
+                <td>
+                    <%= product.productId.name %>
+                    <strong class="mx-2">x</strong>
+                    <%= product.quantity %>
+                </td>
+                <td class="price-col">
+                    <% let discountedPrice = 0; %>
+                    <% if (product.productId.offer || (product.productId.category && product.productId.category.offer)) { %>
+                        <% const offer = product.productId.offer ? product.productId.offer : (product.productId.category ? product.productId.category.offer : null); %>
+                        <% if (offer) { %>
+                            <% discountedPrice = product.productId.price - (product.productId.price * (offer.offerPercentage / 100)); %>
+                            <!-- Calculate discounted price -->
+                            <span class="discounted-price">₹<%= discountedPrice.toFixed(2) * product.quantity %></span>
+                        <% } %>
+                    <% } else { %>
+                        <!-- Display regular price -->
+                        ₹<%= product.productId.price * product.quantity %>
+                    <% } %>
+                </td>
+                <% subTotal += discountedPrice* product.quantity %>
+            </tr>
+        <% }); %>
+    <% } %>
+    <tr>
+        <td class="text-black font-weight-bold">
+            <strong>Cart Subtotal</strong>
+        </td>
+        <td class="text-black">₹<%= subTotal.toFixed(2) %></td>
+    </tr>
+    <tr>
+        <td class="text-black font-weight-bold">
+            <strong>Order Total</strong>
+        </td>
+        <td class="text-black font-weight-bold"><strong id="total">₹<%= subTotal.toFixed(2) %></strong></td>
+    </tr>
+</tbody>
 
-                                                                    <tr>
-
-                                                                        <td class="text-black font-weight-bold">
-                                                                            <strong>Order Total</strong>
-                                                                        </td>
-                                                                        <td class="text-black font-weight-bold"><strong
-                                                                                id="total">₹<%= subTotal %>
-                                                                        </td>
-
-
-                                                                    </tr>
-
-                                        </tbody>
                                     </table>
                                     <ul class="selection-list">
                                         <label>Payment Method</label>
@@ -815,7 +811,6 @@
                                 subTotal: subTotal,
                                 couponCode: value
                             };
-                            console.log(data);
                             $.ajax({
                                 url: '/placeOrder',
                                 method: 'POST',
@@ -833,10 +828,11 @@
                                         showConfirmButton: true
                                     });
                                 }
-                                else if (response.quan == true) {
+                                else if(response.quan == true) {
+                                    console.log("check");
                                     Swal.fire({
                                         icon: 'warning',
-                                        text: `Sorry you product ${response.quantityLess} is Out Of Stock'`,
+                                        text: `Sorry you product  is Out Of Stock`,
                                         showConfirmButton: false
                                     })
                                 } 

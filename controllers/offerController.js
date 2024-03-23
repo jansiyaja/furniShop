@@ -82,9 +82,7 @@ const loadaddOffer = async (req, res) => {
   //-------------------------------------------------------------------------------//
   //---Load Edit Offer----------------------------------------------------------------------------//
   const loadEditOffer= async (req,res)=>{
-    if (req.session.user){
-      res.redirect("/error404")
-    }
+   
     try {
       const id = req.query.id;
       const offer = await Offer.findOne({_id:id})
@@ -99,9 +97,7 @@ const loadaddOffer = async (req, res) => {
   const editOffer = async (req, res) => {
     
     try {
-      if (req.session.user){
-        res.redirect("/error404")
-      }
+     
       let { name, offerPercentage,startingDate,expiryDate,editid } = req.body;
       console.log(req.body);
       const id= req.body.editid;

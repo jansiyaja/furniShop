@@ -278,22 +278,24 @@ const editProduct = async (req, res) => {
 
     const existingProduct = await Product.findById(id);
 
-    // Handle existing images
-    const existingImages = existingProduct.images || [];
-    const arrimages = [...existingImages];
+    // Get existing images
+    let existingImages = existingProduct.images || [];
 
     // Handle new images
     for (let i = 0; i < req.files.length; i++) {
       const result = await cloudinary.uploader.upload(req.files[i].path, {
         width: 500,
         height: 500,
-        crop: 'fill',
-        folder: 'productImages'
+        crop: 'fill'
       });
 
-      // Check if the new image URL is different from the existing ones
-      if (!arrimages.includes(result.secure_url)) {
-        arrimages.push(result.secure_url);
+      // Check if the new image replaces an existing image
+      if (i < existingImages.length) {
+        // Replace the existing image URL at the same position with the new image URL
+        existingImages[i] = result.secure_url;
+      } else {
+        // If the new image is added beyond the existing images, push it to the end
+        existingImages.push(result.secure_url);
       }
     }
 
@@ -307,7 +309,7 @@ const editProduct = async (req, res) => {
           stock: newquantity,
           category: newcategory,
           description: newdescription,
-          images: arrimages
+          images: existingImages
         }
       }
     );
@@ -317,6 +319,7 @@ const editProduct = async (req, res) => {
     console.log(error);
   }
 };
+
 
 
 //------------------------------------------------------------------------------------------//
@@ -358,7 +361,18 @@ const loadShop = async (req, res) => {
       .skip((page - 1) * itemsPerPage)
       .limit(itemsPerPage)
       .populate('offer')
-      .lean();
+      .populate({
+        path: 'category',
+        populate: {
+          path: 'offer', 
+          model: 'Offer' 
+        }
+     })
+     .exec();
+
+     // console.log("products",products);
+  const offers= await Offer.find()
+ 
 
     const totalProducts = await Product.countDocuments(query);
     const totalPages = Math.ceil(totalProducts / itemsPerPage);
@@ -372,6 +386,7 @@ const loadShop = async (req, res) => {
       messages,
       currentPage: parseInt(page),
       totalPages,
+      offers
     });
   } catch (error) {
     console.log(error.message);
@@ -453,28 +468,37 @@ const loadShop = async (req, res) => {
 
 const productView = async (req, res) => {
   try {
-    const productId = req.query.id;
-    const products = [await Product.findById(productId)];
-    const userId= req.session.user.id
+     const productId = req.query.id;
+     const products = await Product.findById(productId).populate('offer')
+       .populate({
+         path: 'category',
+         populate: {
+           path: 'offer', 
+           model: 'Offer'
+         }
+       })
+       .exec();
+ 
     
-    const cartUser = await Cart.findOne({ userId: userId });
-    
-    if(cartUser){
-      const existsProduct = cartUser.products.find((pro) => pro.productId.toString() === productId);
-      if (existsProduct) {
-        res.render('productDetails', { products, inCart: true ,user:req.session.user});
+     let userId = null;
+     let inCart = false;
+     if (req.session && req.session.user) {
+       userId = req.session.user.id;
+       const cartUser = await Cart.findOne({ userId: userId });
+       if (cartUser) {
+         const existsProduct = cartUser.products.find((pro) => pro.productId.toString() === productId);
+         if (existsProduct) {
+           inCart = true;
+         }
+       }
       }
-
-    }
-     
-    
-    res.render('productDetails', { products, inCart: false ,user:req.session.user});
+     res.render('productDetails', { products, inCart, user: req.session ? req.session.user : null });
   } catch (error) {
-    console.log("cart",error.message);
-   
-    res.redirect("/error404")
+     console.log("Error rendering product details:", error.message);
+     res.status(500).send("An error occurred while rendering the product details.");
   }
-}
+ };
+ 
 
 
 //------------------------------------------------------------------------------------------//

@@ -27,10 +27,7 @@ const orderSchema = mongoose.Schema({
         type:Number,
         
       },
-      description:{
-        type:String,
-        
-      },
+     
       status :{
         type:String,
         enum:  ['success','placed','pending', 'outForDelivery','returnRequested','returned' ,'returnDenied','shipped', 'delivered','cancelled'],
