@@ -696,7 +696,7 @@ const loadForget = async (req, res) => {
     const mailOptions = {
       to: user.email,
       subject: 'Password Reset',
-      text: `Click the following link to reset your password: ${'http://localhost:3000'}/reset-password/${token}`,
+      text: `Click the following link to reset your password: ${'http://furnishop.site'}/reset-password/${token}`,
     };
 
     transporter.sendMail(mailOptions, (error, info) => {

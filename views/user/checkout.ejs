@@ -251,50 +251,51 @@
                                                 <th>Total</th>
                                             </tr>
                                         </thead>
-                                     <tbody>
-    <% let subTotal = 0; %>
-    <% if (cart && cart.length > 0) { %>
-        <% cart.forEach((product) => { %>
-            <tr>
-                <td>
-                    <img src="<%= product.productId.images[0] %>" alt="" style="max-width: 50px;">
-                </td>
-                <td>
-                    <%= product.productId.name %>
-                    <strong class="mx-2">x</strong>
-                    <%= product.quantity %>
-                </td>
-                <td class="price-col">
-                    <% let discountedPrice = 0; %>
-                    <% if (product.productId.offer || (product.productId.category && product.productId.category.offer)) { %>
-                        <% const offer = product.productId.offer ? product.productId.offer : (product.productId.category ? product.productId.category.offer : null); %>
-                        <% if (offer) { %>
-                            <% discountedPrice = product.productId.price - (product.productId.price * (offer.offerPercentage / 100)); %>
-                            <!-- Calculate discounted price -->
-                            <span class="discounted-price">₹<%= discountedPrice.toFixed(2) * product.quantity %></span>
-                        <% } %>
-                    <% } else { %>
-                        <!-- Display regular price -->
-                        ₹<%= product.productId.price * product.quantity %>
-                    <% } %>
-                </td>
-                <% subTotal += discountedPrice* product.quantity %>
-            </tr>
-        <% }); %>
-    <% } %>
-    <tr>
-        <td class="text-black font-weight-bold">
-            <strong>Cart Subtotal</strong>
-        </td>
-        <td class="text-black">₹<%= subTotal.toFixed(2) %></td>
-    </tr>
-    <tr>
-        <td class="text-black font-weight-bold">
-            <strong>Order Total</strong>
-        </td>
-        <td class="text-black font-weight-bold"><strong id="total">₹<%= subTotal.toFixed(2) %></strong></td>
-    </tr>
-</tbody>
+                                        <tbody>
+                                            <% let subTotal = 0; %>
+                                            <% if (cart && cart.length > 0) { %>
+                                                <% let discountedPrice = 0; %>
+                                                <% cart.forEach((product) => { %>
+                                                    <tr>
+                                                        <td>
+                                                            <img src="<%= product.productId.images[0] %>" alt="" style="max-width: 50px;">
+                                                        </td>
+                                                        <td>
+                                                            <%= product.productId.name %>
+                                                            <strong class="mx-2">x</strong>
+                                                            <%= product.quantity %>
+                                                        </td>
+                                                        <td class="price-col">
+                                                            <% if (product.productId.offer || (product.productId.category && product.productId.category.offer)) { %>
+                                                                <% const offer = product.productId.offer ? product.productId.offer : (product.productId.category ? product.productId.category.offer : null); %>
+                                                                <% if (offer) { %>
+                                                                    <% discountedPrice = product.productId.price - (product.productId.price * (offer.offerPercentage / 100)); %>
+                                                                    <!-- Calculate discounted price -->
+                                                                    <span class="discounted-price">₹<%= discountedPrice.toFixed(2) * product.quantity %></span>
+                                                                <% } %>
+                                                            <% } else { %>
+                                                                <!-- Display regular price -->
+                                                                ₹<%=discountedPrice = product.productId.price * product.quantity %>
+                                                            <% } %>
+                                                        </td>
+                                                    </tr>
+                                                    <% subTotal += discountedPrice * product.quantity; %>
+                                                <% }); %>
+                                            <% } %>
+                                            <tr>
+                                                <td class="text-black font-weight-bold">
+                                                    <strong>Cart Subtotal</strong>
+                                                </td>
+                                                <td class="text-black">₹<%= subTotal.toFixed(2) %></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-black font-weight-bold">
+                                                    <strong>Order Total</strong>
+                                                </td>
+                                                <td class="text-black font-weight-bold"><strong id="total">₹<%= subTotal.toFixed(2) %></strong></td>
+                                            </tr>
+                                        </tbody>
+                                        
 
                                     </table>
                                     <ul class="selection-list">
