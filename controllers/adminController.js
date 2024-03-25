@@ -286,21 +286,18 @@ const adminLogout = async (req, res) => {
           let previous = page>1 ? page-1 : 1
       
           const count  = await User.find({
-            is_admin:0
+           
           }).count()
       
          let totalPages = Math.ceil(count/limit)
          if(next>totalPages){
           next=totalPages
          } 
-      
-          const user = await User.find({
-            is_admin:0,
-            
-          }).limit(limit)
+      const user= await User.find().sort({date:-1})
+      .limit(limit)
           .skip((page-1)*limit)
           .exec()
-      
+      console.log("user",user);
             res.render('customers',{users:user,
               page:page,
               previous:previous,

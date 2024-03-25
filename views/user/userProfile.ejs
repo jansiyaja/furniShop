@@ -467,9 +467,9 @@
                                                                         <td class="text-center"
                                                                             style="font-size: 1.3rem;">
                                                                             <% if (entry.credit) { %>
-                                                                                ₹<%= entry.credit %>
+                                                                                ₹<%= entry.credit?entry:no amount %>
                                                                                     <% } else if (entry.debit) { %>
-                                                                                        -₹<%= entry.debit %>
+                                                                                        -₹<%= entry.debit ? entry: no amount %>
                                                                                             <% } %>
                                                                         </td>
                                                                         <td class="text-center"

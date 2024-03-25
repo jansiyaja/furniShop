@@ -191,8 +191,8 @@
                     </header>
                     <!-- card-header end// -->
                     <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-hover">
+                        <div class="table-responsive ordersTable">
+                            <table class="table table-hover  ">
                                 <thead>
                                     <tr>
                                         <th>Index</th>
@@ -211,8 +211,9 @@
                                         <tr>
                                             <td><%= item.orderId%></td>
                                             <td><%= i + 1%></td>
-                                            <td><b><%= item.userId.name%></b></td>
-                                            <td><%= item.userId.email%></td>
+                                            <td><%= item.userId ? item.userId.name : 'User Not Found' %></td>
+
+                                            <td><%= item.userId ? item.userId.email : 'Email Not Found' %></td>
                                             <td><%= item.totalAmount%></td>
                                            
                                             <% const formattedDate = item.date.toLocaleString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true }); %>
@@ -246,20 +247,7 @@
                     <!-- card-body end// -->
                 </div>
                 <!-- card end// -->
-                <div class="pagination-area mt-15 mb-50">
-                    <nav aria-label="Page navigation example">
-                        <ul class="pagination justify-content-start">
-                            <li class="page-item active"><a class="page-link" href="#">01</a></li>
-                            <li class="page-item"><a class="page-link" href="#">02</a></li>
-                            <li class="page-item"><a class="page-link" href="#">03</a></li>
-                            <li class="page-item"><a class="page-link dot" href="#">...</a></li>
-                            <li class="page-item"><a class="page-link" href="#">16</a></li>
-                            <li class="page-item">
-                                <a class="page-link" href="#"><i class="material-icons md-chevron_right"></i></a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
+               
             </section>
             <!-- content-main end// -->
             <footer class="main-footer font-xs">
@@ -283,5 +271,33 @@
         <script src="assets/js/vendors/jquery.fullscreen.min.js"></script>
         <!-- Main Script -->
         <script src="assets/js/main.js?v=1.1" type="text/javascript"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.datatables.net/2.0.1/js/dataTables.min.js"></script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                console.log('Document ready!');
+        
+                const ordersTable = $('#ordersTable');
+        
+                if (ordersTable.length) {
+                    console.log('#ordersTable found!');
+        
+                    ordersTable.DataTable({
+                        "paging": true,
+                        "lengthMenu": [10, 20, 50, 100],
+                        "pageLength": 10,
+                        "order": [],
+                        "language": {
+                            "paginate": {
+                                "first": "&laquo;",
+                                "last": "&raquo;",
+                                "next": "&rsaquo;",
+                                "previous": "&lsaquo;"
+                            }
+                        }
+                    });
+                }
+            });
+        </script>
     </body>
 </html>

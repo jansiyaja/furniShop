@@ -386,7 +386,12 @@ const loadDashboard = async (req, res) => {
 
       const user = await User.findOne({ _id: userId });
       const wallet= await Wallet.findOne({userId:userId}).sort({ date: -1 })
-//      console.log(wallet);
+    console.log(wallet);
+if (wallet) {
+ 
+  wallet.walletHistory.sort((a, b) => new Date(b.date) - new Date(a.date));
+}
+
       res.render('userProfile', { userDetails: user,user:req.session.user, orders: orders,wallet:wallet });
     } else {
       req.flash('error', 'Please log in.');
@@ -480,7 +485,40 @@ const addAddress = async (req, res) => {
    
   }
 };
+const addAddresscheck = async (req, res) => {
+  try {
+    console.log(req.body);
+    const { fullName, city, streetAddress, state, zipCode, phone } = req.body;
 
+   
+    const user = await User.findOne({ _id: req.session.user.id });
+    const existAddress = user.address.find((addr) => addr.streetAddress === streetAddress);
+
+    if (existAddress) {
+      req.flash('success', 'Address already exists');
+      res.redirect('/user');
+    } else {
+      
+      user.address.push({
+        fullName: fullName,
+        streetAddress: streetAddress,
+        phone: phone,
+        city: city,
+        pincode: zipCode,
+        state: state,
+      });
+
+      
+      await user.save();
+
+      req.flash('success', 'Address added successfully');
+      res.redirect('/checkout');
+    }
+  } catch (error) {
+    console.error(error.message);
+   
+  }
+};
 
 //------------------------------------------------------//
 //-----load edit address-------------------------------------------------//
@@ -869,6 +907,6 @@ module.exports = {
   error404,
   loadeditAddress,
   loadeditProfile,
-  changePassword
-
+  changePassword,
+  addAddresscheck
 };

@@ -60,6 +60,7 @@ user_route.get('/edit-address/:addressId/:index',auth.isLogin, userController.lo
 user_route.post('/edit-address',auth.isLogin, userController.editAddress);
 user_route.post('/changePassword', auth.isLogin, userController.changePassword)
 user_route.post('/addAddress', auth.isLogin,userController.addAddress);
+user_route.post('/addAddresscheck', auth.isLogin,userController.addAddresscheck);
 user_route.get('/delete-address/:userId/:addressIndex', auth.isLogin,userController.deleteAddress);
 user_route.get('/forgot-password',userController.loadForgetPage)
 user_route.post('/forgot-password',userController.loadForget)

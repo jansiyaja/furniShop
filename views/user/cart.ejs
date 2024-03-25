@@ -60,8 +60,7 @@
                                                         </div><!-- End .product -->
                                                     </td>
 
-
-                                                    <td class="price-col">$<%= value.productId.price %>
+                                                    <td class="price-col">$<%=value.productId ?value.productId.price:'cart Not Price' %>
                                                     </td>
                                                     <td class="quantity-col ">
                                                         <div class="cart-product-quantity">
