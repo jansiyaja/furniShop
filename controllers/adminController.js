@@ -339,7 +339,7 @@ const adminLogout = async (req, res) => {
           .populate('userId')
           .populate('products.productId')
           .sort({ date: -1 })
-        res.render('OrderList', { order: order })
+        res.render('orderList', { order: order })
       } catch (error) {
         console.log(error.message);
       }
