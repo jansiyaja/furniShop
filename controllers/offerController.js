@@ -25,7 +25,7 @@ const Product= require('../models/products')
         .skip((page - 1) * limit)
         .exec();
   
-      res.render('Offers', {
+      res.render('offers', {
         offer: offer,
         page: page,
         previous: previous,
