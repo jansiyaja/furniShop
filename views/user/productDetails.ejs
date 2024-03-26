@@ -776,7 +776,7 @@ function addToWishlist(id){
               window.location.href = '/login'
             }
           })
-      }else if(response.already == true){
+      }else if(response.added == false){
         Swal.fire({
           title:'already in the whishlist',
           confirmButton:false

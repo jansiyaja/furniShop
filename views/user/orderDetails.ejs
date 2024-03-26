@@ -58,77 +58,56 @@
                                 </div><!-- End .col-md-8 -->
                                 <div class="col-md-4">
                                     <% if (orderedProducts && orderedProducts.length > 0) { %>
-                                
-                               
+                                        <% let retryPaymentDisplayed = false; %>
                                         <% orderedProducts.forEach(product => { %>
                                             <h2 class="entry-title">
                                                 <a href="single.html"><%= product.name %></a>
                                             </h2><!-- End .entry-title -->
                                             <figure class="entry-media">
                                                 <a href="single.html">
-                                                    <img src=" <%= product.images[0] %>" alt="image desc">
+                                                    <img src="<%= product.images[0] %>" alt="image desc">
                                                 </a>
                                             </figure><!-- End .entry-media -->
-                                          
-                                               
-                                                <!-- <p>Product Price: ₹<%= product.quantity.productId %></p> -->
-                                               
-                                            <p>Quantity: <%= product.quantity.quantity%></p>
-                                          
+                                            <p>Quantity: <%= product.quantity.quantity %></p>
                                             <p>Product Price: ₹<%= product.price %></p>
                                             <p>
-                                                <% if (product.quantity.status  === 'cancelled') { %>
+                                                <% if (product.quantity.status === 'cancelled') { %>
                                                     <p>Status: <%= product.quantity.status %></p>
-                                                    <p>Cancel Reason: <%=product.quantity.cancelReason %> </p>
-                                                    
-
-                                                    <% } 
-                                                    else if (product.quantity.status  === 'returnRequested') { %>
-                                                        <p>Status: <%= product.quantity.status %></p>
-                                                        <p>Return Reason: <%=product.quantity.returnReason %> </p>
-                                                      
-                                                    <% } else { %>
-                                                        <p>Status: <%= product.quantity.status %></p>
-                                                        
-                                                    <% } %>
-                                          
-                                            <!-- Display product-specific status for orderedProducts -->
-                                           
-                                            <p>
-                                                <% if (product.quantity.status  === 'cancelled') { %>
-                                                    
-                                                    <a href="" class="btn btn-outline-primary-2"><span>Cancelled</span></a>
-                                                <% } else if (product.quantity.status  === 'delivered') { %>
-                                                    
-                                                    <a href="" class="btn btn-outline-primary-2"><span>Delivered</span></a>
-
-                                                    <a href="#" class="btn btn-outline-primary-2 mt-3" id="returnOrderButton" data-orderId="<%= order.orderId %>" data-order-id="<%= order._id %>" data-product-id="<%= product.quantity.productId %>" data-coupon-dis=" <%= order.coupon%>">Return Order</a>
-                                                <% } 
-                                                else if (product.quantity.status  === 'returnRequested') { %>
-                                                  
-                                                    <a href="" class="btn btn-outline-primary-2"><span>Returned Requested</span></a>
-                                                <% }else if (product.quantity.status  === 'returned') { %>
-                                                    
-                                                    <a href="" class="btn btn-outline-primary-2"><span>Returned</span></a>
-                                                  
-                                                <% } 
-                                                else if (product.quantity.status ==='pending') { %>
-                                                    <a href="#" class="btn btn-outline-primary-2" id="retryPayment"  onclick="countinuePayment('<%=order.orderId%>')">Retry online payment</a>
-                                                  
-                                                  
-                                                <% } 
-                                                else { %>
-                                                    <a href="#" class="go-back-button" id="cancelOrderButton" data-order-Id="<%= order.orderId %>" data-order-id="<%= order._id %>" data-product-id="<%= product.quantity.productId %>" data-coupon-dis=" <%= order.coupon%>">Cancel Order</a>
+                                                    <p>Cancel Reason: <%= product.quantity.cancelReason %> </p>
+                                                <% } else if (product.quantity.status === 'returnRequested') { %>
+                                                    <p>Status: <%= product.quantity.status %></p>
+                                                    <p>Return Reason: <%= product.quantity.returnReason %> </p>
+                                                <% } else { %>
+                                                    <p>Status: <%= product.quantity.status %></p>
                                                 <% } %>
                                             </p>
-                                          
-                                            
+                                            <!-- Display product-specific status for orderedProducts -->
+                                            <p>
+                                                <% if (product.quantity.status === 'cancelled') { %>
+                                                    <a href="" class="btn btn-outline-primary-2"><span>Cancelled</span></a>
+                                                <% } else if (product.quantity.status === 'delivered') { %>
+                                                    <a href="" class="btn btn-outline-primary-2"><span>Delivered</span></a>
+                                                    <% if (!retryPaymentDisplayed) { %>
+                                                        <a href="#" class="btn btn-outline-primary-2 mt-3" id="retryPayment" onclick="countinuePayment('<%= order.orderId %>')">Retry online payment</a>
+                                                        <% retryPaymentDisplayed = true; %>
+                                                    <% } %>
+                                                <% } else if (product.quantity.status === 'returnRequested') { %>
+                                                    <a href="" class="btn btn-outline-primary-2"><span>Returned Requested</span></a>
+                                                <% } else if (product.quantity.status === 'returned') { %>
+                                                    <a href="" class="btn btn-outline-primary-2"><span>Returned</span></a>
+                                                <% } else if (product.quantity.status === 'pending' && !retryPaymentDisplayed) { %>
+                                                    <a href="#" class="btn btn-outline-primary-2" id="retryPayment" onclick="countinuePayment('<%= order.orderId %>')">Retry online payment</a>
+                                                    <% retryPaymentDisplayed = true; %>
+                                                <% } else { %>
+                                                    <a href="#" class="go-back-button" id="cancelOrderButton" data-order-Id="<%= order.orderId %>" data-order-id="<%= order._id %>" data-product-id="<%= product.quantity.productId %>" data-coupon-dis="<%= order.coupon %>">Cancel Order</a>
+                                                <% } %>
+                                            </p>
                                         <% }); %>
                                     <% } else { %>
                                         <p>No products found for this order.</p>
                                     <% } %>
-                                    
                                 </div><!-- End .col-md-4 -->
+                                
                             </div><!-- End .row -->
                             <div class="bt-3">
                                 <a href="/shop" class="btn btn-outline-primary-2"><span>GO SHOP</span><i class="icon-long-arrow-right"></i></a>

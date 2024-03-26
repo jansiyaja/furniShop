@@ -360,7 +360,7 @@ const addToWishlist = async (req, res) => {
        await wishlist.save();
        res.json({ added: true });
      } else {
-       // If the product is already in the wishlist, send a response indicating that
+       
        res.json({ added: false, message: "Product already in wishlist" });
      }
   } catch (error) {
