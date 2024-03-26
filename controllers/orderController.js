@@ -468,7 +468,7 @@ const cancelOrder = async (req, res) => {
                     userId: userId,
                     amount: totalAmount - discountAmount, // Deduct the discount amount
                     walletHistory: [{ date: date, 
-                        orderData: discountAmount,
+                        credit:totalAmount - discountAmount,
                         orderId2:orderId,
                         reason:cancelReason }]
                 });
@@ -722,7 +722,7 @@ const CountinuePayment = async (req, res) => {
         );
   
         console.log("Order updated successfully:", updatedOrder);
-  
+        await Cart.deleteOne({ userId: userId });
         res.json({ paymentSuccess: true });
       } else {
         const changedOrder = await Order.findByIdAndUpdate(
