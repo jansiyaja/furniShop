@@ -185,7 +185,7 @@ const loadaddOffer = async (req, res) => {
         const validOffers = offers.filter(offer => currentDate <= new Date(offer.expiryDate));
 
        
-        res.render('categoryApplyOffer', { offers: validOffers, categoryId });
+        res.render('categoryApplyoffer', { offers: validOffers, categoryId });
     } catch (error) {
         
         console.error(error);
